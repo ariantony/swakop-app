@@ -23,9 +23,11 @@
     DB_USERNAME=root
     DB_PASSWORD=
     ```
+
 5. Simpan perubahan pada file .env lalu kembali ke terminal, jalankan perintah berikut:
 
     ```
+    php artisan migrate:fresh --seed
     npm run dev
     ```
 
