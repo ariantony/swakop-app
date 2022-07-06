@@ -10,6 +10,7 @@ import JetNavLink from '@/Jetstream/NavLink.vue';
 import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue';
 import DropdownLink from '../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/DropdownLink.vue';
 import Dropdown from '@/Components/Dropdown.vue';
+import 'boxicons';
 
 defineProps({
     title: String,
@@ -61,11 +62,20 @@ const logout = () => {
                                         <button @click.prevent="toggle" class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition" :class="route().current('masterdata.goods') ? 'border-indigo-400' : 'border-transparent' ">Masterdata</button>
                                     </template>
                                     <template #body>
-                                        <JetDropdownLink :href="route('masterdata.goods')" :active="route().current('masterdata/goods')">
-                                            <div class="flex items-center">
-                                                <div class="block pl-1 pr-4 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">Barang</div>
-                                            </div>
-                                        </JetDropdownLink>
+                                        <transition
+                                            enter-active-class="transition ease-out duration-200"
+                                            enter-from-class="transform opacity-0 scale-95"
+                                            enter-to-class="transform opacity-100 scale-100"
+                                            leave-active-class="transition ease-in duration-75"
+                                            leave-from-class="transform opacity-100 scale-100"
+                                            leave-to-class="transform opacity-0 scale-95"
+                                        >
+                                            <JetDropdownLink :href="route('masterdata.goods')" :active="route().current('masterdata/goods')">
+                                                <div class="flex items-center">
+                                                    <div class="flex pr-4 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"><box-icon class="mr-2" type="regular" name='package'></box-icon>Barang</div>
+                                                </div>
+                                            </JetDropdownLink>
+                                        </transition>
                                     </template>
                                 </Dropdown>
                             </div>
@@ -103,7 +113,7 @@ const logout = () => {
                                         </div>
 
                                         <JetDropdownLink :href="route('profile.show')">
-                                            Profil
+                                            <box-icon class="mr-2" name='user-circle'></box-icon> Profil
                                         </JetDropdownLink>
 
                                         <div class="border-t border-gray-100" />
@@ -111,7 +121,7 @@ const logout = () => {
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <JetDropdownLink as="button">
-                                                Log Out
+                                                <box-icon class="mr-2" name='log-out'></box-icon> Log Out
                                             </JetDropdownLink>
                                         </form>
                                     </template>
