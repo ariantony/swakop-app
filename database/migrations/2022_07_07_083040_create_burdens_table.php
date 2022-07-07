@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('burdens', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->enum('shift',[1, 2])->default(1);
-            $table->double('basic_salary', 20, null, true)->default(0);
-            $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('name', 255);
+            $table->double('cost', 20, null, true)->default(0);
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('burdens');
     }
 };
