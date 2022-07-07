@@ -38,4 +38,6 @@ Route::middleware([
             return Inertia::render('Masterdata/Goods');
         })->name('masterdata.goods');
     });
+
+    Route::resource('user', App\Http\Controllers\UserController::class);
 });
