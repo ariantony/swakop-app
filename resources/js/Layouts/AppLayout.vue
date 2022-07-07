@@ -1,3 +1,14 @@
+<style>
+.fade-enter-active, .fade-leave-active {
+    transition: all 300ms linear;
+    opacity: 1;
+}
+
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
+</style>
+
 <script setup>
 import { getCurrentInstance, onMounted, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
@@ -34,9 +45,13 @@ const logout = () => {
 const self = getCurrentInstance()
 
 const resizeSidebar = () => {
-    const sidebarHeight = window.innerHeight - (self.refs.topbar.clientHeight);
+    const { topbar, w } = self.refs
 
-    self.refs.w.style.height = `${sidebarHeight}px`;
+    if (!topbar && !w) return
+
+    const sidebarHeight = window.innerHeight - (topbar.clientHeight);
+
+    w.style.height = `${sidebarHeight}px`;
 }
 
 onMounted(() => {
@@ -220,9 +235,10 @@ onMounted(() => {
                     <Button iconName="data" text="Masterdata" :href="route('masterdata.goods')" :active="route().current('masterdata.goods')"></Button>
                     <Button iconName="dollar-circle" :href="route('dashboard')" text="Transaksi" :active="false"></Button>
                     <Button iconType="solid" iconName="report" text="Laporan" :active="false"></Button>
+                    <Button iconName="user" text="User" :href="route('user.index')" :active="route().current('user.*')"></Button>
                 </div>
                 <!-- Page Content -->
-                <main>
+                <main class="flex flex-col w-full space-y-2 py-6 px-4">
                     <slot />
                 </main>
             </div>
