@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { getCurrentInstance, onMounted, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import JetApplicationMark from '@/Jetstream/ApplicationMark.vue';
@@ -10,6 +10,7 @@ import JetNavLink from '@/Jetstream/NavLink.vue';
 import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue';
 import DropdownLink from '../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/DropdownLink.vue';
 import Dropdown from '@/Components/Dropdown.vue';
+import Button from '@/Components/Button.vue';
 import 'boxicons';
 
 defineProps({
@@ -29,6 +30,19 @@ const switchToTeam = (team) => {
 const logout = () => {
     Inertia.post(route('logout'));
 };
+
+const self = getCurrentInstance()
+
+const resizeSidebar = () => {
+    const sidebarHeight = window.innerHeight - (self.refs.topbar.clientHeight);
+
+    self.refs.w.style.height = `${sidebarHeight}px`;
+}
+
+onMounted(() => {
+    resizeSidebar();
+    window.addEventListener('resize', resizeSidebar);
+});
 </script>
 
 <template>
@@ -38,20 +52,20 @@ const logout = () => {
         <JetBanner />
 
         <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+            <nav ref="topbar" class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <JetApplicationMark class="block h-9 w-auto" />
+                                    <h1 class="text-2xl antialiased font-semibold">Swakop</h1>
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <JetNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </JetNavLink>
@@ -78,7 +92,7 @@ const logout = () => {
                                         </transition>
                                     </template>
                                 </Dropdown>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -199,17 +213,28 @@ const logout = () => {
                 </div>
             </nav>
 
+            <!-- Sidebar -->
+            <div ref="w" class="flex">
+                <div class="flex flex-col space-y-1 bg-white w-56 rounded-md p-2 sidebar-height">
+                    <Button iconType="solid" iconName="dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"></Button>
+                    <Button iconName="data" text="Masterdata" :href="route('masterdata.goods')" :active="route().current('masterdata.goods')"></Button>
+                    <Button iconName="dollar-circle" :href="route('dashboard')" text="Transaksi" :active="false"></Button>
+                    <Button iconType="solid" iconName="report" text="Laporan" :active="false"></Button>
+                </div>
+                <!-- Page Content -->
+                <main>
+                    <slot />
+                </main>
+            </div>
+
             <!-- Page Heading -->
-            <header v-if="$slots.header" class="bg-white shadow">
+            <!-- <header v-if="$slots.header" class="bg-white shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
-            </header>
+            </header> -->
 
-            <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
+
         </div>
     </div>
 </template>
