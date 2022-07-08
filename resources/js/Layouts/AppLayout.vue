@@ -7,6 +7,20 @@
 .fade-enter-from, .fade-leave-to {
     opacity: 0;
 }
+
+.slide-fade-enter-active {
+    transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    transform: translateY(-20px);
+    opacity: 0;
+}
 </style>
 
 <script setup>
@@ -22,21 +36,12 @@ import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue';
 import DropdownLink from '../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/DropdownLink.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import Button from '@/Components/Button.vue';
-import 'boxicons';
 
 defineProps({
     title: String,
 });
 
 const showingNavigationDropdown = ref(false);
-
-const switchToTeam = (team) => {
-    Inertia.put(route('current-team.update'), {
-        team_id: team.id,
-    }, {
-        preserveState: false,
-    });
-};
 
 const logout = () => {
     Inertia.post(route('logout'));
@@ -101,7 +106,7 @@ onMounted(() => {
                                         >
                                             <JetDropdownLink :href="route('masterdata.goods')" :active="route().current('masterdata/goods')">
                                                 <div class="flex items-center">
-                                                    <div class="flex pr-4 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"><box-icon class="mr-2" type="regular" name='package'></box-icon>Barang</div>
+                                                    <div class="flex pr-4 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"><i class="bx bxr-package mr-2"></i>Barang</div>
                                                 </div>
                                             </JetDropdownLink>
                                         </transition>
@@ -142,15 +147,19 @@ onMounted(() => {
                                         </div>
 
                                         <JetDropdownLink :href="route('profile.show')">
-                                            <box-icon class="mr-2" name='user-circle'></box-icon> Profil
+                                            <div class="flex items-center">
+                                                <i class="bx bx-user-circle mr-2 text-xl"></i> Profil
+                                            </div>
                                         </JetDropdownLink>
 
                                         <div class="border-t border-gray-100" />
 
                                         <!-- Authentication -->
-                                        <form @submit.prevent="logout">
+                                        <form @submit.prevent="logout" class="w-full">
                                             <JetDropdownLink as="button">
-                                                <box-icon class="mr-2" name='log-out'></box-icon> Log Out
+                                                <div class="flex items-center">
+                                                    <i class="bx bx-log-out mr-2 text-xl"></i> Log Out
+                                                </div>
                                             </JetDropdownLink>
                                         </form>
                                     </template>
@@ -230,12 +239,12 @@ onMounted(() => {
 
             <!-- Sidebar -->
             <div ref="w" class="flex">
-                <div class="flex flex-col space-y-1 bg-white w-56 rounded-md p-2 sidebar-height">
-                    <Button iconType="solid" iconName="dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"></Button>
-                    <Button iconName="data" text="Masterdata" :href="route('masterdata.goods')" :active="route().current('masterdata.goods')"></Button>
-                    <Button iconName="dollar-circle" :href="route('dashboard')" text="Transaksi" :active="false"></Button>
-                    <Button iconType="solid" iconName="report" text="Laporan" :active="false"></Button>
-                    <Button iconName="user" text="User" :href="route('user.index')" :active="route().current('user.*')"></Button>
+                <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height">
+                    <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
+                    <Button iconClass="bx-data" text="Masterdata" :href="route('masterdata.goods')" :active="route().current('masterdata.goods')"/>
+                    <Button iconClass="bx-dollar-circle" text="Transaksi" :href="route('dashboard')" :active="false"/>
+                    <Button iconClass="bxs-report" text="Laporan" :active="false"/>
+                    <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                 </div>
                 <!-- Page Content -->
                 <main class="flex flex-col w-full space-y-2 py-6 px-4">
