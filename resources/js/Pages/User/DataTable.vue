@@ -9,46 +9,50 @@ const { edit, destroy } = defineProps({
 </script>
 
 <template>
-  <Builder :href="route('api.user.paginate')">
+  <Builder :href="route('api.user.paginate')" :colspan="6">
     <template v-slot:thead="table">
       <tr>
-        <Th class="px-1 py-2 uppercase" :sortable="false">no</Th>
-        <Th class="px-3 py-2 uppercase" :table="table" key="name">name</Th>
-        <Th class="px-3 py-2 uppercase" :table="table" key="name">username</Th>
-        <Th class="px-3 py-2 uppercase" :table="table" key="name">email</Th>
-        <Th class="px-3 py-2 uppercase" :table="table" key="name">roles</Th>
-        <Th class="px-3 py-2 uppercase" :sortable="false">action</Th>
+        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" key="name">nama</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" key="name">username</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" key="name">email</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" key="name">role</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
       </tr>
     </template>
     <template #tfoot>
-      <Th class="p-1 uppercase" :sortable="false">no</Th>
-      <Th class="p-1 uppercase" :sortable="false">name</Th>
-      <Th class="p-1 uppercase" :sortable="false">username</Th>
-      <Th class="p-1 uppercase" :sortable="false">email</Th>
-      <Th class="p-1 uppercase" :sortable="false">roles</Th>
-      <Th class="p-1 uppercase" :sortable="false">action</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">no</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">username</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">email</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">role</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
       <tr>
-        <td class="border p-1 text-center">{{ index + 1 }}</td>
-        <td class="border p-1 uppercase">{{ item.name }}</td>
-        <td class="border p-1 uppercase">{{ item.username }}</td>
-        <td class="border p-1 uppercase">{{ item.email }}</td>
-        <td class="border p-1">
-          <div class="flex-wrap text-white text-xs">
-            <button v-for="(role, i) in item.roles" :key="i" class="bg-slate-700 hover:bg-slate-600 rounded-md px-2 py-1 transition-all ease-in-out duration-150 font-semibold uppercase">
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ item.name }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ item.username }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ item.email }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">
+          <div class="flex flex-wrap justify-center items-center text-white text-xs">
+            <button v-for="(role, i) in item.roles" :key="i" class="bg-slate-700 hover:bg-slate-600 rounded-md px-2 py-1 transition-all ease-in-out duration-150 font-semibold uppercase cursor-default">
               {{ role.name }}
             </button>
           </div>
         </td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
-            <button @click.prevent="edit(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm uppercase font-semibold">
-              edit
+            <button @click.prevent="edit(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">
+              <div class="flex items-center">
+                <i class="bx bx-edit mr-1 text-white text-sm"></i> Edit
+              </div>
             </button>
 
-            <button @click.prevent="destroy(item)" class="bg-red-600 rounded-md px-3 py-1 text-sm uppercase font-semibold">
-              delete
+            <button @click.prevent="destroy(item)" class="bg-red-600 rounded-md px-3 py-1 text-sm font-semibold">
+              <div class="flex items-center">
+                <i class="bx bx-trash mr-1 text-white text-sm"></i> Hapus
+              </div>
             </button>
           </div>
         </td>
