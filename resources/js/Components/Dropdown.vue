@@ -1,6 +1,5 @@
 <script setup>
     import { getCurrentInstance, nextTick, ref } from 'vue'
-    import 'boxicons';
 
 const open = ref(false)
 const self = getCurrentInstance()
@@ -33,7 +32,7 @@ const toggle = () => {
             </div>
         </transition>
         <div class="flex items-center h-full">
-            <box-icon :class="!open ? 'rotate-0' : '-rotate-180'" class="transition-all duration-150" type="regular" size="sm" name="chevron-down"></box-icon>
+            <i :class="!open ? 'rotate-0' : '-rotate-180'" class="bx bxr-chevron-down transition-all duration-150"></i>
         </div>
     </div>
 </template>
