@@ -67,9 +67,7 @@ onMounted(() => refresh())
         </thead>
 
         <tbody>
-          <transition-group name="fade">
             <slot v-for="(item, i) in paginator.data" :key="i" :index="i" :item="item" :refresh="refresh" name="tbody" />
-          </transition-group>
 
           <tr v-if="!paginator.data?.length">
             <td :colspan="colspan" class="py-4 text-xl text-center font-semibold first-letter:capitalize">
