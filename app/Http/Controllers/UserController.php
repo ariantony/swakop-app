@@ -44,6 +44,7 @@ class UserController extends Controller
                 $query->orWhere($column, 'like', $search);
             }
         })
+            ->where('id', '!=', 1)
             ->with(['roles'])
             ->orderBy($request->input('order.key', 'name') ?: 'name', $request->input('order.dir', 'asc') ?: 'asc')
             ->paginate($request->input('per_page', 10));
