@@ -28,7 +28,7 @@ class UserController extends Controller
     public function paginate(Request $request)
     {
         $model = new User();
-        $columns = array_filter($model->getFillable(), fn ($column) => ! in_array($column, $model->getHidden()));
+        $columns = array_filter($model->getFillable(), fn ($column) => !in_array($column, $model->getHidden()));
 
         $request->validate([
             'search' => 'nullable|string',
@@ -38,15 +38,15 @@ class UserController extends Controller
         ]);
 
         return User::where(function (Builder $query) use (&$request, &$model, &$columns) {
-                            $search = '%'. $request->input('search') .'%';
+            $search = '%' . $request->input('search') . '%';
 
-                            foreach ($columns as $column) {
-                                $query->orWhere($column, 'like', $search);
-                            }
-                        })
-                        ->with(['roles'])
-                        ->orderBy($request->input('order.key', 'name'), $request->input('order.dir', 'asc') ?: 'asc')
-                        ->paginate($request->input('per_page', 10));
+            foreach ($columns as $column) {
+                $query->orWhere($column, 'like', $search);
+            }
+        })
+            ->with(['roles'])
+            ->orderBy($request->input('order.key', 'name') ?: 'name', $request->input('order.dir', 'asc') ?: 'asc')
+            ->paginate($request->input('per_page', 10));
     }
 
     /**
@@ -78,7 +78,7 @@ class UserController extends Controller
         $post = $request->only([
             'name', 'username', 'email', 'password'
         ]);
-        
+
         foreach ($post as $key => $val) {
             if ($key !== 'password') {
                 $post[$key] = mb_strtolower($val);
@@ -88,14 +88,11 @@ class UserController extends Controller
         }
 
         if ($user = User::create($post)) {
-            return redirect()->back()->with('success', __(
-                'user has been created',
-            ));
+            $user->assignRole('kasir');
+            return redirect()->back()->with('success', 'User berhasil ditambahkan.');
         }
 
-        return redirect()->back()->with('error', __(
-            'can\'t create user',
-        ));
+        return redirect()->back()->with('error', 'User gagal ditambahkan.');
     }
 
     /**
@@ -136,7 +133,7 @@ class UserController extends Controller
             'password' => 'required|string',
             'password_confirmation' => 'required|same:password',
         ]);
-        
+
         foreach ($post as $key => $val) {
             if ($key !== 'password') {
                 $post[$key] = mb_strtolower($val);
@@ -144,14 +141,10 @@ class UserController extends Controller
         }
 
         if ($user->update($post)) {
-            return redirect()->back()->with('success', __(
-                'user has been updated',
-            ));
+            return redirect()->back()->with('success', 'User berhasil diperbarui.');
         }
 
-        return redirect()->back()->with('error', __(
-            'can\'t update user',
-        ));
+        return redirect()->back()->with('error', 'User gagal diperbarui.');
     }
 
     /**
@@ -163,13 +156,9 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if ($user->delete()) {
-            return redirect()->back()->with('success', __(
-                'user has been deleted',
-            ));
+            return redirect()->back()->with('success', 'User berhasil dihapus.');
         }
 
-        return redirect()->back()->with('error', __(
-            'can\'t delete user',
-        ));
+        return redirect()->back()->with('success', 'User gagal dihapus.');
     }
 }
