@@ -44,6 +44,10 @@ const submit = () => {
         </div>
 
         <form @submit.prevent="submit">
+            <div class="flex flex-col items-center justify-center mb-4">
+                <h1 class="text-2xl font-semibold mb-2">Login</h1>
+                <h4 class="text-md text-slate-400">Silahkan login unuk mengakses aplikasi swakop.</h4>
+            </div>
             <div>
                 <JetLabel for="username" value="Username" />
                 <JetInput
@@ -51,7 +55,6 @@ const submit = () => {
                     v-model="form.username"
                     type="text"
                     class="mt-1 block w-full"
-                    required
                     autofocus
                 />
             </div>
@@ -63,23 +66,11 @@ const submit = () => {
                     v-model="form.password"
                     type="password"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="current-password"
                 />
             </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <JetCheckbox v-model:checked="form.remember" name="remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
-
             <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Forgot your password?
-                </Link>
-
                 <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Log in
                 </JetButton>

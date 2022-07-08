@@ -79,11 +79,11 @@ const clearPhotoFileInput = () => {
 <template>
     <JetFormSection @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
+            Informasi Profil
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            Perbarui informasi profil Anda.
         </template>
 
         <template #form>
@@ -97,40 +97,42 @@ const clearPhotoFileInput = () => {
                     @change="updatePhotoPreview"
                 >
 
-                <JetLabel for="photo" value="Photo" />
+                <JetLabel for="photo" value="Foto" />
+                
+                <div class="flex space-x-8 items-center">
+                    <!-- Current Profile Photo -->
+                    <div v-show="! photoPreview" class="mt-2">
+                        <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
+                    </div>
 
-                <!-- Current Profile Photo -->
-                <div v-show="! photoPreview" class="mt-2">
-                    <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
+                    <!-- New Profile Photo Preview -->
+                    <div v-show="photoPreview" class="mt-2">
+                        <span
+                            class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
+                            :style="'background-image: url(\'' + photoPreview + '\');'"
+                        />
+                    </div>
+
+                    <JetSecondaryButton class="h-10" type="button" @click.prevent="selectNewPhoto">
+                        Pilih Foto Lain
+                    </JetSecondaryButton>
+
+                    <JetSecondaryButton
+                        v-if="user.profile_photo_path"
+                        type="button"
+                        class="mt-2"
+                        @click.prevent="deletePhoto"
+                    >
+                        Hapus Foto
+                    </JetSecondaryButton>
+
+                    <JetInputError :message="form.errors.photo" class="mt-2" />
                 </div>
-
-                <!-- New Profile Photo Preview -->
-                <div v-show="photoPreview" class="mt-2">
-                    <span
-                        class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
-                        :style="'background-image: url(\'' + photoPreview + '\');'"
-                    />
-                </div>
-
-                <JetSecondaryButton class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
-                    Select A New Photo
-                </JetSecondaryButton>
-
-                <JetSecondaryButton
-                    v-if="user.profile_photo_path"
-                    type="button"
-                    class="mt-2"
-                    @click.prevent="deletePhoto"
-                >
-                    Remove Photo
-                </JetSecondaryButton>
-
-                <JetInputError :message="form.errors.photo" class="mt-2" />
             </div>
 
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
-                <JetLabel for="name" value="Name" />
+                <JetLabel for="name" value="Nama" />
                 <JetInput
                     id="name"
                     v-model="form.name"
@@ -176,11 +178,11 @@ const clearPhotoFileInput = () => {
 
         <template #actions>
             <JetActionMessage :on="form.recentlySuccessful" class="mr-3">
-                Saved.
+                Tersimpan.
             </JetActionMessage>
 
             <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                Simpan
             </JetButton>
         </template>
     </JetFormSection>

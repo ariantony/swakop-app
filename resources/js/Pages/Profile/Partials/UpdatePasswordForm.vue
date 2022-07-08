@@ -44,12 +44,12 @@ const updatePassword = () => {
         </template>
 
         <template #description>
-            Ensure your account is using a long, random password to stay secure.
+            Pastikan akun anda menggunakan password yang baik dan sulit ditebak agar tetap aman.
         </template>
 
         <template #form>
             <div class="col-span-6 sm:col-span-4">
-                <JetLabel for="current_password" value="Current Password" />
+                <JetLabel for="current_password" value="Password Sebelumnya" />
                 <JetInput
                     id="current_password"
                     ref="currentPasswordInput"
@@ -62,7 +62,7 @@ const updatePassword = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <JetLabel for="password" value="New Password" />
+                <JetLabel for="password" value="Password Baru" />
                 <JetInput
                     id="password"
                     ref="passwordInput"
@@ -75,7 +75,7 @@ const updatePassword = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <JetLabel for="password_confirmation" value="Confirm Password" />
+                <JetLabel for="password_confirmation" value="Konfirmasi Password Baru" />
                 <JetInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -89,11 +89,11 @@ const updatePassword = () => {
 
         <template #actions>
             <JetActionMessage :on="form.recentlySuccessful" class="mr-3">
-                Saved.
+                Tersimpan.
             </JetActionMessage>
 
             <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                Simpan
             </JetButton>
         </template>
     </JetFormSection>
