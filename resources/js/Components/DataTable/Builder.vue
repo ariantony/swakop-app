@@ -1,12 +1,17 @@
 <script setup>
 import { getCurrentInstance, onMounted, ref } from 'vue'
 import { Link, useForm } from '@inertiajs/inertia-vue3'
+import Swal from 'sweetalert2'
 import axios from 'axios'
 
 const { href } = defineProps({
   href: {
     type: String,
     required: true,
+  },
+  colspan: {
+    type: Number,
+    default: 1,
   },
 })
 
@@ -25,7 +30,7 @@ const refresh = () => {
   return axios.post(href, form.data())
               .then(response => response.data)
               .then(response => paginator.value = response)
-              // .catch(e => Swal.fire({ text: `${e}`, icon: 'error' }))
+              .catch(e => Swal.fire({ text: `${e}`, icon: 'error' }))
 }
 
 const table = {
@@ -39,8 +44,8 @@ onMounted(() => refresh())
   <div class="flex flex-col space-y-2">
     <div class="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0 sm:space-x-2">
       <div class="w-1/3 flex items-center space-x-1">
-        <label for="per_page" class="lowercase first-letter:capitalize">per page</label>
-        <select name="per_page" v-model="form.per_page" @change.prevent="refresh" class="bg-transparent border border-slate-200 rounded-md text-sm">
+        <label for="per_page" class="lowercase first-letter:capitalize">Tampilkan data</label>
+        <select name="per_page" v-model="form.per_page" @change.prevent="refresh" class="bg-transparent border-2 border-slate-300 rounded-md text-sm">
           <option value="10">10</option>
           <option value="15">15</option>
           <option value="25">25</option>
@@ -50,20 +55,16 @@ onMounted(() => refresh())
       </div>
 
       <div class="w-2/3 flex items-center justify-end space-x-1">
-        <label for="search" class="lowecase first-letter:capitalize">search</label>
-        <input type="search" v-model="form.search" @input.prevent="refresh" class="bg-transparent w-full max-w-xs border border-slate-200 rounded-md placeholder:capitalize text-sm" placeholder="search something">
+        <label for="search" class="lowecase first-letter:capitalize">Cari</label>
+        <input type="search" v-model="form.search" @input.prevent="refresh" class="bg-transparent w-full max-w-xs border-2 border-slate-300 rounded-md placeholder:capitalize text-sm" placeholder="Cari sesuatu ...">
       </div>
     </div>
 
     <div class="w-full overflow-x-auto rounded-md">
-      <table class="w-full border-collapse border">
-        <thead class="bg-slate-100 sticky top-0 left-0">
+      <table class="w-full border-collapse border-2 border-slate-300">
+        <thead class="bg-slate-100">
           <slot name="thead" :table="table" />
         </thead>
-
-        <tfoot class="bg-slate-100">
-          <slot name="tfoot" :table="table" />
-        </tfoot>
 
         <tbody>
           <transition-group name="fade">
@@ -71,11 +72,15 @@ onMounted(() => refresh())
           </transition-group>
 
           <tr v-if="!paginator.data?.length">
-            <td colspan="1000" class="py-4 text-xl text-center font-semibold lowercase first-letter:capitalize">
-              there are no data available :'(
+            <td :colspan="colspan" class="py-4 text-xl text-center font-semibold first-letter:capitalize">
+              Tidak ada data ditemukan.
             </td>
           </tr>
         </tbody>
+
+        <tfoot class="bg-slate-100">
+          <slot name="tfoot" :table="table" />
+        </tfoot>
       </table>
     </div>
   </div>

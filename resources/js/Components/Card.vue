@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col border rounded-md">
-    <div class="bg-slate-100 rounded-t-md">
+  <div class="flex flex-col border-2 border-slate-400 rounded-md">
+    <div class="p-1 bg-slate-100 rounded-t-md">
       <slot name="header" />
     </div>
 
