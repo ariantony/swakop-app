@@ -10,12 +10,12 @@ const { edit, destroy } = defineProps({
 
 <template>
   <Builder :href="route('api.user.paginate')" :colspan="5">
-    <template v-slot:thead="table">
+    <template v-slot:thead="{table}">
       <tr>
         <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" key="name">nama</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" key="name">username</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" key="name">email</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name">nama</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="username">username</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="email">email</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
       </tr>
     </template>
