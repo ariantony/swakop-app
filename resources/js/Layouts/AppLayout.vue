@@ -247,7 +247,7 @@ onMounted(() => {
                     <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                 </div>
                 <!-- Page Content -->
-                <main class="flex flex-col w-full space-y-2 py-6 px-4">
+                <main class="flex flex-col w-full space-y-2 py-6 px-4 overflow-y-auto">
                     <slot />
                 </main>
             </div>
