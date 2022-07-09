@@ -34,7 +34,7 @@ Inertia.on('finish', () => {
 
 Inertia.on('finish', () => {
     const { success, error } = usePage().props.value;
-    console.log(success, error)
+    
     if (success || error) {
         Swal.fire({
             title: success ? 'Berhasil!' : 'Gagal!',
