@@ -36,6 +36,7 @@ import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue';
 import DropdownLink from '../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/DropdownLink.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import Button from '@/Components/Button.vue';
+import SidebarLinks from '../Components/SidebarLinks.vue';
 
 defineProps({
     title: String,
@@ -241,10 +242,12 @@ onMounted(() => {
             <div ref="w" class="flex">
                 <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
-                    <Button iconClass="bx-data" text="Masterdata" :href="route('masterdata.goods')" :active="route().current('masterdata.goods')"/>
+                    <SidebarLinks :active="route().current('masterdata.*') || route().current('user.*')" text="Master Data" icon="caret-down">
+                        <Button iconClass="bx-data" text="Masterdata" :href="route('masterdata.goods')" :active="route().current('masterdata.goods')"/>
+                        <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
+                    </SidebarLinks>
                     <Button iconClass="bx-dollar-circle" text="Transaksi" :href="route('dashboard')" :active="false"/>
                     <Button iconClass="bxs-report" text="Laporan" :active="false"/>
-                    <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                 </div>
                 <!-- Page Content -->
                 <main class="flex flex-col w-full space-y-2 py-6 px-4 overflow-y-auto">
