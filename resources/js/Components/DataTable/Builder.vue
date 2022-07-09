@@ -94,14 +94,16 @@ onUnmounted(() => interval.value && clearInterval(interval.value))
         <p class="lowercase first-letter:capitalize">menampilkan {{ paginator.per_page }} data dari data ke {{ paginator.from }} sampai {{ paginator.to }}. total semua data {{ paginator.total }}</p>
       </div>
 
-      <div class="flex items-center justify-end overflow-x-auto w-full">
-        <button
-          v-for="(link, i) in paginator.links"
-          :key="i"
-          @click.prevent="link.url && refresh(link.url)"
-          class="text-sm uppercase font-semibold px-3 py-1 border"
-          :class="`${i === 0 ? 'rounded-l-md' : ''} ${paginator.links?.length - 1 === i ? 'rounded-r-md' : ''} ${link.active ? 'bg-blue-600 text-white border-blue-600' : (link.url ? 'bg-slate-50' : 'bg-slate-200')} ${link.url ? 'cursor-pointer' : 'cursor-default'}`"
-          v-html="link.label"></button>
+      <div class="flex items-center justify-end overflow-x-auto w-2/3">
+        <div class="w-full flex items-center">
+          <button
+            v-for="(link, i) in paginator.links"
+            :key="i"
+            @click.prevent="link.url && refresh(link.url)"
+            class="text-sm uppercase font-semibold px-3 py-1 border flex-none"
+            :class="`${i === 0 ? 'rounded-l-md' : ''} ${paginator.links?.length - 1 === i ? 'rounded-r-md' : ''} ${link.active ? 'bg-blue-600 text-white border-blue-600' : (link.url ? 'bg-slate-50' : 'bg-slate-200')} ${link.url ? 'cursor-pointer' : 'cursor-default'}`"
+            v-html="link.label"></button>
+        </div>
       </div>
     </div>
   </div>
