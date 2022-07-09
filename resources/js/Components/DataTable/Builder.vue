@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -37,7 +37,10 @@ const table = {
   refresh, paginator, form,
 }
 
-onMounted(() => refresh())
+const interval = ref(null)
+
+onMounted(() => refresh().then(() => interval.value = setInterval(refresh, 5000)))
+onUnmounted(() => interval.value && clearInterval(interval.value))
 </script>
 
 <template>
