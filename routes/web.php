@@ -28,11 +28,7 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::prefix('/masterdata')->group(function () {
-        Route::get('/goods', function () {
-            return Inertia::render('Masterdata/Goods');
-        })->name('masterdata.goods');
-    });
-
     Route::resource('user', App\Http\Controllers\UserController::class);
+    Route::resource('burden', App\Http\Controllers\BurdenController::class);
+    Route::patch('burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle');
 });

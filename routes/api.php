@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::name('api.')->group(function () {
     Route::post('/user', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
+    Route::post('/burden', [App\Http\Controllers\BurdenController::class, 'paginate'])->name('burden.paginate');
 });
