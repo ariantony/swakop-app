@@ -248,7 +248,6 @@ onMounted(() => {
                 <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
                     <SidebarLinks :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*')" text="Master Data" icon="caret-down">
-                        <Button iconClass="bx-data" text="Masterdata" :href="route('masterdata.goods')" :active="route().current('masterdata.goods')"/>
                         <Button iconClass="bx-data" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
                         <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                         <Button iconClass="bx-bookmark" text="Beban" :href="route('burden.index')" :active="route().current('burden.*')"/>
