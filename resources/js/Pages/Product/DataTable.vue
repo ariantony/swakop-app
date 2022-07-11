@@ -44,9 +44,9 @@ const { edit, destroy, transaction } = defineProps({
         <td class="border p-2 border-x-2 border-slate-300">{{ item.stock_carton }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
-            <button @click.prevent="transaction(item)" class="bg-green-600 rounded-md px-3 py-1 text-sm font-semibold">
+            <button @click.prevent="transaction(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
-                <i class="bx bx-list mr-1 text-white text-sm"></i> Transaksi
+                <i class="bx bx-list-ul mr-1 text-white text-sm"></i> Transaksi
               </div>
             </button>
 

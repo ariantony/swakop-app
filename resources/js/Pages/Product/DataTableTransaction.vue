@@ -8,7 +8,7 @@ const { product } = defineProps({
 </script>
 
 <template>
-  <Builder :href="route('api.product.transactions.paginate', product.id)" :colspan="5">
+  <Builder :href="route('api.product.transactions.paginate', product.id)" :colspan="8">
     <template v-slot:thead="{table}">
       <tr>
         <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>

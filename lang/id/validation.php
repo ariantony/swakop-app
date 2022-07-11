@@ -149,5 +149,6 @@ return [
         'name' => 'nama',
         'password_confirmation' => 'konfirmasi password',
         'cost' => 'biaya',
+        'code' => 'kode',
     ],
 ];

@@ -61,16 +61,13 @@ class ProductController extends Controller
             'code' => 'required|unique:products',
             'name' => 'required|string',
             'barcode' => 'required|string|unique:products',
-            'qty_per_unit' => 'required|integer|min:0',
-            'qty_per_box' => 'required|integer|min:0',
-            'qty_per_carton' => 'required|integer|min:0',
         ]);
 
         if ($product = Product::create($post)) {
-            return redirect()->back()->with('success', 'produk berhasil dibuat');
+            return redirect()->back()->with('success', 'Produk berhasil dibuat.');
         }
 
-        return redirect()->back()->with('error', 'gagal membuat produk');
+        return redirect()->back()->with('error', 'Gagal membuat produk.');
     }
 
     /**
@@ -86,16 +83,13 @@ class ProductController extends Controller
             'code' => ['required', Rule::unique('products')->ignore($product->id)],
             'name' => 'required|string',
             'barcode' => ['required', 'string', Rule::unique('products')->ignore($product->id)],
-            'qty_per_unit' => 'required|integer|min:0',
-            'qty_per_box' => 'required|integer|min:0',
-            'qty_per_carton' => 'required|integer|min:0',
         ]);
 
         if ($product->update($post)) {
-            return redirect()->back()->with('success', 'produk berhasil diperbaharui');
+            return redirect()->back()->with('success', 'Produk berhasil diperbaharui.');
         }
 
-        return redirect()->back()->with('error', 'gagal memperbaharui produk');
+        return redirect()->back()->with('error', 'Gagal memperbaharui produk.');
     }
 
     /**
@@ -107,9 +101,9 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product->delete()) {
-            return redirect()->back()->with('success', 'produk berhasil dihapus');
+            return redirect()->back()->with('success', 'Produk berhasil dihapus.');
         }
 
-        return redirect()->back()->with('success', 'gagal menghapus produk');
+        return redirect()->back()->with('success', 'Gagal menghapus produk.');
     }
 }

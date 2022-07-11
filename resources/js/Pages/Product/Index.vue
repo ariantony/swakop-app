@@ -65,7 +65,7 @@ const update = () => {
 const destroy = product => {
   return Swal.fire({
     title: 'Konfirmasi!',
-    html: 'Anda yakin akan menghapus akun ini? Semua pencatatan data yang berhubungan akun ini akan ikut terhapus.',
+    html: 'Anda yakin akan menghapus produk ini? Semua pencatatan data yang berhubungan produk ini akan ikut terhapus.',
     icon: 'question',
     showCancelButton: true,
   }).then(response => {
@@ -135,7 +135,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="name" class="lowercase first-letter:capitalize w-1/4">nama</label>
-                  <input ref="name" type="text" name="name" v-model="form.name" class="w-3/4 bg-transparent border border-slate-200 rounded-md uppercase placeholder:capitalize" autocomplete="off" placeholder="nama">
+                  <input ref="name" type="text" name="name" v-model="form.name" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="nama">
                 </div>
                 <div v-if="form.errors.name" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.name }}</div>
               </div>
