@@ -26,7 +26,7 @@
 <script setup>
 import { getCurrentInstance, onMounted, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Head, Link, usePage } from '@inertiajs/inertia-vue3';
 import JetApplicationMark from '@/Jetstream/ApplicationMark.vue';
 import JetBanner from '@/Jetstream/Banner.vue';
 import JetDropdown from '@/Jetstream/Dropdown.vue';
@@ -37,10 +37,14 @@ import DropdownLink from '../../../vendor/laravel/jetstream/stubs/inertia/resour
 import Dropdown from '@/Components/Dropdown.vue';
 import Button from '@/Components/Button.vue';
 import SidebarLinks from '../Components/SidebarLinks.vue';
+import axios from 'axios';
 
 defineProps({
     title: String,
 });
+
+const { $token } = usePage().props.value
+axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`
 
 const showingNavigationDropdown = ref(false);
 
@@ -63,6 +67,7 @@ const resizeSidebar = () => {
 onMounted(() => {
     resizeSidebar();
     window.addEventListener('resize', resizeSidebar);
+
 });
 </script>
 
@@ -242,9 +247,10 @@ onMounted(() => {
             <div ref="w" class="flex">
                 <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
-                    <SidebarLinks :active="route().current('masterdata.*') || route().current('user.*')" text="Master Data" icon="caret-down">
+                    <SidebarLinks :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*')" text="Master Data" icon="caret-down">
                         <Button iconClass="bx-data" text="Masterdata" :href="route('masterdata.goods')" :active="route().current('masterdata.goods')"/>
                         <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
+                        <Button iconClass="bx-data" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
                     </SidebarLinks>
                     <Button iconClass="bx-dollar-circle" text="Transaksi" :href="route('dashboard')" :active="false"/>
                     <Button iconClass="bxs-report" text="Laporan" :active="false"/>
