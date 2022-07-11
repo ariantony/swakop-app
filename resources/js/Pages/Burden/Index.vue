@@ -57,10 +57,10 @@ const update = () => {
   })
 }
 
-const toggle = burden => {
-  Inertia.on('success', () => nextTick(reset))
+const toggle = (burden, refresh) => {
+  Inertia.on('success', () => nextTick(refresh))
   Inertia.on('error', () => nextTick(show))
-  
+
   return Inertia.patch(route('burden.toggle', burden.id))
 }
 
