@@ -28,11 +28,12 @@ const paginator = ref({})
 const latest = ref(href)
 
 const refresh = (page) => {
-  return axios.post(page || href, form.data())
-              .then(response => response.data)
-              .then(response => paginator.value = response)
-              .then(() => latest.value = page || href)
-              .catch(e => Swal.fire({ text: `${e}`, icon: 'error' }))
+  if (page || href)
+    return axios.post(page || href, form.data())
+                .then(response => response.data)
+                .then(response => paginator.value = response)
+                .then(() => latest.value = page || href)
+                .catch(e => Swal.fire({ text: `${e}`, icon: 'error' }))
 }
 
 const table = {
@@ -41,7 +42,7 @@ const table = {
 
 const interval = ref(null)
 
-onMounted(() => refresh().then(() => interval.value = setInterval(() => refresh(latest.value), 5000)))
+onMounted(() => refresh())
 onUnmounted(() => interval.value && clearInterval(interval.value))
 </script>
 
