@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['buy', 'sell']);
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->unsignedDouble('cost_unit', 20)->nullable()->default(null);
             $table->unsignedDouble('cost_box', 20)->nullable()->default(null);
             $table->unsignedDouble('cost_carton', 20)->nullable()->default(null);
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('details');
     }
 };

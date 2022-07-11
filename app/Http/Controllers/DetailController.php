@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Transaction;
+use App\Models\Detail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class TransactionController extends Controller
+class DetailController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +25,7 @@ class TransactionController extends Controller
      */
     public function paginate(Request $request, Product $product)
     {
-        $model = new Transaction();
+        $model = new Detail();
         $columns = array_filter($model->getFillable(), fn ($column) => ! in_array($column, $model->getHidden()));
 
         $request->validate([
@@ -35,7 +35,7 @@ class TransactionController extends Controller
             'order.dir' => 'nullable|string|in:asc,desc',
         ]);
 
-        return $product->transactions()
+        return $product->details()
                         ->with(['user'])
                         ->where(function (Builder $query) use (&$request, &$columns) {
                             $search = '%' . $request->input('search') . '%';
@@ -72,10 +72,10 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Transaction  $transaction
+     * @param  \App\Models\Detail  $detail
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transaction)
+    public function show(Detail $detail)
     {
         //
     }
@@ -83,10 +83,10 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Transaction  $transaction
+     * @param  \App\Models\Detail  $Ddetail
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaction $transaction)
+    public function edit(Detail $detail)
     {
         //
     }
@@ -95,10 +95,10 @@ class TransactionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaction  $transaction
+     * @param  \App\Models\Detail  $detail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(Request $request, Detail $detail)
     {
         //
     }
@@ -106,10 +106,10 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Transaction  $transaction
+     * @param  \App\Models\Detail  $detail
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Detail $detail)
     {
         //
     }

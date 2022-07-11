@@ -6,7 +6,7 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import Card from '@/Components/Card.vue'
 import DataTable from './DataTable.vue'
 import Swal from 'sweetalert2'
-import Transaction from './Transaction.vue'
+import Detail from './Detail.vue'
 
 const self = getCurrentInstance()
 const render = ref(true)
@@ -100,7 +100,7 @@ onMounted(() => {
         </div>
       </template>
       <template #body>
-        <DataTable v-if="render" :edit="edit" :destroy="destroy" :transaction="(product) => transaction = product" />
+        <DataTable v-if="render" :edit="edit" :destroy="destroy" :detail="(product) => transaction = product" />
       </template>
     </Card>
   </AppLayout>
@@ -163,5 +163,5 @@ onMounted(() => {
     </div>
   </transition>
 
-  <Transaction :product="transaction" :close="() => transaction = null" />
+  <Detail :product="transaction" :close="() => transaction = null" />
 </template>

@@ -42,9 +42,9 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function transactions()
+    public function details()
     {
-        return $this->hasMany(Transaction::class, 'product_id', 'id');
+        return $this->hasMany(Detail::class, 'product_id', 'id');
     }
 
     /**
@@ -52,7 +52,7 @@ class Product extends Model
      */
     public function buy()
     {
-        return $this->transactions()->where('type', 'buy');
+        return $this->details()->where('type', 'buy');
     }
 
     /**
@@ -60,7 +60,7 @@ class Product extends Model
      */
     public function sell()
     {
-        return $this->transactions()->where('type', 'sell');
+        return $this->details()->where('type', 'sell');
     }
 
     /**
