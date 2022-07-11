@@ -18,9 +18,6 @@ return new class extends Migration
             $table->string('code', 255);
             $table->string('name', 255);
             $table->string('barcode', 255);
-            $table->integer('qty_per_unit', false, true);
-            $table->integer('qty_per_box', false, true);
-            $table->integer('qty_per_carton', false, true);
             $table->timestamps();
         });
     }
