@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedDouble('cost_unit', 20)->nullable()->default(null);
             $table->unsignedDouble('cost_box', 20)->nullable()->default(null);
             $table->unsignedDouble('cost_carton', 20)->nullable()->default(null);
+            $table->unsignedDouble('subtotal')->nullable()->default(null);
             $table->timestamps();
         });
     }
