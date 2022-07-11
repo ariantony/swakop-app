@@ -58,11 +58,10 @@ const update = () => {
 }
 
 const toggle = burden => {
-  console.log(burden)
-  return Inertia.patch(route('burden.toggle', burden.id), {
-    onSuccess: () => reset(),
-    onError: () => nextTick(show),
-  })
+  Inertia.on('success', () => nextTick(reset))
+  Inertia.on('error', () => nextTick(show))
+  
+  return Inertia.patch(route('burden.toggle', burden.id))
 }
 
 const destroy = burden => {
