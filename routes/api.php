@@ -14,10 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::name('api.')->group(function () {
-    Route::post('/user', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
+    Route::post('/users', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
+    Route::post('/products', [App\Http\Controllers\ProductController::class, 'paginate'])->name('product.paginate');
+    Route::post('/product/{product}/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('product.transactions.paginate');
 });
