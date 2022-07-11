@@ -148,5 +148,6 @@ return [
     'attributes' => [
         'name' => 'nama',
         'password_confirmation' => 'konfirmasi password',
+        'cost' => 'biaya',
     ],
 ];

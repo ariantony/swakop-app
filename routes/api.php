@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('api.')->group(function () {
-    Route::post('/users', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
     Route::post('/products', [App\Http\Controllers\ProductController::class, 'paginate'])->name('product.paginate');
     Route::post('/product/{product}/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('product.transactions.paginate');
+    Route::post('/users', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
+    Route::post('/burdens', [App\Http\Controllers\BurdenController::class, 'paginate'])->name('burden.paginate');
 });
