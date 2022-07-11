@@ -36,12 +36,21 @@ Inertia.on('finish', () => {
     const { success, error } = usePage().props.value;
     
     if (success || error) {
-        Swal.fire({
-            title: success ? 'Berhasil!' : 'Gagal!',
-            text: success || error,
-            icon: success ? 'success' : 'error',
+        Swal.mixin({
+            toast: true,
+            position: 'top-end',
             showConfirmButton: false,
-            timer: 1500,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            heightAuto: false,
+        }).fire({
+            icon: success ? 'success' : 'error',
+            title: success ? 'Berhasil !' : 'Error !',
+            text: success ? success : error,
         });
     }
 })
