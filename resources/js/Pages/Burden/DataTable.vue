@@ -7,15 +7,6 @@ const { edit, destroy, toggle } = defineProps({
   destroy: Function,
   toggle: Function,
 })
-
-const rupiah = (value) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(value);
-}
-
 </script>
 
 <template>
