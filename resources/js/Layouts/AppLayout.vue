@@ -245,7 +245,7 @@ onMounted(() => {
 
             <!-- Sidebar -->
             <div ref="w" class="flex">
-                <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height">
+                <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
                     <SidebarLinks :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*')" text="Master Data" icon="data">
                         <Button iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
@@ -254,6 +254,7 @@ onMounted(() => {
                     </SidebarLinks>
                     <Button iconClass="bx-dollar-circle" text="Transaksi" :href="route('dashboard')" :active="false"/>
                     <Button iconClass="bxs-report" text="Laporan" :active="false"/>
+                    <Button iconClass="bx-cog" text="Pengaturan" :href="route('setting.index')" :active="route().current('setting.*')"/>
                 </div>
                 <!-- Page Content -->
                 <main class="flex flex-col w-full space-y-2 py-10 px-8 overflow-y-auto">
