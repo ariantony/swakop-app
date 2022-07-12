@@ -256,7 +256,7 @@ onMounted(() => {
                     <Button iconClass="bxs-report" text="Laporan" :active="false"/>
                 </div>
                 <!-- Page Content -->
-                <main class="flex flex-col w-full space-y-2 py-6 px-4 overflow-y-auto">
+                <main class="flex flex-col w-full space-y-2 py-10 px-8 overflow-y-auto">
                     <slot />
                 </main>
             </div>
