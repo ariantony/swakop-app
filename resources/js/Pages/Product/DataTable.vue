@@ -19,8 +19,8 @@ const { edit, destroy, detail } = defineProps({
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name">nama</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode">barcode</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stock unit</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stock box</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stock carton</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stock box / renceng</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stock karton</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
       </tr>
     </template>
@@ -30,8 +30,8 @@ const { edit, destroy, detail } = defineProps({
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">barcode</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok unit</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok box</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok carton</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok box / renceng</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok karton</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
@@ -51,7 +51,7 @@ const { edit, destroy, detail } = defineProps({
               </div>
             </button>
 
-            <button @click.prevent="price(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
+            <button @click.prevent="price(item)" class="bg-pink-500 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-dollar mr-1 text-white text-sm"></i> Harga
               </div>

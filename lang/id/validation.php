@@ -152,5 +152,11 @@ return [
         'password_confirmation' => 'konfirmasi password',
         'cost' => 'biaya',
         'code' => 'kode',
+        'cost_selling_per_unit' => 'harga pokok per satuan',
+        'cost_selling_per_box' => 'harga pokok per box / renceng',
+        'cost_selling_per_carton' => 'harga pokok per karton',
+        'price_per_unit' => 'harga jual per satuan',
+        'price_per_box' => 'harga jual per box / renceng',
+        'price_per_carton' => 'harga jual per karton',
     ],
 ];

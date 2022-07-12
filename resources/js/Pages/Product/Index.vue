@@ -170,6 +170,10 @@ onMounted(() => {
     </div>
   </transition>
 
-  <Detail v-if="transaction" :product="transaction" :close="() => transaction = null" />
-  <Price v-if="price" :product="price" :close="() => price = null" />
+  <transition name="slide-fade">
+    <Detail v-if="transaction" :product="transaction" :close="() => transaction = null" />
+  </transition>
+  <transition name="slide-fade">
+    <Price v-if="price" :product="price" :close="() => price = null" />
+  </transition>
 </template>
