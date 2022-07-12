@@ -147,6 +147,8 @@ return [
 
     'attributes' => [
         'name' => 'nama',
+        'password_before' => 'password sebelumnya',
+        'password_new' => 'password baru',
         'password_confirmation' => 'konfirmasi password',
         'cost' => 'biaya',
         'code' => 'kode',

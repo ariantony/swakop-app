@@ -32,4 +32,8 @@ Route::middleware([
     Route::resource('product', App\Http\Controllers\ProductController::class);
     Route::resource('burden', App\Http\Controllers\BurdenController::class);
     Route::patch('burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle');
+    Route::prefix('setting/')->group(function () {
+        Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');
+        Route::patch('master-password/update', [App\Http\Controllers\SettingController::class, 'masterPasswordUpdate'])->name('setting.master-password.update');
+    });
 });
