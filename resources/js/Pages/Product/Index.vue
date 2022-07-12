@@ -7,6 +7,7 @@ import Card from '@/Components/Card.vue'
 import DataTable from './DataTable.vue'
 import Swal from 'sweetalert2'
 import Detail from './Detail.vue'
+import Price from './Price.vue'
 
 const self = getCurrentInstance()
 const render = ref(true)
@@ -18,6 +19,7 @@ const form = useForm({
   barcode: '',
 })
 const users = ref([])
+const price = ref(null)
 const transaction = ref(null)
 
 const show = () => {
@@ -100,13 +102,18 @@ onMounted(() => {
         </div>
       </template>
       <template #body>
-        <DataTable v-if="render" :edit="edit" :destroy="destroy" :detail="(product) => transaction = product" />
+        <DataTable
+          v-if="render" 
+          :edit="edit" 
+          :destroy="destroy" 
+          :detail="(product) => transaction = product" 
+          :price="(product) => price = product" />
       </template>
     </Card>
   </AppLayout>
 
   <transition name="fade">
-    <div  v-if="open || transaction" class="fixed top-0 left-0 w-full h-screen bg-slate-600 bg-opacity-70"></div>
+    <div  v-if="open || transaction || price" class="fixed top-0 left-0 w-full h-screen bg-slate-600 bg-opacity-70"></div>
   </transition>
 
   <transition name="slide-fade">
@@ -163,5 +170,6 @@ onMounted(() => {
     </div>
   </transition>
 
-  <Detail :product="transaction" :close="() => transaction = null" />
+  <Detail v-if="transaction" :product="transaction" :close="() => transaction = null" />
+  <Price v-if="price" :product="price" :close="() => price = null" />
 </template>

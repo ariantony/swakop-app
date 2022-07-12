@@ -20,4 +20,25 @@ class Price extends Model
         'effective_date',
         'expire_date',
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function (Price $model) {
+            $latest = Price::where('product_id', $model->product_id)
+                            ->where('created_at', '<', $model->created_at)
+                            ->orderBy('created_at', 'desc')
+                            ->first();
+
+            if ($latest) {
+                $latest->update([
+                    'expire_date' => now()->format('Y-m-d'),
+                ]);
+            }
+        });
+    }
 }

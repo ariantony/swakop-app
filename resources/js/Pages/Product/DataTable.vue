@@ -6,6 +6,7 @@ const { edit, destroy, detail } = defineProps({
   edit: Function,
   destroy: Function,
   detail: Function,
+  price: Function,
 })
 </script>
 
@@ -47,6 +48,12 @@ const { edit, destroy, detail } = defineProps({
             <button @click.prevent="detail(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-list-ul mr-1 text-white text-sm"></i> Transaksi
+              </div>
+            </button>
+
+            <button @click.prevent="price(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
+              <div class="flex items-center">
+                <i class="bx bx-dollar mr-1 text-white text-sm"></i> Harga
               </div>
             </button>
 
