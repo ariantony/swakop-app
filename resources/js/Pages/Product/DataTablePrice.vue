@@ -21,7 +21,7 @@ const { product } = defineProps({
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="price_per_carton">price per carton</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="effective_date">effective date</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="expire_date">expire date</Th>
-        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">action</Th>
+        <!-- <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">action</Th> -->
       </tr>
     </template>
     <template #tfoot>
@@ -34,7 +34,7 @@ const { product } = defineProps({
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">price per carton</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">effective date</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">expire date</Th>
-        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">action</Th>
+        <!-- <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">action</Th> -->
     </template>
     <template v-slot:tbody="{ index, item }">
       <tr>
@@ -47,14 +47,14 @@ const { product } = defineProps({
         <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.price_per_carton) }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ new Date(item.effective_date).toLocaleDateString('id') }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ new Date(item.expire_date).toLocaleDateString('id') }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">
+        <!-- <td class="border p-2 border-x-2 border-slate-300">
           <button @click.prevent="edit(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm text-white">
             <div class="flex items-center space-x-1">
               <i class="bx bx-edit"></i>
               <p class="lowercase first-letter:capitalize">edit</p>
             </div>
           </button>
-        </td>
+        </td> -->
       </tr>
     </template>
   </Builder>
