@@ -47,6 +47,7 @@ const edit = burden => {
   form.name = burden.name
   form.cost = burden.cost
 
+  reformat(form.cost)
   show()
 }
 
@@ -80,6 +81,28 @@ const destroy = burden => {
 }
 
 const submit = () => form.id ? update() : store()
+
+const reformat = (value) => {
+  var val = new String(value),
+      replaced = val.replace(/[^,\d]/g, '').toString(),
+      split = replaced.split(','),
+      remaining = split[0].length % 3,
+      result = split[0].substring(0, remaining),
+      thousand = split[0].substring(remaining).match(/\d{3}/gi),
+      separator;
+
+  if (thousand) {
+    separator = remaining ? '.' : '';
+    result += separator + thousand.join('.');
+  }
+
+  result = split[1] != undefined ? result + ',' + split[1] : result;
+
+  nextTick(() => {
+    self.refs.second.value = `Rp ${result}`
+    form.cost = parseInt(result.replaceAll('.', ''))
+  })
+}
 
 onMounted(() => {
   window.addEventListener('keyup', e => {
@@ -139,7 +162,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="cost" class="lowercase first-letter:capitalize w-1/4">biaya</label>
-                  <input ref="second" type="text" name="cost" v-model="form.cost" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="biaya">
+                  <input @input.prevent="reformat(this.$refs.second.value)" ref="second" type="text" name="cost" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="biaya">
                 </div>
                 <div v-if="form.errors.cost" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.cost }}</div>
               </div>
