@@ -31,7 +31,7 @@ class Product extends Model
 
     public function price()
     {
-        return $this->hasOne(Price::class)->orderBy('effective_date', 'desc');
+        return $this->hasOne(Price::class)->orderBy('created_at', 'desc');
     }
 
     public function prices()
