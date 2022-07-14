@@ -68,7 +68,7 @@ onUnmounted(() => interval.value && clearInterval(interval.value))
       </div>
     </div>
 
-    <div class="w-full overflow-x-auto rounded-md">
+    <div class="w-full overflow-auto rounded-md max-h-96">
       <table class="w-full border-collapse border-2 border-slate-300">
         <thead class="bg-slate-100">
           <slot name="thead" :table="table" />
@@ -96,7 +96,7 @@ onUnmounted(() => interval.value && clearInterval(interval.value))
       </div>
 
       <div class="flex items-center justify-end overflow-x-auto w-2/3">
-        <div class="w-full flex items-center">
+        <div class="w-full flex items-center justify-end">
           <button
             v-for="(link, i) in paginator.links"
             :key="i"

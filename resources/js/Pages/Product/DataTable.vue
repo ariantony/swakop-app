@@ -14,14 +14,23 @@ const { edit, destroy, detail } = defineProps({
   <Builder :href="route('api.product.paginate')" :colspan="8">
     <template v-slot:thead="{table}">
       <tr>
-        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="code">kode</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name">nama</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode">barcode</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stock unit</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stock box / renceng</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stock karton</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
+        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false" rowspan="2">no</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="code" rowspan="2">kode</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name" rowspan="2">nama</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode" rowspan="2">barcode</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="3">price</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="3">stock</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false" rowspan="2">aksi</Th>
+      </tr>
+
+      <tr>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">unit</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">box</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">carton</Th>
+        
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">unit</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">box</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">carton</Th>
       </tr>
     </template>
     <template #tfoot>
@@ -29,9 +38,8 @@ const { edit, destroy, detail } = defineProps({
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kode</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">barcode</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok unit</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok box / renceng</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok karton</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="3">price</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="3">stok</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
@@ -40,9 +48,12 @@ const { edit, destroy, detail } = defineProps({
         <td class="border p-2 border-x-2 border-slate-300">{{ item.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.name }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.barcode }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ item.stock_unit }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ item.stock_box }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ item.stock_carton }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.price?.cost_selling_per_unit) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.price?.cost_selling_per_box) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.price?.cost_selling_per_carton) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_unit }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_box }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_carton }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="detail(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
