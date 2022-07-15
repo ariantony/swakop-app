@@ -81,12 +81,12 @@ class PriceController extends Controller
 
         if ($price = Price::create($request->all())) {
             return redirect()->back()->with([
-                'success' => 'price has been created',
+                'success' => 'Harga baru berhasil ditambahkan.',
             ]);
         }
 
         return redirect()->back()->with([
-            'error' => 'can\'t create price'
+            'error' => 'Harga baru gagal ditambahkan.',
         ]);
     }
 

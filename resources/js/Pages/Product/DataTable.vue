@@ -62,7 +62,7 @@ const { edit, destroy, detail } = defineProps({
               </div>
             </button>
 
-            <button @click.prevent="price(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
+            <button @click.prevent="price(item)" class="bg-pink-500 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-dollar mr-1 text-white text-sm"></i> Harga
               </div>
