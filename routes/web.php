@@ -32,6 +32,7 @@ Route::middleware([
     Route::resource('product', App\Http\Controllers\ProductController::class);
     Route::resource('burden', App\Http\Controllers\BurdenController::class);
     Route::resource('price', App\Http\Controllers\PriceController::class);
+    Route::resource('transaction', App\Http\Controllers\TransactionController::class);
     Route::patch('burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle');
     Route::prefix('setting/')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');

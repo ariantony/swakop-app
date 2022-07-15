@@ -13,6 +13,7 @@ class Detail extends Model
      * @var string[]
      */
     protected $fillable = [
+        'transaction_id',
         'product_id',
         'type',
         'qty_unit',

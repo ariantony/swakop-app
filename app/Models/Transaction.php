@@ -24,4 +24,12 @@ class Transaction extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function details()
+    {
+        return $this->hasMany(Detail::class, 'transaction_id', 'id');
+    }
 }

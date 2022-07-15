@@ -252,7 +252,7 @@ onMounted(() => {
                         <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                         <Button iconClass="bx-bookmark" text="Beban" :href="route('burden.index')" :active="route().current('burden.*')"/>
                     </SidebarLinks>
-                    <Button iconClass="bx-dollar-circle" text="Transaksi" :href="route('dashboard')" :active="false"/>
+                    <Button iconClass="bx-dollar-circle" text="Transaksi" :href="route('transaction.index')" :active="route().current('transaction.*')"/>
                     <Button iconClass="bxs-report" text="Laporan" :active="false"/>
                     <Button iconClass="bx-cog" text="Pengaturan" :href="route('setting.index')" :active="route().current('setting.*')"/>
                 </div>
