@@ -48,9 +48,8 @@ class TransactionController extends Controller
             'transactions.*.type' => 'required|string|in:unit,box,carton',
         ]);
 
-        $productIds = array_unique(array_map(fn ($transaction) => $transaction['product_id'], $request->transactions));
+        $productIds = array_unique(array_column($request->transactions, 'product_id'));
         $products = Product::whereIn('id', $productIds)->get();
-        $total = 0;
 
         $transactionByProducts = [];
 
@@ -68,18 +67,9 @@ class TransactionController extends Controller
                 },
             ]);
         }
-
-        $total = array_reduce($transactionByProducts, function ($current, $transaction) {
-            return $current + array_sum([
-                $transaction['cost_unit'] * $transaction['qty_unit'],
-                $transaction['cost_box'] * $transaction['qty_box'],
-                $transaction['cost_carton'] * $transaction['qty_carton'],
-            ]);
-        }, $total);
         
         $tx = Transaction::create([
             'user_id' => $request->user()->id,
-            'total_cost' => $total,
         ]);
 
         if ($tx) {
