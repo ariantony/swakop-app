@@ -20,7 +20,7 @@ class TransactionController extends Controller
     public function index()
     {
         return Inertia::render('Transaction/Index')->with([
-            'products' => Product::get(),
+            'products' => Product::has('price')->get(),
         ]);
     }
 
@@ -71,9 +71,9 @@ class TransactionController extends Controller
 
         $total = array_reduce($transactionByProducts, function ($current, $transaction) {
             return $current + array_sum([
-                $transaction['cost_unit'] * $transaction['qty_unit'],
-                $transaction['cost_box'] * $transaction['qty_box'],
-                $transaction['cost_carton'] * $transaction['qty_carton'],
+                array_key_exists('cost_unit', $transaction) ? $transaction['cost_unit'] * $transaction['qty_unit'] : 0,
+                array_key_exists('cost_box', $transaction) ? $transaction['cost_box'] * $transaction['qty_box'] : 0,
+                array_key_exists('cost_carton', $transaction) ? $transaction['cost_carton'] * $transaction['qty_carton'] : 0,
             ]);
         }, $total);
         
@@ -102,10 +102,10 @@ class TransactionController extends Controller
                 return redirect()->back()->with('error', $error->getMessage());
             }
 
-            return redirect()->back()->with('success', 'transaksi berhasil');
+            return redirect()->back()->with('success', 'Transaksi berhasil');
         }
 
-        return redirect()->back()->with('error', 'can\'t create transaction');
+        return redirect()->back()->with('error', 'Transaksi gagal. Silahkan coba lagi.');
     }
 
     /**

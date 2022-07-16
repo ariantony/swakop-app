@@ -76,7 +76,7 @@ const reformat = e => {
 
 const submit = () => {
   return Swal.fire({
-    title: 'are you sure?',
+    title: 'Akhiri proses transaksi?',
     icon: 'question',
     showCancelButton: true,
   }).then(response => response.isConfirmed && (
@@ -97,16 +97,21 @@ const submit = () => {
   <AppLayout title="Transaction">
     <div class="flex space-x-2">
       <form @submit.prevent="add" class="flex flex-col space-y-2 bg-white border rounded-md p-2 shadow w-full">
-        <Select
-          v-model="current.product_id"
-          :options="products.map(p => ({
-            label: `${p.code} - ${p.barcode} - ${p.name}`,
-            value: p.id,
-          }))"
-          :searchable="true"
-          required />
+        <div class="flex items-center space-x-2">
+          <label for="name" class="w-1/4">Barcode / Kode</label>
+          <Select
+            v-model="current.product_id"
+            :options="products.map(p => ({
+              label: `${p.code} - ${p.barcode} - ${p.name}`,
+              value: p.id,
+            }))"
+            :searchable="true"
+            required 
+          />
+        </div>
 
-        <div class="flex items-center space-x-1">
+        <div class="flex items-center space-x-2">
+          <label for="name" class="w-1/4 basis-52">Qty</label>
           <input v-model="current.qty" type="number" name="qty" class="w-full bg-transparent border border-slate-300 rounded-md" min="1">
           
           <Select
@@ -115,9 +120,8 @@ const submit = () => {
             :searchable="true"
             class="max-w-[8rem]"
             required />
-
-          <i @click.prevent="current.qty > 1 && (current.qty -= 1)" class="bg-slate-50 hover:bg-white transition-all ease-in-out duration-100 border rounded-md p-3 bx bx-minus cursor-pointer"></i>
-          <i @click.prevent="current.qty += 1" class="bg-slate-50 hover:bg-white transition-all ease-in-out duration-100 border rounded-md p-3 bx bx-plus cursor-pointer"></i>
+          <!-- <i @click.prevent="current.qty > 1 && (current.qty -= 1)" class="bg-slate-50 hover:bg-white transition-all ease-in-out duration-100 border rounded-md p-3 bx bx-minus cursor-pointer"></i>
+          <i @click.prevent="current.qty += 1" class="bg-slate-50 hover:bg-white transition-all ease-in-out duration-100 border rounded-md p-3 bx bx-plus cursor-pointer"></i> -->
         </div>
 
         <div class="flex items-center justify-end">
@@ -144,16 +148,16 @@ const submit = () => {
           <thead class="bg-slate-50 uppercase sticky top-0 left-0">
             <tr>
               <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">no</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">name</th>
+              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">nama</th>
               <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">qty</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">type</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" colspan="2">price</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">action</th>
+              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">satuan</th>
+              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" colspan="2">harga</th>
+              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">aksi</th>
             </tr>
 
             <tr>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">sub</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">total</th>
+              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">per satuan</th>
+              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">subtotal</th>
             </tr>
           </thead>
 
@@ -179,7 +183,7 @@ const submit = () => {
             </tr>
 
             <tr v-if="!transactions.length">
-              <td colspan="7" class="border py-4 text-center font-semibold text-5xl">Belum ada produk</td>
+              <td colspan="7" class="border py-4 text-center font-semibold text-3xl">Belum ada produk yang ditambahkan.</td>
             </tr>
           </tbody>
         </table>
@@ -190,7 +194,7 @@ const submit = () => {
       <form @submit.prevent="submit" class="bg-white w-full max-w-sm rounded-md p-4 flex flex-col space-y-4">
         <div class="flex items-center justify-between space-x-2">
           <label class="lowercase first-letter:capitalize">cash</label>
-          <input @input.prevent="reformat" type="text" class="bg-transparent rounded-md placeholder:capitalize text-right" placeholder="cash">
+          <input @input.prevent="reformat" type="text" class="bg-transparent rounded-md placeholder:capitalize text-right" placeholder="cash" required>
         </div>
 
         <div class="flex items-center justify-between space-x-2">
