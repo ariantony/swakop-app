@@ -20,7 +20,7 @@ class TransactionController extends Controller
     public function index()
     {
         return Inertia::render('Transaction/Index')->with([
-            'products' => Product::get(),
+            'products' => Product::has('price')->get(),
         ]);
     }
 
@@ -92,10 +92,10 @@ class TransactionController extends Controller
                 return redirect()->back()->with('error', $error->getMessage());
             }
 
-            return redirect()->back()->with('success', 'transaksi berhasil');
+            return redirect()->back()->with('success', 'Transaksi berhasil');
         }
 
-        return redirect()->back()->with('error', 'can\'t create transaction');
+        return redirect()->back()->with('error', 'Transaksi gagal. Silahkan coba lagi.');
     }
 
     /**

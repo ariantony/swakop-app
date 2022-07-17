@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('details', function (Blueprint $table) {
-            $table->after('id', function (Blueprint $table) {
-                $table->foreignId('transaction_id')
-                        ->constrained()
-                        ->cascadeOnDelete();
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->after('total_cost', function ($table) {
+                $table->enum('payment_method', ['cash', 'qris'])->default('cash');
             });
         });
     }
@@ -29,8 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('details', function (Blueprint $table) {
-            $table->dropColumn('transaction_id');
+        Schema::table('transactions', function (Blueprint $table) {
+            //
         });
     }
 };

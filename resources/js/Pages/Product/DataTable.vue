@@ -18,8 +18,8 @@ const { edit, destroy, detail } = defineProps({
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="code" rowspan="2">kode</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name" rowspan="2">nama</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode" rowspan="2">barcode</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="3">price</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="3">stock</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="3">harga</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="3">stok</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false" rowspan="2">aksi</Th>
       </tr>
 
@@ -38,7 +38,7 @@ const { edit, destroy, detail } = defineProps({
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kode</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">barcode</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="3">price</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="3">harga</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="3">stok</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
@@ -48,9 +48,9 @@ const { edit, destroy, detail } = defineProps({
         <td class="border p-2 border-x-2 border-slate-300">{{ item.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.name }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.barcode }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.price?.cost_selling_per_unit) }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.price?.cost_selling_per_box) }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.price?.cost_selling_per_carton) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_unit ? rupiah(item.price?.cost_selling_per_unit) : '-' }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_box ? rupiah(item.price?.cost_selling_per_box) : '-' }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_carton ? rupiah(item.price?.cost_selling_per_carton) : '-' }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_unit }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_box }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_carton }}</td>
@@ -62,7 +62,7 @@ const { edit, destroy, detail } = defineProps({
               </div>
             </button>
 
-            <button @click.prevent="price(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
+            <button @click.prevent="price(item)" class="bg-pink-500 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-dollar mr-1 text-white text-sm"></i> Harga
               </div>

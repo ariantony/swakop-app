@@ -247,13 +247,21 @@ onMounted(() => {
             <div ref="w" class="flex">
                 <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
-                    <SidebarLinks :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*')" text="Master Data" icon="data">
+                    <SidebarLinks :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*')" text="Master Data" icon="bx-data">
                         <Button iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
                         <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                         <Button iconClass="bx-bookmark" text="Beban" :href="route('burden.index')" :active="route().current('burden.*')"/>
                     </SidebarLinks>
-                    <Button iconClass="bx-dollar-circle" text="Transaksi" :href="route('transaction.index')" :active="route().current('transaction.*')"/>
-                    <Button iconClass="bxs-report" text="Laporan" :active="false"/>
+                    <SidebarLinks :active="route().current('transaction.*')" text="Transaksi" icon="bx-dollar-circle">
+                        <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.*')"/>
+                        <Button iconClass="bxs-inbox" text="Stok Masuk" :active="false"/>
+                        <Button iconClass="bx-history" text="Riwayat Transaksi" :active="false"/>
+                    </SidebarLinks>
+                    <SidebarLinks :active="false" text="Laporan" icon="bxs-report">
+                        <Button iconClass="bxs-file" text="Laba Rugi" :active="false"/>
+                        <Button iconClass="bx-receipt" text="Harian" :active="false"/>
+                        <Button iconClass="bxs-user-detail" text="Absensi" :active="false"/>
+                    </SidebarLinks>
                     <Button iconClass="bx-cog" text="Pengaturan" :href="route('setting.index')" :active="route().current('setting.*')"/>
                 </div>
                 <!-- Page Content -->

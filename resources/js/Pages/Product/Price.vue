@@ -19,12 +19,12 @@ const reRender = () => {
 const form = useForm({
   id: null,
   product_id: product?.id,
-  cost_selling_per_unit: 0,
-  cost_selling_per_box: 0,
-  cost_selling_per_carton: 0,
-  price_per_unit: 0,
-  price_per_box: 0,
-  price_per_carton: 0,
+  cost_selling_per_unit: '',
+  cost_selling_per_box: '',
+  cost_selling_per_carton: '',
+  price_per_unit: '',
+  price_per_box: '',
+  price_per_carton: '',
 })
 
 const show = ref(true)
@@ -113,110 +113,106 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
 </script>
 
 <template>
-  <transition name="slide-fade">
-    <template v-if="product !== null && product !== undefined">
-      <div v-if="show" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
-        <div class="flex flex-col bg-slate-50 w-full max-w-5xl rounded-md">
-          <div class="flex items-center justify-between space-x-2 bg-slate-100 rounded-t-md py-2 px-4">
-            <div class="lowercase first-letter:capitalize text-2xl font-semibold">harga produk "{{ product.name }}"</div>
+  <div v-if="show" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
+    <div class="flex flex-col bg-slate-50 w-full max-w-7xl max-w rounded-md">
+      <div class="flex items-center justify-between space-x-2 bg-slate-200 rounded-t-md py-2 px-4">
+        <div class="lowercase first-letter:capitalize text-2xl font-semibold">harga produk "{{ product.name }}"</div>
 
+        <div class="flex items-center space-x-4">
+          <button @click.prevent="show = false" class="rounded-md bg-green-600 text-white px-3 py-1 flex items-center">
+            <i class="bx bx-plus text-lg pr-2"></i> Tambah
+          </button>
+
+          <button @click.prevent="close" type="button" class="rounded-md bg-red-500 text-white px-2 py-1 flex items-center">
+            <i class="bx bx-x text-xl"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4 max-h-96 overflow-auto">
+        <DataTable v-if="render" :product="product" :edit="edit" />
+      </div>
+    </div>
+  </div>
+
+  <div v-else class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
+    <form @submit.prevent="submit" class="flex flex-col bg-slate-50 w-full max-w-5xl rounded-md">
+      <div class="flex items-center justify-between space-x-2 bg-slate-200 rounded-t-md py-2 px-4">
+        <div class="lowercase first-letter:capitalize text-2xl font-semibold">tambah harga produk "{{ product.name }}"</div>
+
+        <div class="flex items-center space-x-2">
+          <button @click.prevent="show = true" type="button" class="rounded-md bg-red-500 text-white px-1">
+            <i class="bx bx-x text-xl"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4 max-h-96 overflow-auto">
+        <div class="flex flex-col space-y-2">
+          <div class="flex justify-center text-red-500">
+            Penambahan harga baru akan memperbarui harga sebelumnya, dan harga tersebut akan digunakan untuk transaksi.
+          </div>
+          <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
-              <button @click.prevent="show = false" class="rounded-md bg-green-600 text-white text-lg px-3 py-1">
-                <i class="bx bx-plus text-lg"></i> Tambah
-              </button>
-
-              <button @click.prevent="close" type="button" class="rounded-md bg-red-500 text-white px-1">
-                <i class="bx bx-x text-xl"></i>
-              </button>
+              <label for="cost_selling_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga pokok per satuan</label>
+              <input ref="cost_selling_per_unit" @input.prevent="reformat($event.target, 'cost_selling_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga pokok per satuan">
             </div>
+
+            <div v-if="form.errors.cost_selling_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_unit }}</div>
           </div>
 
-          <div class="p-4 max-h-96 overflow-auto">
-            <DataTable v-if="render" :product="product" :edit="edit" />
+          <div class="flex flex-col space-y-2">
+            <div class="flex items-center space-x-2">
+              <label for="cost_selling_per_box" class="lowercase first-letter:capitalize w-1/3">Harga pokok per box / renceng</label>
+              <input ref="cost_selling_per_box" @input.prevent="reformat($event.target, 'cost_selling_per_box')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga pokok per box / renceng">
+            </div>
+
+            <div v-if="form.errors.cost_selling_per_box" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_box }}</div>
+          </div>
+
+          <div class="flex flex-col space-y-2">
+            <div class="flex items-center space-x-2">
+              <label for="cost_selling_per_carton" class="lowercase first-letter:capitalize w-1/3">Harga pokok per karton</label>
+              <input ref="cost_selling_per_carton" @input.prevent="reformat($event.target, 'cost_selling_per_carton')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga pokok per karton">
+            </div>
+
+            <div v-if="form.errors.cost_selling_per_carton" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_carton }}</div>
+          </div>
+          
+          <div class="flex flex-col space-y-2">
+            <div class="flex items-center space-x-2">
+              <label for="price_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga jual per satuan</label>
+              <input ref="price_per_unit" @input.prevent="reformat($event.target, 'price_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga jual per satuan">
+            </div>
+
+            <div v-if="form.errors.price_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_unit }}</div>
+          </div>
+
+          <div class="flex flex-col space-y-2">
+            <div class="flex items-center space-x-2">
+              <label for="price_per_box" class="lowercase first-letter:capitalize w-1/3">Harga jual per box / renceng</label>
+              <input ref="price_per_box" @input.prevent="reformat($event.target, 'price_per_box')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga jual per box / renceng">
+            </div>
+
+            <div v-if="form.errors.price_per_box" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_box }}</div>
+          </div>
+
+          <div class="flex flex-col space-y-2">
+            <div class="flex items-center space-x-2">
+              <label for="price_per_carton" class="lowercase first-letter:capitalize w-1/3">Harga jual per karton</label>
+              <input ref="price_per_carton" @input.prevent="reformat($event.target, 'price_per_carton')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga jual per karton">
+            </div>
+
+            <div v-if="form.errors.price_per_carton" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_carton }}</div>
           </div>
         </div>
       </div>
 
-      <div v-else class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
-        <form @submit.prevent="submit" class="flex flex-col bg-slate-50 w-full max-w-5xl rounded-md">
-          <div class="flex items-center justify-between space-x-2 bg-slate-100 rounded-t-md py-2 px-4">
-            <div class="lowercase first-letter:capitalize text-2xl font-semibold">create harga produk "{{ product.name }}"</div>
-
-            <div class="flex items-center space-x-2">
-              <button @click.prevent="show = true" type="button" class="rounded-md bg-red-500 text-white px-1">
-                <i class="bx bx-x text-xl"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="p-4 max-h-96 overflow-auto">
-            <div class="flex flex-col space-y-2">
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="cost_selling_per_unit" class="lowercase first-letter:capitalize w-1/3">cost selling per unit</label>
-                  <input ref="cost_selling_per_unit" @input.prevent="reformat($event.target, 'cost_selling_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="cost selling per unit">
-                </div>
-
-                <div v-if="form.errors.cost_selling_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_unit }}</div>
-              </div>
-
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="cost_selling_per_box" class="lowercase first-letter:capitalize w-1/3">cost selling per box</label>
-                  <input ref="cost_selling_per_box" @input.prevent="reformat($event.target, 'cost_selling_per_box')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="cost selling per box">
-                </div>
-
-                <div v-if="form.errors.cost_selling_per_box" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_box }}</div>
-              </div>
-
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="cost_selling_per_carton" class="lowercase first-letter:capitalize w-1/3">cost selling per carton</label>
-                  <input ref="cost_selling_per_carton" @input.prevent="reformat($event.target, 'cost_selling_per_carton')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="cost selling per carton">
-                </div>
-
-                <div v-if="form.errors.cost_selling_per_carton" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_carton }}</div>
-              </div>
-
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="price_per_unit" class="lowercase first-letter:capitalize w-1/3">price per unit</label>
-                  <input ref="price_per_unit" @input.prevent="reformat($event.target, 'price_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="price per unit">
-                </div>
-
-                <div v-if="form.errors.price_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_unit }}</div>
-              </div>
-
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="price_per_box" class="lowercase first-letter:capitalize w-1/3">price per box</label>
-                  <input ref="price_per_box" @input.prevent="reformat($event.target, 'price_per_box')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="price per box">
-                </div>
-
-                <div v-if="form.errors.price_per_box" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_box }}</div>
-              </div>
-
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="price_per_carton" class="lowercase first-letter:capitalize w-1/3">price per carton</label>
-                  <input ref="price_per_carton" @input.prevent="reformat($event.target, 'price_per_carton')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="price per carton">
-                </div>
-
-                <div v-if="form.errors.price_per_carton" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_carton }}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-end space-x-2 bg-slate-100 rounded-b-md py-2 px-4 text-white">
-            <button class="bg-green-600 rounded-md px-3 py-1 text-sm font-semibold">
-              <div class="flex items-center space-x-1">
-                <i class="bx bx-check"></i>
-                <p class="lowercase first-letter:capitalize">{{ form.id ? 'update' : 'create' }}</p>
-              </div>
-            </button>
-          </div>
-        </form>
+      <div class="flex items-center justify-end space-x-2 rounded-b-md p-2 bg-slate-200 text-white">
+        <button class="flex items-center bg-green-600 rounded-md px-3 py-1 font-semibold">
+          <i class="bx bx-save text-xl mr-1"></i> {{ form.id ? 'Perbarui' : 'Tambah' }}
+        </button>
       </div>
-    </template>
-  </transition>
+    </form>
+  </div>
 </template>
