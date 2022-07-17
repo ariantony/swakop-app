@@ -67,6 +67,31 @@ class TransactionController extends Controller
                 },
             ]);
         }
+
+        // e.g product A, unit is out of stock
+        $format = 'product %s, %s is out of stock';
+
+        foreach ($transactionByProducts as $transaction) {
+            $product = $products->where('id', $transaction['product_id'])->first();
+
+            if ($product->stock_unit < $transaction['qty_unit']) {
+                return redirect()->back()->with('error', sprintf(
+                    $format, $product->name, 'unit',
+                ));
+            }
+
+            if ($product->stock_box < $transaction['qty_box']) {
+                return redirect()->back()->with('error', sprintf(
+                    $format, $product->name, 'box',
+                ));
+            }
+
+            if ($product->stock_carton < $transaction['qty_carton']) {
+                return redirect()->back()->with('error', sprintf(
+                    $format, $product->name, 'carton',
+                ));
+            }
+        }
         
         $tx = Transaction::create([
             'user_id' => $request->user()->id,
