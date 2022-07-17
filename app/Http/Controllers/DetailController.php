@@ -36,7 +36,7 @@ class DetailController extends Controller
         ]);
 
         return $product->details()
-                        ->with(['user'])
+                        ->with('transaction')
                         ->where(function (Builder $query) use (&$request, &$columns) {
                             $search = '%' . $request->input('search') . '%';
 

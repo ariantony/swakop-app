@@ -44,6 +44,14 @@ class Detail extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'id', 'transaction_id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function totalCostUnit() : Attribute

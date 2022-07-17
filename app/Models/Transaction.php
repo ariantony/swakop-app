@@ -25,6 +25,13 @@ class Transaction extends Model
     ];
 
     /**
+     * @var string[]
+     */
+    protected $with = [
+        'user',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function user()
