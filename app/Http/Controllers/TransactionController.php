@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Detail;
+use Throwable;
+use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
-use Throwable;
+use Illuminate\Database\Eloquent\Builder;
 
 class TransactionController extends Controller
 {
@@ -166,5 +167,72 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         //
+    }
+
+    /**
+     * Transaction History.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function history()
+    {
+        return Inertia::render('Transaction/History')->with([
+            'transactions' => Transaction::with('details')->get(),
+        ]);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function paginate(Request $request)
+    {
+        $model = new Transaction();
+        $columns = array_filter($model->getFillable(), fn ($column) => !in_array($column, $model->getHidden()));
+
+        $request->validate([
+            'search' => 'nullable|string',
+            'order.key' => 'nullable|string|in:' . join(',', $columns),
+            'order.dir' => 'nullable|string|in:asc,desc',
+            'per_page' => 'nullable|integer',
+        ]);
+
+        return Transaction::where(function (Builder $query) use (&$request, &$model, &$columns) {
+            $search = '%' . $request->input('search') . '%';
+
+            foreach ($columns as $column) {
+                $query->orWhere($column, 'like', $search);
+            }
+        })
+            ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
+            ->paginate($request->input('per_page', 10));
+    }
+
+    /**
+     * @param \App\Models\Transaction $transaction
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function detailPaginate(Request $request, Transaction $transaction)
+    {
+        $model = new Detail();
+        $columns = array_filter($model->getFillable(), fn ($column) => !in_array($column, $model->getHidden()));
+
+        $request->validate([
+            'search' => 'nullable|string',
+            'order.key' => 'nullable|string|in:' . join(',', $columns),
+            'order.dir' => 'nullable|string|in:asc,desc',
+            'per_page' => 'nullable|integer',
+        ]);
+
+        return $transaction->details()->where(function (Builder $query) use (&$request, &$model, &$columns) {
+            $search = '%' . $request->input('search') . '%';
+
+            foreach ($columns as $column) {
+                $query->orWhere($column, 'like', $search);
+            }
+        })
+            ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'asc') ?: 'asc')
+            ->paginate($request->input('per_page', 10));
     }
 }
