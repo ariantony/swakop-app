@@ -34,7 +34,7 @@ const submit = () => {
 
     <JetAuthenticationCard>
         <template #logo>
-            <JetAuthenticationCardLogo />
+            <img :src="url('assets/images/logo-swakop.png')" class="w-56" alt="Logo Swakop">
         </template>
 
         <JetValidationErrors class="mb-4" />
@@ -46,7 +46,7 @@ const submit = () => {
         <form @submit.prevent="submit">
             <div class="flex flex-col items-center justify-center mb-4">
                 <h1 class="text-2xl font-semibold mb-2">Login</h1>
-                <h4 class="text-md text-slate-400">Silahkan login unuk mengakses aplikasi swakop.</h4>
+                <h4 class="text-md text-slate-400">Silahkan login untuk mengakses aplikasi swakop.</h4>
             </div>
             <div>
                 <JetLabel for="username" value="Username" />
