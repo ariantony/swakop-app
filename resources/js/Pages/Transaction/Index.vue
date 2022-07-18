@@ -5,6 +5,8 @@ import Select from '@vueform/multiselect'
 import { useForm } from '@inertiajs/inertia-vue3'
 import Swal from 'sweetalert2'
 
+const self = getCurrentInstance()
+
 const { products } = defineProps({
   products: Array,
 })
@@ -32,6 +34,10 @@ const add = () => {
     transactions.value.push(current.data())
   }
   current.reset()
+
+  const { product } = self.refs
+  self.refs.product.focus()
+  self.refs.product.close()
 }
 
 const getPriceByTransaction = transaction => {
@@ -107,6 +113,7 @@ const submit = () => {
             }))"
             :searchable="true"
             required 
+            ref="product"
           />
         </div>
 
