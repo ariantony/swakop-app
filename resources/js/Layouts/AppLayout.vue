@@ -86,6 +86,7 @@ onMounted(() => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
+                                    <!-- <img src="{{ url('assets/images/logo-swakop.jpg') }}" alt="Logo Swakop"> -->
                                     <h1 class="text-2xl antialiased font-semibold">Swakop</h1>
                                 </Link>
                             </div>
