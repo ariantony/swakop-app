@@ -48,9 +48,8 @@ class TransactionController extends Controller
             'transactions.*.type' => 'required|string|in:unit,box,carton',
         ]);
 
-        $productIds = array_unique(array_map(fn ($transaction) => $transaction['product_id'], $request->transactions));
+        $productIds = array_unique(array_column($request->transactions, 'product_id'));
         $products = Product::whereIn('id', $productIds)->get();
-        $total = 0;
 
         $transactionByProducts = [];
 
@@ -69,17 +68,33 @@ class TransactionController extends Controller
             ]);
         }
 
-        $total = array_reduce($transactionByProducts, function ($current, $transaction) {
-            return $current + array_sum([
-                array_key_exists('cost_unit', $transaction) ? $transaction['cost_unit'] * $transaction['qty_unit'] : 0,
-                array_key_exists('cost_box', $transaction) ? $transaction['cost_box'] * $transaction['qty_box'] : 0,
-                array_key_exists('cost_carton', $transaction) ? $transaction['cost_carton'] * $transaction['qty_carton'] : 0,
-            ]);
-        }, $total);
+        // e.g product A, unit is out of stock
+        $format = 'product %s, %s is out of stock';
+
+        foreach ($transactionByProducts as $transaction) {
+            $product = $products->where('id', $transaction['product_id'])->first();
+
+            if ($product->stock_unit < $transaction['qty_unit']) {
+                return redirect()->back()->with('error', sprintf(
+                    $format, $product->name, 'unit',
+                ));
+            }
+
+            if ($product->stock_box < $transaction['qty_box']) {
+                return redirect()->back()->with('error', sprintf(
+                    $format, $product->name, 'box',
+                ));
+            }
+
+            if ($product->stock_carton < $transaction['qty_carton']) {
+                return redirect()->back()->with('error', sprintf(
+                    $format, $product->name, 'carton',
+                ));
+            }
+        }
         
         $tx = Transaction::create([
             'user_id' => $request->user()->id,
-            'total_cost' => $total,
         ]);
 
         if ($tx) {
