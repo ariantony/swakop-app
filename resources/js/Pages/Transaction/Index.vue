@@ -28,16 +28,29 @@ const add = () => {
     return t.product_id === current.product_id && t.type === current.type
   })
 
-  if (has) {
-    has.qty += current.qty
-  } else {
-    transactions.value.push(current.data())
-  }
-  current.reset()
+  const product = products.find(p => p.id === current.product_id)
 
-  const { product } = self.refs
-  self.refs.product.focus()
-  self.refs.product.close()
+  if (product['stock_' + current.type] < 1)
+    return
+
+  if (has) {
+    if (product['stock_' + current.type] < current.qty)
+      return
+      
+    has.qty += current.qty
+    product['stock_' + current.type] -= current.qty
+    current.reset()
+    self.refs.product.focus()
+    self.refs.product.close()
+  } else {
+    if (product['stock_' + current.type] > 0 && current.qty <= product['stock_' + current.type]) {
+      transactions.value.push(current.data())
+      product['stock_' + current.type] -= current.qty
+      current.reset()
+      self.refs.product.focus()
+      self.refs.product.close()
+    }
+  }
 }
 
 const getPriceByTransaction = transaction => {
@@ -56,6 +69,8 @@ const grandTotal = () => {
 }
 
 const remove = transaction => {
+  const product = find(transaction)
+  product['stock_' + transaction.type] += transaction.qty
   transactions.value = transactions.value.filter(t => t.product_id === transaction.product_id && t.type !== transaction.type)
 }
 
@@ -94,6 +109,35 @@ const submit = () => {
       },
     })
   ))
+}
+
+const getStockOf = transaction => {
+  const product = products.find(p => p.id === transaction.product_id)
+
+  if (product) {
+    return product['stock_' + transaction.type]
+  }
+
+  return 0
+}
+
+const find = transaction => products.find(p => p.id === transaction.product_id)
+
+const increment = transaction => {
+  const product = find(transaction)
+  if (getStockOf(transaction) > 0) {
+    transaction.qty += 1
+    product['stock_' + transaction.type] -= 1
+  }
+}
+
+const decrement = transaction => {
+  const product = find(transaction)
+
+  if (transaction.qty > 0) {
+    transaction.qty -= 1
+    product['stock_' + transaction.type] += 1
+  }
 }
 </script>
 
@@ -174,9 +218,9 @@ const submit = () => {
               <td class="border py-1 text-center">{{ products.find(p => p.id === transaction.product_id)?.name }}</td>
               <td class="border py-1 text-center">
                 <div class="flex items-center justify-center space-x-1">
-                  <i @click.prevent="transaction.qty > 1 && (transaction.qty -= 1)" class="p-3 bg-slate-50 rounded-md bx bx-minus cursor-pointer"></i>
+                  <i @click.prevent="decrement(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-minus cursor-pointer"></i>
                   <input type="number" v-model="transaction.qty" class="bg-slate-50 rounded-md w-20 border-0 appearance-none outline-none" min="1">
-                  <i @click.prevent="transaction.qty += 1" class="p-3 bg-slate-50 rounded-md bx bx-plus cursor-pointer"></i>
+                  <i @click.prevent="increment(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-plus cursor-pointer"></i>
                 </div>
               </td>
               <td class="border py-1 text-center">{{ transaction.type }}</td>
