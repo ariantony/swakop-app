@@ -167,7 +167,7 @@ const decrement = transaction => {
           
           <Select
             v-model="current.type"
-            :options="['unit', 'box', 'carton']"
+            :options="['unit']"
             :searchable="true"
             class="max-w-[8rem]"
             required />
