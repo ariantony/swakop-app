@@ -17,12 +17,12 @@ return new class extends Migration
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->double('cost_selling_per_unit', 20, null, true)->default(0);
-            $table->double('cost_selling_per_box', 20, null, true)->default(0);
-            $table->double('cost_selling_per_carton', 20, null, true)->default(0);
-            $table->double('price_per_unit', 20, null, true)->default(0);
-            $table->double('price_per_box', 20, null, true)->default(0);
-            $table->double('price_per_carton', 20, null, true)->default(0);
+            $table->double('cost_selling_per_unit', 20, null, true)->default(0)->nullable();
+            $table->double('cost_selling_per_box', 20, null, true)->default(0)->nullable();
+            $table->double('cost_selling_per_carton', 20, null, true)->default(0)->nullable();
+            $table->double('price_per_unit', 20, null, true)->default(0)->nullable();
+            $table->double('price_per_box', 20, null, true)->default(0)->nullable();
+            $table->double('price_per_carton', 20, null, true)->default(0)->nullable();
             $table->date('effective_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('expire_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();

@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->after('total_cost', function ($table) {
-                $table->enum('payment_method', ['cash', 'qris'])->default('cash');
-            });
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->unsignedDouble('total_cost')->nullable()->default(null);
+            $table->enum('payment_method', ['cash', 'qris'])->default('cash');
+            $table->timestamps();
         });
     }
 
@@ -27,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('transactions');
     }
 };
