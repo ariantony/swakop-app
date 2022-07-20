@@ -225,14 +225,14 @@ class TransactionController extends Controller
             'per_page' => 'nullable|integer',
         ]);
 
-        return $transaction->details()->where(function (Builder $query) use (&$request, &$model, &$columns) {
+        return $transaction->details()->with('product')->where(function (Builder $query) use (&$request, &$model, &$columns) {
             $search = '%' . $request->input('search') . '%';
 
             foreach ($columns as $column) {
                 $query->orWhere($column, 'like', $search);
             }
         })
-            ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'asc') ?: 'asc')
-            ->paginate($request->input('per_page', 10));
+        ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'asc') ?: 'asc')
+        ->paginate($request->input('per_page', 10));
     }
 }
