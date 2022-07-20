@@ -17,8 +17,12 @@
                 margin: 0;
             }
 
+            a {
+                text-decoration: none;
+            }
+
             .full-height {
-                height: 100vh;
+                height: 90vh;
             }
 
             .flex-center {
@@ -48,6 +52,9 @@
                     @yield('message')
                 </div>
             </div>
+        </div>
+        <div class="flex-center">
+            <strong> @yield('action') </strong>
         </div>
     </body>
 </html>

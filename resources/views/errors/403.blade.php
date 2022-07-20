@@ -1,5 +1,8 @@
-@extends('errors::minimal')
+@extends('errors::layout')
 
-@section('title', __('Forbidden'))
+@section('title', '403 Forbidden')
 @section('code', '403')
-@section('message', __($exception->getMessage() ?: 'Forbidden'))
+@section('message', 'Anda tidak memiliki akses ke halaman ini')
+@section('action')
+  <a href="{{ route('dashboard') }}" class="text-xs"> Silahkan kembali ke dashboard</a>
+@endsection
