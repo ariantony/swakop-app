@@ -28,16 +28,16 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::resource('user', App\Http\Controllers\UserController::class);
-    Route::resource('product', App\Http\Controllers\ProductController::class);
-    Route::resource('burden', App\Http\Controllers\BurdenController::class);
-    Route::resource('price', App\Http\Controllers\PriceController::class);
-    Route::resource('in', App\Http\Controllers\InController::class);
-    Route::post('/in/add', [App\Http\Controllers\InController::class, 'add'])->name('in.add');
+    Route::resource('user', App\Http\Controllers\UserController::class)->middleware('role:admin');
+    Route::resource('product', App\Http\Controllers\ProductController::class)->middleware('role:admin');
+    Route::resource('burden', App\Http\Controllers\BurdenController::class)->middleware('role:admin');
+    Route::resource('price', App\Http\Controllers\PriceController::class)->middleware('role:admin');
+    Route::resource('in', App\Http\Controllers\InController::class)->middleware('role:admin');
+    Route::post('/in/add', [App\Http\Controllers\InController::class, 'add'])->name('in.add')->middleware('role:admin');
     Route::get('transaction/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
     Route::resource('transaction', App\Http\Controllers\TransactionController::class);
-    Route::patch('burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle');
-    Route::prefix('setting/')->group(function () {
+    Route::patch('burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle')->middleware('role:admin');
+    Route::prefix('setting/')->middleware('role:admin')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');
         Route::patch('master-password/update', [App\Http\Controllers\SettingController::class, 'masterPasswordUpdate'])->name('setting.master-password.update');
     });

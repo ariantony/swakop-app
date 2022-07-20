@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
             'success' => session()->get('success'),
             'error' => session()->get('error'),
             '$url' => url('/'),
+            'isAdmin' => (bool) $request?->user()?->hasRole('admin'),
         ]);
     }
 }

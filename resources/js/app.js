@@ -21,6 +21,11 @@ window.url = (path = '/') => {
     return url.replace(end, '')
 }
 
+window.isAdmin = () => {
+    const { isAdmin } = usePage().props.value
+    return isAdmin
+}
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
@@ -32,6 +37,7 @@ createInertiaApp({
                 methods: {
                     ...common,
                     url,
+                    isAdmin
                 },
             })
             .mount(el);
