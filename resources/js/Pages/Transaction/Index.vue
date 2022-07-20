@@ -57,9 +57,9 @@ const getPriceByTransaction = transaction => {
   const product = products.find(p => p.id === transaction.product_id)
   
   if (!product) return 0
-  if (transaction.type === 'unit') return product.price.cost_selling_per_unit
-  if (transaction.type === 'box') return product.price.cost_selling_per_box
-  if (transaction.type === 'carton') return product.price.cost_selling_per_carton
+  if (transaction.type === 'unit') return product.price.price_per_unit
+  if (transaction.type === 'box') return product.price.price_per_box
+  if (transaction.type === 'carton') return product.price.price_per_carton
 }
 
 const grandTotal = () => {
@@ -167,7 +167,11 @@ const decrement = transaction => {
           
           <Select
             v-model="current.type"
-            :options="['unit']"
+            :options="[
+              { label: 'satuan', value: 'unit' },
+              // { label: 'box', value: 'box' },
+              // { label: 'carton', value: 'carton' },
+            ]"
             :searchable="true"
             class="max-w-[8rem]"
             required />
@@ -223,7 +227,7 @@ const decrement = transaction => {
                   <i @click.prevent="increment(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-plus cursor-pointer"></i>
                 </div>
               </td>
-              <td class="border py-1 text-center">{{ transaction.type }}</td>
+              <td class="border py-1 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td>
               <td class="border py-1 text-center">{{ rupiah(getPriceByTransaction(transaction)) }}</td>
               <td class="border py-1 text-center">{{ rupiah(getPriceByTransaction(transaction) * transaction.qty) }}</td>
               <td class="border py-1 text-center">
