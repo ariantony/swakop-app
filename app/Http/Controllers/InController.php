@@ -59,12 +59,12 @@ class InController extends Controller
             ]);
 
             $price = $product->prices()->create([
-                'cost_selling_per_unit' => $request->input('price.sell.unit', 0),
-                'cost_selling_per_box' => $request->input('price.sell.box', 0),
-                'cost_selling_per_carton' => $request->input('price.sell.carton', 0),
-                'price_per_unit' => $request->input('price.buy.unit', 0),
-                'price_per_box' => $request->input('price.buy.box', 0),
-                'price_per_carton' => $request->input('price.buy.carton', 0),
+                'cost_selling_per_unit' => $request->input('price.buy.unit', 0),
+                'cost_selling_per_box' => $request->input('price.buy.box', 0),
+                'cost_selling_per_carton' => $request->input('price.buy.carton', 0),
+                'price_per_unit' => $request->input('price.sell.unit', 0),
+                'price_per_box' => $request->input('price.sell.box', 0),
+                'price_per_carton' => $request->input('price.sell.carton', 0),
             ]);
 
             $transaction = Transaction::create([
