@@ -24,11 +24,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <AppLayout title="Riwayat Transaksi">
+  <AppLayout title="Riwayat Transaksi Penjualan">
     <Card>
       <template #header>
         <div class="flex items-center justify-start space-x-2 text-white p-2">
-          <h1 class="ml-4 text-black text-2xl font-semibold">Riwayat Transaksi</h1>
+          <h1 class="ml-4 text-black text-2xl font-semibold">Riwayat Transaksi Penjualan</h1>
         </div>
       </template>
       <template #body>

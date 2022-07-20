@@ -21,10 +21,10 @@ const { product } = defineProps({
       </tr>
       
       <tr>
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="qty_unit">unit</Th>
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="qty_unit">satuan</Th>
         <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="qty_box">box / renceng</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="qty_carton">karton</Th> -->
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_unit">unit</Th>
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_unit">satuan</Th>
         <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_box">box / renceng</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_carton">carton</Th> -->
       </tr>
@@ -32,10 +32,10 @@ const { product } = defineProps({
     <template #tfoot>
       <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false">no</Th>
       <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false">tipe</Th>
-      <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">unit</Th>
+      <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">satuan</Th>
       <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">box / renceng</Th>
       <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">karton</Th> -->
-      <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">unit</Th>
+      <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">satuan</Th>
       <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">box / renceng</Th>
       <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">carton</Th> -->
       <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">total</Th>

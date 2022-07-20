@@ -5,7 +5,7 @@ import Th from '@/Components/DataTable/Th.vue'
 const { detail } = defineProps({
   detail: Function,
 })
-console.log(detail)
+
 </script>
 
 <template>

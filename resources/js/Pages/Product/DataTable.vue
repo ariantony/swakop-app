@@ -24,11 +24,11 @@ const { edit, destroy, detail } = defineProps({
       </tr>
 
       <tr>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">unit</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">satuan</Th>
         <!-- <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">box</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">carton</Th> -->
         
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">unit</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">satuan</Th>
         <!-- <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">box</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">carton</Th> -->
       </tr>
@@ -48,7 +48,7 @@ const { edit, destroy, detail } = defineProps({
         <td class="border p-2 border-x-2 border-slate-300">{{ item.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.name }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.barcode }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_unit ? rupiah(item.price?.cost_selling_per_unit) : '-' }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.price_per_unit ? rupiah(item.price?.price_per_unit) : '-' }}</td>
         <!-- <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_box ? rupiah(item.price?.cost_selling_per_box) : '-' }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_carton ? rupiah(item.price?.cost_selling_per_carton) : '-' }}</td> -->
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_unit }}</td>
