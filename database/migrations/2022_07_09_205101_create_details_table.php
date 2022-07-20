@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('details', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('transaction_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['buy', 'sell']);
             $table->unsignedInteger('qty_unit')->nullable()->default(null);

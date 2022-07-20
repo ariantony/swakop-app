@@ -12,6 +12,15 @@ import common from './common';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
+window.url = (path = '/') => {
+    const sanitizer = /^\/+|\/+$/g
+    const end = /\/+$/
+    const { $url } = usePage().props.value
+    const url = $url.replace(end, '') + '/' + path.replace(sanitizer, '').replace(/\/+/g, '/')
+
+    return url.replace(end, '')
+}
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
@@ -22,6 +31,7 @@ createInertiaApp({
             .mixin({
                 methods: {
                     ...common,
+                    url,
                 },
             })
             .mount(el);

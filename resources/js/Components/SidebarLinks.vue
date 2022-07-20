@@ -15,7 +15,7 @@ const open = ref(active)
   <div class="relative flex flex-col space-y-2 .a">
     <div class="flex relative cursor-pointer">
       <Button class="w-full" :iconClass="`bx ${icon}`" :text="text" :active="open" :isDropdown="true" @click.prevent="open = ! open" />
-      <div class="flex absolute right-0 top-0 p-2">
+      <div class="flex absolute right-0 top-0 p-2" @click.prevent="open = ! open">
           <i class="bx bx-chevron-down transition-all duration-250 text-xl" :class="!open ? 'rotate-0 text-black' : '-rotate-180 text-white'"></i>
       </div>
     </div>

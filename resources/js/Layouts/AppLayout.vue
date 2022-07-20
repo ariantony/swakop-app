@@ -86,7 +86,7 @@ onMounted(() => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <h1 class="text-2xl antialiased font-semibold">Swakop</h1>
+                                    <img :src="url('assets/images/logo-swakop.png')" class="w-32" alt="Logo Swakop">
                                 </Link>
                             </div>
 
@@ -252,10 +252,10 @@ onMounted(() => {
                         <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                         <Button iconClass="bx-bookmark" text="Beban" :href="route('burden.index')" :active="route().current('burden.*')"/>
                     </SidebarLinks>
-                    <SidebarLinks :active="false" text="Transaksi" icon="bx-dollar-circle">
-                        <Button iconClass="bx-cart-add" text="Penjualan" :active="false"/>
-                        <Button iconClass="bxs-inbox" text="Stok Masuk" :active="false"/>
-                        <Button iconClass="bx-history" text="Riwayat Transaksi" :active="false"/>
+                    <SidebarLinks :active="route().current('transaction.*') || route().current('in.*')" text="Transaksi" icon="bx-dollar-circle">
+                        <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.index')"/>
+                        <Button iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
+                        <Button iconClass="bx-history" text="Riwayat Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
                     </SidebarLinks>
                     <SidebarLinks :active="false" text="Laporan" icon="bxs-report">
                         <Button iconClass="bxs-file" text="Laba Rugi" :active="false"/>
