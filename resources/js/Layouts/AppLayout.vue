@@ -252,9 +252,9 @@ onMounted(() => {
                         <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                         <Button iconClass="bx-bookmark" text="Beban" :href="route('burden.index')" :active="route().current('burden.*')"/>
                     </SidebarLinks>
-                    <SidebarLinks :active="route().current('transaction.*')" text="Transaksi" icon="bx-dollar-circle">
+                    <SidebarLinks :active="route().current('transaction.*') || route().current('in.*')" text="Transaksi" icon="bx-dollar-circle">
                         <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.index')"/>
-                        <Button iconClass="bxs-inbox" text="Stok Masuk" :active="false"/>
+                        <Button iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
                         <Button iconClass="bx-history" text="Riwayat Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
                     </SidebarLinks>
                     <SidebarLinks :active="false" text="Laporan" icon="bxs-report">

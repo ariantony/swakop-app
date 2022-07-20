@@ -69,17 +69,22 @@ class PriceController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $post = $request->validate([
             'product_id' => 'required|exists:products,id',
             'cost_selling_per_unit' => 'required|numeric',
-            'cost_selling_per_box' => 'required|numeric',
-            'cost_selling_per_carton' => 'required|numeric',
+            // 'cost_selling_per_box' => 'required|numeric',
+            // 'cost_selling_per_carton' => 'required|numeric',
             'price_per_unit' => 'required|numeric',
-            'price_per_box' => 'required|numeric',
-            'price_per_carton' => 'required|numeric',
+            // 'price_per_box' => 'required|numeric',
+            // 'price_per_carton' => 'required|numeric',
         ]);
 
-        if ($price = Price::create($request->all())) {
+        $post['cost_selling_per_box'] = 0;
+        $post['cost_selling_per_carton'] = 0;
+        $post['price_per_box'] = 0;
+        $post['price_per_carton'] = 0;
+
+        if ($price = Price::create($post)) {
             return redirect()->back()->with([
                 'success' => 'Harga baru berhasil ditambahkan.',
             ]);
