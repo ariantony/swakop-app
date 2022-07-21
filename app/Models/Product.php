@@ -14,10 +14,12 @@ class Product extends Model
         'code',
         'name',
         'barcode',
+        'group_id',
     ];
 
     protected $with = [
         'price',
+        'group',
     ];
 
     /**
@@ -28,6 +30,14 @@ class Product extends Model
         'stock_box',
         'stock_carton',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function group()
+    {
+        return $this->hasOne(Group::class, 'id', 'group_id')->orderBy('created_at', 'desc');
+    }
 
     public function price()
     {

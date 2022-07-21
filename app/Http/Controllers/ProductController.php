@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class ProductController extends Controller
     {
         return Inertia::render('Product/Index')->with([
             'product' => Product::get(),
+            'groups' => Group::get(),
         ]);
     }
 
@@ -61,6 +63,7 @@ class ProductController extends Controller
             'code' => 'required|unique:products',
             'name' => 'required|string',
             'barcode' => 'required|string|unique:products',
+            'group_id' => 'required|integer|exists:groups,id',
         ]);
 
         if ($product = Product::create($post)) {
@@ -83,6 +86,7 @@ class ProductController extends Controller
             'code' => ['required', Rule::unique('products')->ignore($product->id)],
             'name' => 'required|string',
             'barcode' => ['required', 'string', Rule::unique('products')->ignore($product->id)],
+            'group_id' => ['required', 'integer', 'exists:groups,id'],
         ]);
 
         if ($product->update($post)) {

@@ -8,7 +8,11 @@ import DataTable from './DataTable.vue'
 import Swal from 'sweetalert2'
 import Detail from './Detail.vue'
 import Price from './Price.vue'
+import Select from '@vueform/multiselect'
 
+const { groups } = defineProps({
+  groups: Array,
+})
 const self = getCurrentInstance()
 const render = ref(true)
 const open = ref(false)
@@ -17,6 +21,7 @@ const form = useForm({
   code: null,
   name: '',
   barcode: '',
+  group_id: null,
 })
 const users = ref([])
 const price = ref(null)
@@ -53,6 +58,7 @@ const edit = product => {
   form.code = product.code
   form.name = product.name
   form.barcode = product.barcode
+  form.group_id = product.group.id
 
   show()
 }
@@ -87,6 +93,8 @@ onMounted(() => {
   })
 })
 </script>
+
+<style src="@vueform/multiselect/themes/default.css"></style>
 
 <template>
   <AppLayout title="Produk">
@@ -134,7 +142,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="code" class="lowercase first-letter:capitalize w-1/4">kode</label>
-                  <input ref="code" type="text" name="code" v-model="form.code" class="w-3/4 bg-transparent border border-slate-200  rounded-md uppercase placeholder:capitalize" autocomplete="off" placeholder="kode">
+                  <input ref="code" type="text" name="code" v-model="form.code" class="w-3/4 bg-white border border-slate-200  rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="kode">
                 </div>
                 <div v-if="form.errors.code" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.code }}</div>
               </div>
@@ -142,7 +150,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="name" class="lowercase first-letter:capitalize w-1/4">nama</label>
-                  <input ref="name" type="text" name="name" v-model="form.name" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="nama">
+                  <input ref="name" type="text" name="name" v-model="form.name" class="w-3/4 bg-white border border-slate-200 rounded placeholder:capitalize" autocomplete="off" placeholder="nama">
                 </div>
                 <div v-if="form.errors.name" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.name }}</div>
               </div>
@@ -150,9 +158,23 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="barcode" class="lowercase first-letter:capitalize w-1/4">barcode</label>
-                  <input ref="barcode" type="text" name="barcode" v-model="form.barcode" class="w-3/4 bg-transparent border border-slate-200 rounded-md uppercase placeholder:capitalize" autocomplete="off" placeholder="barcode">
+                  <input ref="barcode" type="text" name="barcode" v-model="form.barcode" class="w-3/4 bg-white border border-slate-200 rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="barcode">
                 </div>
                 <div v-if="form.errors.barcode" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.barcode }}</div>
+              </div>
+
+              <div class="flex flex-col space-y-2">
+                <div class="flex items-center space-x-2">
+                  <label for="group_id" class="lowercase first-letter:capitalize w-1/3">group</label>
+                  <Select
+                    v-model="form.group_id"
+                    :options="groups.map(g => ({
+                      label: `${g.code} - ${g.name}`,
+                      value: g.id,
+                    }))"
+                    :searchable="true" />
+                </div>
+                <div v-if="form.errors.group_id" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.group_id }}</div>
               </div>
             </div>
           </template>

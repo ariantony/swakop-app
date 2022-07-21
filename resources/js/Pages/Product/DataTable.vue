@@ -18,6 +18,7 @@ const { edit, destroy, detail } = defineProps({
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="code" rowspan="2">kode</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name" rowspan="2">nama</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode" rowspan="2">barcode</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" rowspan="2">kelompok</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="1">harga</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="1">stok</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false" rowspan="2">aksi</Th>
@@ -38,6 +39,7 @@ const { edit, destroy, detail } = defineProps({
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kode</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">barcode</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kelompok</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="1">harga</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="1">stok</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
@@ -48,6 +50,7 @@ const { edit, destroy, detail } = defineProps({
         <td class="border p-2 border-x-2 border-slate-300">{{ item.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.name }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.barcode }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ item.group.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.price_per_unit ? rupiah(item.price?.price_per_unit) : '-' }}</td>
         <!-- <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_box ? rupiah(item.price?.cost_selling_per_box) : '-' }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_carton ? rupiah(item.price?.cost_selling_per_carton) : '-' }}</td> -->
