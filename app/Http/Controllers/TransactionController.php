@@ -176,9 +176,7 @@ class TransactionController extends Controller
      */
     public function history()
     {
-        return Inertia::render('Transaction/History')->with([
-            'transactions' => Transaction::with('details')->get(),
-        ]);
+        return Inertia::render('Transaction/History');
     }
 
     /**

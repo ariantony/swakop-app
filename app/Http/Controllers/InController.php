@@ -18,9 +18,7 @@ class InController extends Controller
      */
     public function index()
     {
-        return Inertia::render('In/Index')->with([
-            'products' => Product::get(),
-        ]);
+        return Inertia::render('In/Index');
     }
 
     /**
