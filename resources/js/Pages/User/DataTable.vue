@@ -9,13 +9,14 @@ const { edit, destroy } = defineProps({
 </script>
 
 <template>
-  <Builder :href="route('api.user.paginate')" :colspan="5">
+  <Builder :href="route('api.user.paginate')" :colspan="6">
     <template v-slot:thead="{table}">
       <tr>
         <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name">nama</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="username">username</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="email">email</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="basic_salary">gaji pokok</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
       </tr>
     </template>
@@ -24,14 +25,16 @@ const { edit, destroy } = defineProps({
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">username</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">email</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">gaji pokok</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
       <tr>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ item.name }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.username }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.email }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.basic_salary) }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="edit(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">

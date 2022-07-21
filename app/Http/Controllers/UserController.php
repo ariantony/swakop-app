@@ -74,10 +74,11 @@ class UserController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|string',
             'password_confirmation' => 'required|same:password',
+            'basic_salary' => 'required|numeric',
         ]);
 
         $post = $request->only([
-            'name', 'username', 'email', 'password'
+            'name', 'username', 'email', 'password', 'basic_salary',
         ]);
 
         foreach ($post as $key => $val) {
@@ -133,6 +134,7 @@ class UserController extends Controller
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => 'required|string',
             'password_confirmation' => 'required|same:password',
+            'basic_salary' => 'required|numeric',
         ]);
 
         foreach ($post as $key => $val) {
