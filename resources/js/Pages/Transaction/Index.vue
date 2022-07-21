@@ -223,7 +223,7 @@ const decrement = transaction => {
               <td class="border py-1 text-center">
                 <div class="flex items-center justify-center space-x-1">
                   <i @click.prevent="decrement(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-minus cursor-pointer"></i>
-                  <input type="number" v-model="transaction.qty" class="bg-slate-50 rounded-md w-20 border-0 appearance-none outline-none" min="1">
+                  <p class="bg-slate-50 rounded-md p-2 border-0 appearance-none outline-none cursor-default">{{ transaction.qty }}</p>
                   <i @click.prevent="increment(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-plus cursor-pointer"></i>
                 </div>
               </td>
