@@ -16,20 +16,22 @@ class GroupSeeder extends Seeder
     public function run()
     {
         $group = [
+            'DPR' => 'diapers',
             'HCR' => 'detergent / home care',
             'BDC' => 'body care',
-            'BBC' => 'baby care',
-            'DPR' => 'diapers',
-            'TSE' => 'tissue',
-            'CDM' => 'condiment',
-            'CNT' => 'coffe & teh',
-            'SNB' => 'snack & biscuits',
-            'MIN' => 'min instan',
-            'MBF' => 'milk body food',
-            'CNC' => 'coklat + permen',
-            'DRK' => 'minuman / drink',
-            'ATK' => 'alat tulis kantor',
             'OBT' => 'obat obatan',
+            'BBC' => 'baby care',
+            'TSE' => 'tissue',
+            'MIN' => 'mie instan',
+            'CDM' => 'condiment',
+            'CNC' => 'coklat + permen',
+            'SNB' => 'snack + biscuits',
+            'DRK' => 'minuman / drink',
+            'MBF' => 'milk baby food',
+            'CNT' => 'kopi + teh',
+            'ICM' => 'ice cream',
+            'RKK' => 'rokok',
+            'ATK' => 'alat tulis kantor',
         ];
 
         foreach ($group as $key => $value) {
