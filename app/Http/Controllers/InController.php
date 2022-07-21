@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detail;
+use App\Models\Group;
 use App\Models\Product;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -20,17 +23,65 @@ class InController extends Controller
     {
         return Inertia::render('In/Index')->with([
             'products' => Product::get(),
+            'groups' => Group::get(),
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function paginate(Request $request)
     {
-        //
+        $model = new Transaction();
+        $columns = array_filter($model->getFillable(), fn ($column) => !in_array($column, $model->getHidden()));
+
+        $request->validate([
+            'search' => 'nullable|string',
+            'order.key' => 'nullable|string',
+            'order.dir' => 'nullable|string|in:asc,desc',
+            'per_page' => 'nullable|integer',
+        ]);
+
+        return Transaction::with('details')
+                            ->whereRelation('details', 'type', 'buy')
+                            ->where(function (Builder $query) use (&$request, &$model, &$columns) {
+                                $search = '%' . $request->input('search') . '%';
+
+                                foreach ($columns as $column) {
+                                    $query->orWhere($column, 'like', $search);
+                                }
+                            })
+                            ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
+                            ->paginate($request->input('per_page', 10));
+    }
+
+    /**
+     * @param \App\Models\Transaction $transaction
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function detailPaginate(Request $request, Transaction $transaction)
+    {
+        $model = new Detail();
+        $columns = array_filter($model->getFillable(), fn ($column) => !in_array($column, $model->getHidden()));
+
+        $request->validate([
+            'search' => 'nullable|string',
+            'order.key' => 'nullable|string|in:' . join(',', $columns),
+            'order.dir' => 'nullable|string|in:asc,desc',
+            'per_page' => 'nullable|integer',
+        ]);
+
+        return $transaction->details()->with('product')->where(function (Builder $query) use (&$request, &$model, &$columns) {
+            $search = '%' . $request->input('search') . '%';
+
+            foreach ($columns as $column) {
+                $query->orWhere($column, 'like', $search);
+            }
+        })
+        ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'asc') ?: 'asc')
+        ->paginate($request->input('per_page', 10));
     }
 
     /**
@@ -45,6 +96,7 @@ class InController extends Controller
             'code' => 'required|string|unique:products,code',
             'name' => 'required|string',
             'barcode' => 'required|string|unique:products,barcode',
+            'group_id' => 'required|integer|exists:groups,id',
             'price.buy.unit' => 'required|integer',
             'price.sell.unit' => 'required|integer',
         ]);
@@ -56,6 +108,7 @@ class InController extends Controller
                 'code' => $request->code,
                 'name' => $request->name,
                 'barcode' => $request->barcode,
+                'group_id' => $request->group_id,
             ]);
 
             $price = $product->prices()->create([
@@ -69,6 +122,7 @@ class InController extends Controller
 
             $transaction = Transaction::create([
                 'user_id' => $request->user()->id,
+                'total_cost' => $price->price_per_unit * $request->qty,
             ]);
 
             $detail = $transaction->details()->create([
@@ -111,6 +165,7 @@ class InController extends Controller
         try {
             $transaction = Transaction::create([
                 'user_id' => $request->user()->id,
+                'total_cost' => $request->qty * $price->price_per_unit,
             ]);
 
             $detail = $transaction->details()->create([

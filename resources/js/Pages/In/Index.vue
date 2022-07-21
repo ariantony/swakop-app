@@ -5,11 +5,21 @@ import Select from '@vueform/multiselect'
 import { useForm } from '@inertiajs/inertia-vue3'
 import Swal from 'sweetalert2'
 import Card from '@/Components/Card.vue'
+import DataTable from './DataTable.vue'
+import Detail from './Detail.vue'
+import { Inertia } from '@inertiajs/inertia'
 
 const self = getCurrentInstance()
-const { products } = defineProps({
+const { products, groups } = defineProps({
   products: Array,
+  groups: Array,
 })
+
+const a = ref(true)
+const rr = () => {
+  a.value = false
+  nextTick(() => a.value = true)
+}
 
 const form = useForm({
   product: null,
@@ -20,6 +30,7 @@ const create = useForm({
   code: '',
   name: '',
   barcode: '',
+  group_id: null,
   qty: 1,
   price: {
     buy: {
@@ -36,6 +47,7 @@ const create = useForm({
 })
 
 const open = ref(false)
+const detail = ref(null)
 
 const show = () => {
   open.value = true
@@ -88,6 +100,8 @@ const store = () => {
     onError: () => nextTick(show),
   })
 }
+
+Inertia.on('finish', () => rr())
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
@@ -95,6 +109,11 @@ const store = () => {
 <template>
   <AppLayout title="Stock masuk">
     <Card>
+      <template #header>
+        <div class="flex items-center justify-start space-x-2 text-white p-2">
+          <h1 class="ml-4 text-black text-2xl font-semibold">Input stock masuk</h1>
+        </div>
+      </template>
       <template #body>
         <form @submit.prevent="add" v-if="open === false" class="flex flex-col space-y-2">
           <div class="flex items-center space-x-4">
@@ -138,7 +157,26 @@ const store = () => {
         </form>
       </template>
     </Card>
+
+    <Card v-if="a">
+      <template #header>
+        <div class="flex items-center justify-start space-x-2 text-white p-2">
+          <h1 class="ml-4 text-black text-2xl font-semibold">Riwayat Transaksi Pembelian</h1>
+        </div>
+      </template>
+      <template #body>
+        <DataTable v-if="open === false" :detail="(transaction) => detail = transaction" type="buy" />
+      </template>
+    </Card>
   </AppLayout>
+
+  <transition name="fade">
+    <div  v-if="detail" class="fixed top-0 left-0 w-full h-screen bg-slate-600 bg-opacity-70"></div>
+  </transition>
+
+  <transition name="slide-fade">
+    <Detail v-if="detail" :transaction="detail" :close="() => detail = null" />
+  </transition>
 
   <transition name="fade">
     <div v-if="open" class="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-40 flex items-center justify-center">
@@ -176,6 +214,21 @@ const store = () => {
               </div>
 
               <div v-if="create.errors.barcode" class="text-right text-sm text-red-500">{{ create.errors.barcode }}</div>
+            </div>
+
+            <div class="flex flex-col space-y-2">
+              <div class="flex items-center space-x-2">
+                <label for="group_id" class="lowercase first-letter:capitalize w-1/3">Kelompok</label>
+                <Select
+                 v-model="create.group_id"
+                 :options="groups.map(g => ({
+                  label: `${g.code} - ${g.name}`,
+                  value: g.id,
+                 }))"
+                 :searchable="true" />
+              </div>
+
+              <div v-if="create.errors.group_id" class="text-right text-sm text-red-500">{{ create.errors.group_id }}</div>
             </div>
 
             <div class="flex flex-col space-y-2">
