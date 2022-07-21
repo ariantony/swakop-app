@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, nextTick, ref } from 'vue'
+import { getCurrentInstance, nextTick, onMounted, ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Select from '@vueform/multiselect'
 import { useForm } from '@inertiajs/inertia-vue3'
@@ -7,9 +7,7 @@ import Swal from 'sweetalert2'
 
 const self = getCurrentInstance()
 
-const { products } = defineProps({
-  products: Array,
-})
+const products = ref([])
 
 const form = useForm({
   cash: 0,
@@ -28,7 +26,7 @@ const add = () => {
     return t.product_id === current.product_id && t.type === current.type
   })
 
-  const product = products.find(p => p.id === current.product_id)
+  const product = products.value.find(p => p.id === current.product_id)
 
   if (product['stock_' + current.type] < 1)
     return
@@ -54,7 +52,7 @@ const add = () => {
 }
 
 const getPriceByTransaction = transaction => {
-  const product = products.find(p => p.id === transaction.product_id)
+  const product = products.value.find(p => p.id === transaction.product_id)
   
   if (!product) return 0
   if (transaction.type === 'unit') return product.price.price_per_unit
@@ -112,7 +110,7 @@ const submit = () => {
 }
 
 const getStockOf = transaction => {
-  const product = products.find(p => p.id === transaction.product_id)
+  const product = products.value.find(p => p.id === transaction.product_id)
 
   if (product) {
     return product['stock_' + transaction.type]
@@ -121,7 +119,7 @@ const getStockOf = transaction => {
   return 0
 }
 
-const find = transaction => products.find(p => p.id === transaction.product_id)
+const find = transaction => products.value.find(p => p.id === transaction.product_id)
 
 const increment = transaction => {
   const product = find(transaction)
@@ -139,6 +137,27 @@ const decrement = transaction => {
     product['stock_' + transaction.type] += 1
   }
 }
+
+const fetch = async () => {
+  Swal.showLoading()
+  try {
+    const response = await axios.get(route('api.product.all'))
+    products.value = response.data
+    Swal.close()
+  } catch (e) {
+    const response = await Swal.fire({
+      title: 'Pengambilan data produk gagal',
+      text: 'Apakah anda ingin mencoba lagi?',
+      icon: 'question',
+      showCancelButton: true,
+      showCloseButton: true,
+    })
+
+    response.isConfirmed && fetch()
+  }
+}
+
+onMounted(fetch)
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
@@ -219,7 +238,7 @@ const decrement = transaction => {
           <tbody>
             <tr v-for="(transaction, i) in transactions" :key="i" class="hover:bg-slate-100 transition-all duration-100 ease-in-out">
               <td class="border py-1 text-center">{{ i + 1 }}</td>
-              <td class="border py-1 text-center">{{ products.find(p => p.id === transaction.product_id)?.name }}</td>
+              <td class="border py-1 text-center">{{ find(transaction)?.name }}</td>
               <td class="border py-1 text-center">
                 <div class="flex items-center justify-center space-x-1">
                   <i @click.prevent="decrement(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-minus cursor-pointer"></i>
