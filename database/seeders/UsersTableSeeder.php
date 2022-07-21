@@ -23,6 +23,8 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@swakop.app',
             'username' => 'admin',
             'password' => Hash::make('admin'),
+            'shift' => 1,
+            'basic_salary' => 2000000,
         ]);
 
         $b = User::create([
@@ -31,6 +33,8 @@ class UsersTableSeeder extends Seeder
             'email' => 'kasir@swakop.app',
             'username' => 'kasir',
             'password' => Hash::make('kasir'),
+            'shift' => 1,
+            'basic_salary' => 2000000,
         ]);
 
         collect(['admin', 'kasir'])->each(fn ($n) => Role::create([ 'name' => $n, 'guard_name' => 'web' ]));

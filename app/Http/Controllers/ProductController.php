@@ -54,7 +54,7 @@ class ProductController extends Controller
                                 $query->orWhere($column, 'like', $search);
                             }
                         })
-                        ->orderBy($request->input('order.key') ?: 'code', $request->input('order.dir') ?: 'asc')
+                        ->orderBy($request->input('order.key') ?: 'name', $request->input('order.dir') ?: 'asc')
                         ->paginate($request->input('per_page', 10));
     }
 

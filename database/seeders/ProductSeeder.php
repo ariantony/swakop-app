@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
             if (!$firstline) {
                 Product::create([
                     'group_id' => $data[1],
-                    'name' => $data[2],
+                    'name' => trim($data[2]),
                     'barcode' => $data[3],
                 ]);
             }
