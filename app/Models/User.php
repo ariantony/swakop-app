@@ -56,4 +56,13 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Relation to Presence.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function presences()
+    {
+        return $this->hasMany(Presence::class);
+    }
 }
