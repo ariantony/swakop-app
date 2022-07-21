@@ -105,9 +105,11 @@ const store = () => {
 Inertia.on('finish', () => rr())
 
 const fetch = async () => {
+  Swal.showLoading()
   try {
     const response = await axios.get(route('api.product.all'))
     products.value = response.data
+    Swal.close()
   } catch (e) {
     const response = await Swal.fire({
       title: 'Pengambilan data produk gagal',
@@ -212,7 +214,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="code" class="lowercase first-letter:capitalize w-1/3">kode produk</label>
-                <input ref="code" type="text" name="code" v-model="create.code" class="bg-transparent rounded-md px-3 py-1 w-full" placeholder="kode produk">
+                <input ref="code" type="text" name="code" v-model="create.code" class="bg-white rounded px-3 py-1 w-full" placeholder="kode produk">
               </div>
 
               <div v-if="create.errors.code" class="text-right text-sm text-red-500">{{ create.errors.code }}</div>
@@ -221,7 +223,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="name" class="lowercase first-letter:capitalize w-1/3">nama produk</label>
-                <input ref="name" type="text" name="name" v-model="create.name" class="bg-transparent rounded-md px-3 py-1 w-full" placeholder="nama produk" required>
+                <input ref="name" type="text" name="name" v-model="create.name" class="bg-white rounded px-3 py-1 w-full" placeholder="nama produk" required>
               </div>
 
               <div v-if="create.errors.name" class="text-right text-sm text-red-500">{{ create.errors.name }}</div>
@@ -230,7 +232,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="barcode" class="lowercase first-letter:capitalize w-1/3">barcode</label>
-                <input ref="barcode" type="text" name="barcode" v-model="create.barcode" class="bg-slate-100 rounded-md px-3 py-1 w-full" placeholder="barcode" disabled required>
+                <input ref="barcode" type="text" name="barcode" v-model="create.barcode" class="bg-slate-100 rounded px-3 py-1 w-full" placeholder="barcode" disabled required>
               </div>
 
               <div v-if="create.errors.barcode" class="text-right text-sm text-red-500">{{ create.errors.barcode }}</div>
@@ -254,7 +256,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="price_buy_unit" class="lowercase first-letter:capitalize w-1/3">harga beli per unit</label>
-                <input ref="price_buy_unit" type="text" name="price_buy_unit" @input.prevent="create.price.buy.unit = reformat($event)" class="bg-transparent rounded-md px-3 py-1 w-full" placeholder="harga beli per unit" required>
+                <input ref="price_buy_unit" type="text" name="price_buy_unit" @input.prevent="create.price.buy.unit = reformat($event)" class="bg-white rounded px-3 py-1 w-full" placeholder="harga beli per unit" required>
               </div>
 
               <div v-if="create.errors.price?.buy?.unit" class="text-right text-sm text-red-500">{{ create.errors.price?.buy?.unit }}</div>
@@ -263,7 +265,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="price_sell_unit" class="lowercase first-letter:capitalize w-1/3">harga jual per unit</label>
-                <input ref="price_sell_unit" type="text" name="price_sell_unit" @input.prevent="create.price.sell.unit = reformat($event)" class="bg-transparent rounded-md px-3 py-1 w-full" placeholder="harga jual per unit" required>
+                <input ref="price_sell_unit" type="text" name="price_sell_unit" @input.prevent="create.price.sell.unit = reformat($event)" class="bg-white rounded px-3 py-1 w-full" placeholder="harga jual per unit" required>
               </div>
 
               <div v-if="create.errors.price?.sell?.unit" class="text-right text-sm text-red-500">{{ create.errors.price?.sell?.unit }}</div>
@@ -272,7 +274,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="qty" class="lowercase first-letter:capitalize w-1/3">qty</label>
-                <input ref="qty" type="number" name="qty" v-model="create.qty" class="bg-transparent rounded-md px-3 py-1 w-full" placeholder="qty" min="1" required>
+                <input ref="qty" type="number" name="qty" v-model="create.qty" class="bg-white rounded px-3 py-1 w-full" placeholder="qty" min="1" required>
               </div>
 
               <div v-if="create.errors.qty" class="text-right text-sm text-red-500">{{ create.errors.qty }}</div>
