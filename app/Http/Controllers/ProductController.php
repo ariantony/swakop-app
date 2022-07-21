@@ -18,10 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Product/Index')->with([
-            'product' => Product::get(),
-            'groups' => Group::get(),
-        ]);
+        return Inertia::render('Product/Index');
     }
 
     /**

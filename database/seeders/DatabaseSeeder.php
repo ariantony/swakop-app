@@ -18,6 +18,10 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             SettingSeeder::class,
             GroupSeeder::class,
+            ProductSeeder::class,
+            PriceSeeder::class,
+            TransactionFirstStockSeeder::class,
+            DetailTransactionFirstStockSeeder::class,
         ]);
     }
 }
