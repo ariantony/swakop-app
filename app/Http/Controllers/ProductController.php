@@ -18,7 +18,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Product/Index');
+        return Inertia::render('Product/Index')->with([
+            'groups' => Group::get(),
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function all()
+    {
+        return Product::get();
     }
 
     /**

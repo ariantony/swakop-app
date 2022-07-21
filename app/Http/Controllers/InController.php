@@ -21,7 +21,9 @@ class InController extends Controller
      */
     public function index()
     {
-        return Inertia::render('In/Index');
+        return Inertia::render('In/Index')->with([
+            'groups' => Group::get(),
+        ]);
     }
 
     /**

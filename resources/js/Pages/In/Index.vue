@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, ref, nextTick } from 'vue'
+import { getCurrentInstance, ref, nextTick, onMounted } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Select from '@vueform/multiselect'
 import { useForm } from '@inertiajs/inertia-vue3'
@@ -8,13 +8,14 @@ import Card from '@/Components/Card.vue'
 import DataTable from './DataTable.vue'
 import Detail from './Detail.vue'
 import { Inertia } from '@inertiajs/inertia'
+import axios from 'axios'
 
 const self = getCurrentInstance()
-const { products, groups } = defineProps({
-  products: Array,
+const { groups } = defineProps({
   groups: Array,
 })
 
+const products = ref([])
 const a = ref(true)
 const rr = () => {
   a.value = false
@@ -102,6 +103,25 @@ const store = () => {
 }
 
 Inertia.on('finish', () => rr())
+
+const fetch = async () => {
+  try {
+    const response = await axios.get(route('api.product.all'))
+    products.value = response.data
+  } catch (e) {
+    const response = await Swal.fire({
+      title: 'Pengambilan data produk gagal',
+      text: 'Apakah anda ingin mencoba lagi?',
+      icon: 'question',
+      showCancelButton: true,
+      showCloseButton: true,
+    })
+
+    response.isConfirmed && fetch()
+  }
+}
+
+onMounted(fetch)
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
