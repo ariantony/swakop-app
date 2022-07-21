@@ -15,13 +15,15 @@ class Transaction extends Model
      */
     protected $fillable = [
         'user_id',
+        'payment_method',
+        'total_cost',
     ];
 
     /**
      * @var string[]
      */
     protected $appends = [
-        'total_cost',
+        // 'total_cost',
     ];
 
     /**
@@ -50,10 +52,10 @@ class Transaction extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function totalCost() : Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->details->reduce(fn (int $last, Detail $detail) => $last + $detail->total_cost_all, 0),
-        );
-    }
+    // public function totalCost() : Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn () => $this->details->reduce(fn (int $last, Detail $detail) => $last + $detail->total_cost_all, 0),
+    //     );
+    // }
 }

@@ -81,21 +81,26 @@ class TransactionController extends Controller
                 ));
             }
 
-            if ($product->stock_box < $transaction['qty_box']) {
+            if (array_key_exists('qty_box', $transaction) && $product->stock_box < $transaction['qty_box']) {
                 return redirect()->back()->with('error', sprintf(
                     $format, $product->name, 'box',
                 ));
             }
 
-            if ($product->stock_carton < $transaction['qty_carton']) {
+            if (array_key_exists('qty_box', $transaction) && $product->stock_carton < $transaction['qty_carton']) {
                 return redirect()->back()->with('error', sprintf(
                     $format, $product->name, 'carton',
                 ));
             }
         }
+
+        $total = array_reduce($transactionByProducts, fn (float $last, array $transaction) => (
+            $last + ($transaction['qty_unit'] * $transaction['cost_unit'] + @$transaction['qty_box'] * @$transaction['cost_box'] + @$transaction['qty_carton'] * @$transaction['cost_carton'])
+        ), 0);
         
         $tx = Transaction::create([
             'user_id' => $request->user()->id,
+            'total_cost' => $total,
         ]);
 
         if ($tx) {
@@ -192,7 +197,7 @@ class TransactionController extends Controller
 
         $request->validate([
             'search' => 'nullable|string',
-            'order.key' => 'nullable|string|in:' . join(',', $columns),
+            'order.key' => 'nullable|string',
             'order.dir' => 'nullable|string|in:asc,desc',
             'per_page' => 'nullable|integer',
         ]);
