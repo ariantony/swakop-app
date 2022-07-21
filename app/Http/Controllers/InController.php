@@ -100,6 +100,11 @@ class InController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product);
+        $price = $product->price;
+
+        if (empty($price)) {
+            return redirect()->back()->with('error', 'harga produk belum ditentukan');
+        }
 
         DB::beginTransaction();
 
@@ -112,7 +117,7 @@ class InController extends Controller
                 'product_id' => $product->id,
                 'type' => 'buy',
                 'qty_unit' => $request->qty,
-                'cost_unit' => $product->price->price_per_unit,
+                'cost_unit' => $price->price_per_unit,
             ]);
 
             DB::commit();
