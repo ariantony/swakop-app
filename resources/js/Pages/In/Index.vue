@@ -151,7 +151,8 @@ onMounted(fetch)
                     }))"
                     :searchable="true"
                     :createOption="true"
-                    @option="option" />
+                    @option="option"
+                    noOptionsText="Mohon tunggu..." />
                 </div>
 
                 <div class="text-red-500 text-right text-sm" v-html="form.errors.product || '&nbsp;'"></div>

@@ -177,6 +177,7 @@ onMounted(fetch)
             :searchable="true"
             required 
             ref="product"
+            noOptionsText="Mohon tunggu..."
           />
         </div>
 
