@@ -178,6 +178,7 @@ onMounted(fetch)
             required 
             ref="product"
             noOptionsText="Mohon tunggu..."
+            @change="nextTick(add)"
           />
         </div>
 
