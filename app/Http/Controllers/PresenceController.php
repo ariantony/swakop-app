@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PresenceController extends Controller
 {
@@ -13,7 +16,40 @@ class PresenceController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Report/Presence/Index')->with([
+            'users' => User::get()
+        ]);
+    }
+
+    /**
+     * Generate presence report.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function generate(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer|exists:users,id',
+            'daterange' => 'required',
+        ]);
+
+        $from = new Carbon($request->daterange[0]);
+        $to = new Carbon($request->daterange[1]);
+        $user = User::find($request->user_id);
+
+        $presences = $user->presences()->whereBetween('created_at', [$from, $to])->get()->each(fn ($p) => $p->date = $p->created_at->format('Y-m-d'))->groupBy('date');
+        $presences = $presences->map(fn ($p) => [
+            'in_time' => @$p[0]?->time,
+            'out_time' => @$p[1]?->time,
+        ]);
+
+        return Inertia::render('Report/Presence/Generate', [
+            'data' => $presences,
+            'user' => $user,
+            'from' => $from->format('Y-m-d'),
+            'to' => $to->format('Y-m-d'),
+        ]);
     }
 
     /**

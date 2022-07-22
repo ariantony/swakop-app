@@ -158,5 +158,8 @@ return [
         'price_per_unit' => 'harga jual per satuan',
         'price_per_box' => 'harga jual per box / renceng',
         'price_per_carton' => 'harga jual per karton',
+        'date' => 'tanggal',
+        'daterange' => 'rentang tanggal',
+        'user_id' => 'user'
     ],
 ];

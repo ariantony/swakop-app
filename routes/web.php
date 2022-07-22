@@ -37,6 +37,8 @@ Route::middleware([
     Route::get('transaction/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
     Route::resource('transaction', App\Http\Controllers\TransactionController::class);
     Route::patch('burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle')->middleware('role:admin');
+    Route::resource('presence', App\Http\Controllers\PresenceController::class)->middleware('role:admin');
+    Route::post('presence/generate', [App\Http\Controllers\PresenceController::class, 'generate'])->name('presence.generate')->middleware('role:admin');
     Route::prefix('setting/')->middleware('role:admin')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');
         Route::patch('master-password/update', [App\Http\Controllers\SettingController::class, 'masterPasswordUpdate'])->name('setting.master-password.update');
