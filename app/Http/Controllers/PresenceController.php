@@ -38,7 +38,15 @@ class PresenceController extends Controller
         $to = new Carbon($request->daterange[1]);
         $user = User::find($request->user_id);
 
-        $presences = $user->presences()->whereBetween('created_at', [$from, $to])->get()->each(fn ($p) => $p->date = $p->created_at->format('Y-m-d'))->groupBy('date');
+        $presences = $user->presences()
+                    ->when($from == $to, function ($query) use ($from) {
+                        return $query->whereDate('created_at', $from);
+                    })
+                    ->when($from != $to, function ($query) use ($from, $to) {
+                        return $query->whereBetween('created_at', [$from, $to]);
+                    })
+                    ->get()->each(fn ($p) => $p->date = $p->created_at->format('Y-m-d'))->groupBy('date');
+
         $presences = $presences->map(fn ($p) => [
             'in_time' => @$p[0]?->time,
             'out_time' => @$p[1]?->time,
