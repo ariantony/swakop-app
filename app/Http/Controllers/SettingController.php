@@ -114,4 +114,21 @@ class SettingController extends Controller
         }
         return redirect()->back()->with('error', 'Terjadi kesalahan, coba lagi nanti.');
     }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function compare(Request $request)
+    {
+        $code = Setting::where('key', 'master_password')->first()->value;
+
+        if (Hash::check($request->code, $code['password'])) {
+            return [
+                'message' => 'ok',
+            ];
+        }
+
+        return abort(401);
+    }
 }
