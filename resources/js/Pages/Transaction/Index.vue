@@ -72,7 +72,7 @@ const remove = async transaction => {
     icon: 'question',
     showCloseButton: true,
     showCancelButton: true,
-    input: 'number',
+    input: 'password',
     inputPlaceholder: 'Masukan kode',
     inputValidator: async code => {
       try {
