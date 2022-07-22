@@ -28,12 +28,12 @@ class UserPresenceIn
     {
         $user = $event->user;
 
-        $presence = $user->presences()->where('type', 'in')->whereDate('time', now()->format('Y-m-d'))->first();
+        $presence = $user->presences()->where('type', 'in')->whereDate('created_at', now()->format('Y-m-d'))->first();
         
         if (!$presence) {
             $user->presences()->create([
                 'type' => 'in',
-                'datetime' => now()->format('Y-m-d H:i:s'),
+                'time' => now()->format('Y-m-d H:i:s'),
             ]);
         }
     }

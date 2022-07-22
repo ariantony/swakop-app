@@ -28,10 +28,17 @@ class UserPresenceOut
     {
         $user = $event->user;
 
-        $user->presences()->updateOrCreate([
-            'type' => 'out',
-        ], [
-            'datetime' => now()->format('Y-m-d H:i:s'),
-        ]);
+        $presence = $user->presences()->where('type', 'out')->whereDate('created_at', now()->format('Y-m-d'))->first();
+        
+        if (!$presence) {
+            $user->presences()->create([
+                'type' => 'out',
+                'time' => now()->format('Y-m-d H:i:s'),
+            ]);
+        } else {
+            $presence->update([
+                'time' => now()->format('Y-m-d H:i:s'),
+            ]);
+        }
     }
 }

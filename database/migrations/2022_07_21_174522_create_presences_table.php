@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['in', 'out']);
-            $table->timestamp('datetime')->default(null)->nullable();
+            $table->time('time')->default(null)->nullable();
             $table->boolean('late')->default(false);
             $table->timestamp('late_time')->default(null)->nullable();
             $table->timestamps();
