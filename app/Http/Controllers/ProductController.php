@@ -28,7 +28,7 @@ class ProductController extends Controller
      */
     public function whereHasStock()
     {
-        return Product::without(['group'])->get()->map(function (Product $product) {
+        return Product::without(['group'])->with(['buy', 'sell'])->get()->map(function (Product $product) {
             return $product->only([
                 'id', 'code', 'barcode', 'name', 'stock_unit', 'stock_box', 'stock_carton', 'price'
             ]);
