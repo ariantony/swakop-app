@@ -110,7 +110,7 @@ onMounted(fetch)
             </div>
         </div>
 
-        <div class="flex flex-col space-y-4">
+        <div class="flex flex-col space-y-4 pt-2">
             <SellingThisMonth v-if="a" :date="date" />
         </div>
     </AppLayout>

@@ -12,6 +12,7 @@ import {
 import VChart from 'vue-echarts';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { id } from 'date-fns/locale';
 
 const { date, render } = defineProps({
   date: Object,
@@ -40,19 +41,98 @@ const option = ref({
   visualMap: {
     type: 'piecewise',
     show: false,
-    dimension: 1,
+    dimension: 0,
     seriesIndex: 0,
     pieces: [
-      // {
-      //   gt: 0,
-      //   lt: 1,
-      //   color: 'rgba(0, 0, 180, 0.4)'
-      // },
-      // {
-      //   gt: 2,
-      //   lt: 3,
-      //   color: 'rgba(0, 0, 180, 0.4)'
-      // },
+      {
+        gt: 1,
+        lt: 2,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 3,
+        lt: 4,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 5,
+        lt: 6,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 7,
+        lt: 8,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 9,
+        lt: 10,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 11,
+        lt: 12,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 13,
+        lt: 14,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 15,
+        lt: 16,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 17,
+        lt: 18,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 19,
+        lt: 20,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 21,
+        lt: 22,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 23,
+        lt: 24,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 25,
+        lt: 26,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 27,
+        lt: 28,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
+
+      {
+        gt: 29,
+        lt: 30,
+        color: 'rgba(0, 0, 180, 0.4)'
+      },
     ]
   },
   series: [
@@ -85,6 +165,9 @@ onMounted(fetch)
 
 <template>
   <div class="bg-white rounded-md">
+    <h1 class="text-xl font-semibold px-4 pt-2">
+      Grafix penjualan bulan {{ id.localize.month(date.month) }} {{ date.year }}
+    </h1>
     <VChart class="h-96 rounded-md" :option="option" />
   </div>
 </template>
