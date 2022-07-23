@@ -160,6 +160,7 @@ return [
         'price_per_carton' => 'harga jual per karton',
         'date' => 'tanggal',
         'daterange' => 'rentang tanggal',
-        'user_id' => 'user'
+        'user_id' => 'user',
+        'period' => 'periode',
     ],
 ];

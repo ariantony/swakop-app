@@ -6,6 +6,9 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import Card from '@/Components/Card.vue'
 import DataTable from './DataTable.vue'
 import Swal from 'sweetalert2'
+import Datepicker from '@vuepic/vue-datepicker';
+import { id } from 'date-fns/locale';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const self = getCurrentInstance()
 const render = ref(true)
@@ -14,6 +17,7 @@ const form = useForm({
   id: null,
   name: '',
   cost: '',
+  period: '',
 })
 const burdens = ref([])
 
@@ -23,6 +27,7 @@ const show = () => {
   nextTick(() => {
     if(form.errors.name) self.refs.first.focus()
     else if(form.errors.cost) self.refs.second.focus()
+    else if(form.errors.period) self.refs.third.focus()
   })
 }
 
@@ -46,6 +51,10 @@ const edit = burden => {
   form.id = burden.id
   form.name = burden.name
   form.cost = burden.cost
+  form.period = {
+    month: burden.period.substring(4, 6) - 1,
+    year: burden.period.substring(0, 4),
+  }
 
   reformat(form.cost)
   show()
@@ -56,13 +65,6 @@ const update = () => {
     onSuccess: () => reset(),
     onError: () => nextTick(show),
   })
-}
-
-const toggle = (burden, refresh) => {
-  Inertia.on('success', () => nextTick(refresh))
-  Inertia.on('error', () => nextTick(show))
-
-  return Inertia.patch(route('burden.toggle', burden.id))
 }
 
 const destroy = burden => {
@@ -104,6 +106,11 @@ const reformat = (value) => {
   })
 }
 
+const format = date => {
+  const month = id.localize.month(date.month) 
+  return `${month} ${date.year}`
+}
+
 onMounted(() => {
   window.addEventListener('keyup', e => {
     if (e.key === 'Escape' && open.value) {
@@ -113,6 +120,8 @@ onMounted(() => {
   })
 })
 </script>
+
+<style src="@vueform/multiselect/themes/default.css"></style>
 
 <template>
   <AppLayout title="Burden">
@@ -165,6 +174,23 @@ onMounted(() => {
                   <input @input.prevent="reformat(this.$refs.second.value)" ref="second" type="text" name="cost" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="biaya">
                 </div>
                 <div v-if="form.errors.cost" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.cost }}</div>
+              </div>
+
+              <div class="flex flex-col space-y-2">
+                <div class="flex items-center space-x-2">
+                  <label for="cost" class="lowercase first-letter:capitalize w-1/4">Periode</label>
+                  <Datepicker 
+                      v-model="form.period"
+                      ref="third"
+                      class="w-full flex-1"
+                      locale="id"
+                      :format="format"
+                      autoApply
+                      position="right"
+                      monthPicker
+                    />
+                </div>
+                <div v-if="form.errors.period" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.period }}</div>
               </div>
             </div>
           </template>

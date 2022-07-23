@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->double('cost', 20, null, true)->default(0);
-            $table->boolean('active')->default(1);
+            $table->string('period', 6)->default(null)->nullable();
             $table->timestamps();
         });
     }

@@ -43,7 +43,7 @@ class BurdenController extends Controller
                 $query->orWhere($column, 'like', $search);
             }
         })
-            ->orderBy($request->input('order.key', 'name') ?: 'name', $request->input('order.dir', 'asc') ?: 'asc')
+            ->orderBy($request->input('order.key', 'period') ?: 'period', $request->input('order.dir', 'desc') ?: 'desc')
             ->paginate($request->input('per_page', 10));
     }
 
@@ -65,16 +65,14 @@ class BurdenController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $post = $request->validate([
             'name' => 'required|string|max:255|unique:burdens',
             'cost' => 'required|numeric',
+            'period' => 'required',
         ]);
-
-        $post = $request->only([
-            'name', 'cost', 'active'
-        ]);
-
-        $post['active'] = true;
+        
+        $post['period']['month'] += 1;
+        $post['period'] = $post['period']['year'] . str_pad($post['period']['month'], 2, '0', STR_PAD_LEFT);
 
         if ($burden = Burden::create($post)) {
             return redirect()->back()->with('success', 'Beban pengeluaran berhasil ditambahkan.');
@@ -117,7 +115,11 @@ class BurdenController extends Controller
         $post = $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('burdens')->ignore($burden->id)],
             'cost' => 'required|numeric',
+            'period' => 'required',
         ]);
+
+        $post['period']['month'] += 1;
+        $post['period'] = $post['period']['year'] . str_pad($post['period']['month'], 2, '0', STR_PAD_LEFT);
 
         if ($burden->update($post)) {
             return redirect()->back()->with('success', 'Beban pengeluaran berhasil diperbarui.');
@@ -139,22 +141,5 @@ class BurdenController extends Controller
         }
 
         return redirect()->back()->with('success', 'Beban pengeluaran gagal dihapus.');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Models\Burden  $burden
-     * @return \Illuminate\Http\Response
-     */
-    public function toggle(Burden $burden)
-    {
-        if ($burden->update(['active' => !$burden->active])) {
-            if ($burden->active) {
-                return redirect()->back()->with('success', 'Beban pengeluaran berhasil diaktifkan.');
-            }
-            return redirect()->back()->with('success', 'Beban pengeluaran berhasil dinonaktifkan.');
-        }
-        return redirect()->back()->with('error', 'Beban pengeluaran gagal diperbarui.');
     }
 }
