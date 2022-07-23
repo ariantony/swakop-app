@@ -77,8 +77,8 @@ onMounted(() => {
 
         <JetBanner />
 
-        <div class="min-h-screen bg-gray-100">
-            <nav ref="topbar" class="bg-white border-b border-gray-100">
+        <div class="min-h-screen bg-gray-100 print:bg-white">
+            <nav ref="topbar" class="bg-white border-b border-gray-100 print:hidden">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -245,7 +245,7 @@ onMounted(() => {
 
             <!-- Sidebar -->
             <div ref="w" class="flex">
-                <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto">
+                <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto print:hidden">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
                     <SidebarLinks v-if="isAdmin()" :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*')" text="Master Data" icon="bx-data">
                         <Button iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
