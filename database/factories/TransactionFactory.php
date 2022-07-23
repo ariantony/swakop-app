@@ -20,7 +20,7 @@ class TransactionFactory extends Factory
         return [
             'user_id' => 1,
             'total_cost' => rand(0, 1_000_000),
-            'created_at' => Carbon::createFromDate(2022, 7, rand(0, 30)),
+            'created_at' => Carbon::createFromDate(2022, rand(1, 12), rand(0, 30)),
         ];
     }
 }
