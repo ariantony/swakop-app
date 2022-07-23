@@ -110,7 +110,7 @@ const option = ref({
 
 const fetch = async () => {
   try {
-    const response = await axios.post(route('api.profit'))
+    const response = await axios.post(route('api.profit'), date)
 
     option.value.series[0].data = response.data.map(t => t.buy)
     option.value.series[1].data = response.data.map(t => t.sell)
