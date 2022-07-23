@@ -112,11 +112,9 @@ const store = () => {
 Inertia.on('finish', () => rr())
 
 const fetch = async () => {
-  Swal.showLoading()
   try {
-    const response = await axios.get(route('api.product.all'))
+    const response = await axios.get(route('api.product.without.group.and.price'))
     products.value = response.data
-    Swal.close()
   } catch (e) {
     const response = await Swal.fire({
       title: 'Pengambilan data produk gagal',

@@ -26,9 +26,35 @@ class ProductController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function all()
+    public function whereHasStock()
     {
-        return Product::get();
+        return Product::without(['group'])->get()->map(function (Product $product) {
+            return $product->only([
+                'id', 'code', 'barcode', 'name', 'stock_unit', 'stock_box', 'stock_carton', 'price'
+            ]);
+        })->map(function ($product) {
+            return array_merge($product, [
+                'price' => collect($product['price'])->only([
+                    'cost_selling_per_unit',
+                    'cost_selling_per_box',
+                    'cost_selling_per_carton',
+                ])
+            ]);
+        })->filter(function ($product) {
+            return $product['stock_unit'] > 0;
+        })->values();
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function withoutGroupAndPrice()
+    {
+        return Product::without(['group', 'price'])->get(['id', 'code', 'name', 'barcode'])->map(function (Product $product) {
+            return $product->only([
+                'id', 'code', 'barcode', 'name',
+            ]);
+        });
     }
 
     /**

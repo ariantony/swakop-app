@@ -55,9 +55,9 @@ const getPriceByTransaction = transaction => {
   const product = products.value.find(p => p.id === transaction.product_id)
   
   if (!product) return 0
-  if (transaction.type === 'unit') return product.price.price_per_unit
-  if (transaction.type === 'box') return product.price.price_per_box
-  if (transaction.type === 'carton') return product.price.price_per_carton
+  if (transaction.type === 'unit') return product.price.cost_selling_per_unit
+  if (transaction.type === 'box') return product.price.cost_selling_per_box
+  if (transaction.type === 'carton') return product.price.cost_selling_per_carton
 }
 
 const grandTotal = () => {
@@ -160,11 +160,11 @@ const decrement = transaction => {
 }
 
 const fetch = async () => {
-  Swal.showLoading()
   try {
-    const response = await axios.get(route('api.product.all'))
+    const response = await axios.get(route('api.product.where.has.stock'))
     products.value = response.data
-    Swal.close()
+
+    console.log(products.value)
   } catch (e) {
     const response = await Swal.fire({
       title: 'Pengambilan data produk gagal',

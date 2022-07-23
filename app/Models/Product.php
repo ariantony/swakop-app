@@ -80,8 +80,8 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                $buy = $this->buy()->sum('qty_unit');
-                $sell = $this->sell()->sum('qty_unit');
+                $buy = $this->buy->sum('qty_unit');
+                $sell = $this->sell->sum('qty_unit');
 
                 return $buy - $sell;
             },
@@ -95,8 +95,8 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                $buy = $this->buy()->sum('qty_box');
-                $sell = $this->sell()->sum('qty_box');
+                $buy = $this->buy->sum('qty_box');
+                $sell = $this->sell->sum('qty_box');
 
                 return $buy - $sell;
             },
@@ -110,8 +110,8 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                $buy = $this->buy()->sum('qty_carton');
-                $sell = $this->sell()->sum('qty_carton');
+                $buy = $this->buy->sum('qty_carton');
+                $sell = $this->sell->sum('qty_carton');
 
                 return $buy - $sell;
             },
