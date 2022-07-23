@@ -23,6 +23,7 @@ Route::name('api.')->group(function () {
     Route::post('/users', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
     Route::post('/burdens', [App\Http\Controllers\BurdenController::class, 'paginate'])->name('burden.paginate');
     Route::post('/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('transaction.paginate');
+    Route::post('/transaction/return', [App\Http\Controllers\TransactionController::class, 'returnPaginate'])->name('transaction.return.paginate');
     Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');
     Route::post('/transactions/{transaction}/detail', [App\Http\Controllers\TransactionController::class, 'detailPaginate'])->name('transaction.detail.paginate');
     Route::post('/ins/{transaction}/detail', [App\Http\Controllers\InController::class, 'detailPaginate'])->name('in.detail.paginate');

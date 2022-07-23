@@ -38,7 +38,7 @@ const retur = async transaction => {
 </script>
 
 <template>
-  <Builder v-if="a" :href="route('api.transaction.paginate')" :colspan="5">
+  <Builder v-if="a" :href="route('api.transaction.return.paginate')" :colspan="5">
     <template v-slot:thead="{table}">
       <tr>
         <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>
@@ -72,13 +72,6 @@ const retur = async transaction => {
             <button @click.prevent="detail(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-list-ul mr-1 text-white text-sm"></i> Detail Transaksi
-              </div>
-            </button>
-
-            <button @click.prevent="retur(item)" class="bg-orange-500 hover:bg-orange-600 rounded-md px-3 py-1 text-sm text-white">
-              <div class="flex items-center space-x-1">
-                <i class="bx bx-undo"></i>
-                <p class="capitalize font-semibold">retur</p>
               </div>
             </button>
           </div>

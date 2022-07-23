@@ -256,6 +256,7 @@ onMounted(() => {
                         <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.index')"/>
                         <Button v-if="isAdmin()" iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
                         <Button iconClass="bx-history" text="Riwayat Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
+                        <Button iconClass="bx-undo" text="Riwayat Pengembalian" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
                     </SidebarLinks>
                     <SidebarLinks :active="false" text="Laporan" icon="bxs-report">
                         <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :active="false"/>

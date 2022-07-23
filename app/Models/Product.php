@@ -74,6 +74,14 @@ class Product extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function retur()
+    {
+        return $this->details()->where('type', 'return');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function stockUnit() : Attribute

@@ -34,9 +34,11 @@ Route::middleware([
     Route::resource('price', App\Http\Controllers\PriceController::class)->middleware('role:admin');
     Route::resource('in', App\Http\Controllers\InController::class)->middleware('role:admin');
     Route::post('/in/add', [App\Http\Controllers\InController::class, 'add'])->name('in.add')->middleware('role:admin');
-    Route::get('transaction/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
+    Route::get('/transaction/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
+    Route::get('/transaction/history/return', [App\Http\Controllers\TransactionController::class, 'returnHistory'])->name('transaction.return.history');
+    Route::delete('/transaction/{transaction}/return', [App\Http\Controllers\TransactionController::class, 'retur'])->name('transaction.return');
     Route::resource('transaction', App\Http\Controllers\TransactionController::class);
-    Route::patch('burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle')->middleware('role:admin');
+    Route::patch('/burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle')->middleware('role:admin');
     Route::prefix('setting/')->middleware('role:admin')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');
         Route::patch('master-password/update', [App\Http\Controllers\SettingController::class, 'masterPasswordUpdate'])->name('setting.master-password.update');

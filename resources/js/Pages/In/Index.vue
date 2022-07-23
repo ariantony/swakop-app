@@ -151,7 +151,7 @@ onMounted(fetch)
                   <Select 
                     v-model="form.product"
                     :options="products.map(p => ({
-                      label: `${p.code} - ${p.name} - ${p.barcode}`,
+                      label: `${p.code || ''} - ${p.name} - ${p.barcode}`,
                       value: p.id,
                     }))"
                     :searchable="true"
