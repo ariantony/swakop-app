@@ -52,7 +52,7 @@ const fetch = async () => {
 }
 
 const now = () => {
-    const date = new Date().getDay()
+    const date = new Date().getDate()
     const month = id.localize.month(new Date().getMonth())
     const year = new Date().getFullYear()
 
