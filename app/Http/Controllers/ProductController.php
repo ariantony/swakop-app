@@ -73,7 +73,8 @@ class ProductController extends Controller
             'order.dir' => 'nullable|string|in:asc,desc',
         ]);
 
-        return Product::where(function (Builder $query) use (&$request, &$columns) {
+        return Product::with(['buy', 'sell'])
+                        ->where(function (Builder $query) use (&$request, &$columns) {
                             $search = '%' . $request->input('search') . '%';
 
                             foreach ($columns as $column) {
