@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detail;
 use App\Models\Product;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -17,18 +18,19 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $create = fn () => Carbon::createFromDate($request->year, $request->month + 1);
+
         return [
             'month' => $this->query(
                 $create()->startOfMonth(),
                 $create()->endOfMonth(),
-            )->sum('total_cost'),
+            )->get()->map(fn ($detail) => $detail->total_cost_all)->sum(),
 
-            'today' => $this->query(now()->startOfDay(), now())->sum('total_cost'),
+            'today' => $this->query(now()->startOfDay(), now())->get()->map(fn ($detail) => $detail->total_cost_all)->sum(),
 
-            'customer' => $this->query(
+            'customer' => Transaction::whereBetween('created_at', [
                 $create()->startOfMonth(),
                 $create()->endOfMonth(),
-            )->count(),
+            ])->whereRelation('details', 'type', 'sell')->count(),
         ];
     }
 
@@ -37,11 +39,8 @@ class DashboardController extends Controller
      */
     private function query(Carbon $start, Carbon $end)
     {
-        return Transaction::where(function (Builder $query) {
-                                $query->whereRelation('details', 'type', 'sell')
-                                        ->orDoesntHave('details');
-                            })
-                            ->whereBetween('created_at', [$start, $end]);
+        return Detail::whereBetween('created_at', [$start, $end])
+                        ->where('type', 'sell');
     }
 
     /**
@@ -54,38 +53,45 @@ class DashboardController extends Controller
         $to = Carbon::createFromDate($request->year, $request->month + 1)->endOfMonth();
 
         return $this->query($from, $to)
-                    ->without(['details', 'user'])
-                    ->get(['created_at', 'total_cost'])
-                    ->each(function (Transaction $transaction) {
-                        $transaction->date = $transaction->created_at->format('d');
+                    ->get()
+                    ->each(function (Detail $detail) {
+                        $detail->date = $detail->created_at->format('d');
                     })
                     ->groupBy('date')
-                    ->map(fn ($transaction) => $transaction->sum('total_cost'));
+                    ->map(fn ($detail) => $detail->sum('total_cost_all'));
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function profit()
+    public function profit(Request $request)
     {
         $months = [];
 
         for ($i = 1; $i < 13; $i++) {
             $months[] = [
-                Carbon::createFromDate(month: $i)->startOfMonth()->format('Y-m-d H:i:s'),
-                Carbon::createFromDate(month: $i)->endOfMonth()->format('Y-m-d H:i:s'),
+                Carbon::createFromDate($request->year, $i)->startOfMonth()->format('Y-m-d H:i:s'),
+                Carbon::createFromDate($request->year, $i)->endOfMonth()->format('Y-m-d H:i:s'),
             ];
         }
 
         return collect($months)->map(function ($month) {
-            return [
-                'buy' => Product::with(['buy'])->whereRelation('buy', function (Builder $query) use ($month) {
-                    $query->whereBetween('created_at', $month);
-                })->get()->map(fn ($p) => $p->buy->sum('total_cost_all'))->sum(),
+            $results = Detail::whereBetween('created_at', $month)->get();
 
-                'sell' => Product::with(['sell'])->whereRelation('sell', function (Builder $query) use ($month) {
-                    $query->whereBetween('created_at', $month);
-                })->get()->map(fn ($p) => $p->sell->sum('total_cost_all'))->sum()
+            return [
+                'buy' => $results->where('type', 'buy')->sum('total_cost_all'),
+                'sell' => $results->where('type', 'sell')->sum('total_cost_all'),
+            ];
+
+            return [
+                'buy' => Detail::where('type', 'buy')->whereBetween('created_at', $month)->get(['cost_unit', 'qty_unit'])->map(function (Detail $detail) {
+                    return $detail->total_cost_all;
+                })->sum(),
+
+                'sell' => Detail::where('type', 'sell')->whereBetween('created_at', $month)->get(['cost_unit', 'qty_unit'])->map(function (Detail $detail) {
+                    return $detail->total_cost_all;
+                })->sum()
             ];
         });
     }
