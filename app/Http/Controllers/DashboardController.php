@@ -25,7 +25,10 @@ class DashboardController extends Controller
                 $create()->endOfMonth(),
             )->get()->map(fn ($detail) => $detail->total_cost_all)->sum(),
 
-            'today' => $this->query(now()->startOfDay(), now())->get()->map(fn ($detail) => $detail->total_cost_all)->sum(),
+            'today' => $this->query(
+                now()->startOfDay(),
+                now()->endOfDay()
+            )->get()->map(fn ($detail) => $detail->total_cost_all)->sum(),
 
             'customer' => Transaction::whereBetween('created_at', [
                 $create()->startOfMonth(),
@@ -58,7 +61,7 @@ class DashboardController extends Controller
                         $detail->date = $detail->created_at->format('d');
                     })
                     ->groupBy('date')
-                    ->map(fn ($detail) => $detail->sum('total_cost_all'));
+                    ->map(fn ($details) => $details->map(fn ($detail) => $detail->total_cost_all)->sum());
     }
 
     /**
