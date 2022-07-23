@@ -112,8 +112,8 @@ onMounted(fetch)
         </div>
 
         <div class="flex flex-col space-y-4 pt-2">
-            <SellingThisMonth v-if="a" :date="date" />
-            <TransactionThisYear v-if="a" :date="date" />
+            <SellingThisMonth v-if="a && date" :date="date" />
+            <TransactionThisYear v-if="a && date" :date="date" />
         </div>
     </AppLayout>
 </template>
