@@ -142,7 +142,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="code" class="lowercase first-letter:capitalize w-1/4">kode</label>
-                  <input ref="code" type="text" name="code" v-model="form.code" class="w-3/4 bg-white border border-slate-200  rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="kode">
+                  <input ref="code" type="text" name="code" v-model="form.code" class="w-3/4 bg-white border border-slate-200 rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="kode">
                 </div>
                 <div v-if="form.errors.code" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.code }}</div>
               </div>
@@ -150,7 +150,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="name" class="lowercase first-letter:capitalize w-1/4">nama</label>
-                  <input ref="name" type="text" name="name" v-model="form.name" class="w-3/4 bg-white border border-slate-200 rounded placeholder:capitalize" autocomplete="off" placeholder="nama">
+                  <input ref="name" type="text" name="name" v-model="form.name" class="w-3/4 bg-white border border-slate-200 rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="nama">
                 </div>
                 <div v-if="form.errors.name" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.name }}</div>
               </div>
