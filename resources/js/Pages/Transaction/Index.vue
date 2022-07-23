@@ -21,12 +21,16 @@ const current = useForm({
 
 const transactions = ref([])
 
-const outOfStock = product => Swal.fire({
-      text: `Stok product "${product.name}" tidak tersedia`,
-      icon: 'error',
+const outOfStock = (product, type) => {
+  const stock = product['stock_' + type]
+
+  return Swal.fire({
+      text: `Stok ${type} product "${product.name}" ${stock > 0 ? 'hanya tersedia ' + stock : 'tidak tersedia'}`,
+      icon: stock > 0 ? 'info' : 'warning',
       showCloseButton: true,
       timer: 5000,
     })
+}
 
 const add = () => {
   const has = transactions.value.find(t => {
@@ -39,11 +43,11 @@ const add = () => {
     return
 
   if (product['stock_' + current.type] < 1)
-    return outOfStock(product)
+    return outOfStock(product, current.type)
 
   if (has) {
     if (product['stock_' + current.type] < current.qty)
-      return outOfStock(product)
+      return outOfStock(product, current.type)
       
     has.qty += current.qty
     product['stock_' + current.type] -= current.qty
@@ -58,7 +62,7 @@ const add = () => {
       self.refs.product.focus()
       self.refs.product.close()
     } else {
-      outOfStock(product)
+      outOfStock(product, current.type)
     }
   }
 }
@@ -160,7 +164,7 @@ const increment = transaction => {
     transaction.qty += 1
     product['stock_' + transaction.type] -= 1
   } else {
-    outOfStock(product)
+    outOfStock(product, transaction.type)
   }
 }
 
