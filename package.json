@@ -23,6 +23,8 @@
     "dependencies": {
         "@vueform/multiselect": "^2.5.1",
         "@vuepic/vue-datepicker": "^3.3.1",
-        "sweetalert2": "^11.4.20"
+        "echarts": "^5.3.3",
+        "sweetalert2": "^11.4.20",
+        "vue-echarts": "^6.2.3"
     }
 }
