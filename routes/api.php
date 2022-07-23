@@ -28,4 +28,5 @@ Route::name('api.')->group(function () {
     Route::post('/compare', [App\Http\Controllers\SettingController::class, 'compare'])->name('compare');
     Route::post('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::post('/selling', [App\Http\Controllers\DashboardController::class, 'selling'])->name('selling');
+    Route::post('/profit', [App\Http\Controllers\DashboardController::class, 'profit'])->name('profit');
 });

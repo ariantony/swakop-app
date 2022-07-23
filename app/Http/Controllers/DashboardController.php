@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -60,5 +61,32 @@ class DashboardController extends Controller
                     })
                     ->groupBy('date')
                     ->map(fn ($transaction) => $transaction->sum('total_cost'));
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function profit()
+    {
+        $months = [];
+
+        for ($i = 1; $i < 13; $i++) {
+            $months[] = [
+                Carbon::createFromDate(month: $i)->startOfMonth()->format('Y-m-d H:i:s'),
+                Carbon::createFromDate(month: $i)->endOfMonth()->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        return collect($months)->map(function ($month) {
+            return [
+                'buy' => Product::with(['buy'])->whereRelation('buy', function (Builder $query) use ($month) {
+                    $query->whereBetween('created_at', $month);
+                })->get()->map(fn ($p) => $p->buy->sum('total_cost_all'))->sum(),
+
+                'sell' => Product::with(['sell'])->whereRelation('sell', function (Builder $query) use ($month) {
+                    $query->whereBetween('created_at', $month);
+                })->get()->map(fn ($p) => $p->sell->sum('total_cost_all'))->sum()
+            ];
+        });
     }
 }

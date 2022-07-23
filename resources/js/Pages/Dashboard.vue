@@ -9,6 +9,7 @@ import { nextTick, onMounted, ref } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import SellingThisMonth from '@/Charts/SellingThisMonth.vue';
+import TransactionThisYear from '@/Charts/TransactionThisYear.vue';
 
 const date = ref({
     month: new Date().getMonth(),
@@ -112,6 +113,7 @@ onMounted(fetch)
 
         <div class="flex flex-col space-y-4 pt-2">
             <SellingThisMonth v-if="a" :date="date" />
+            <TransactionThisYear v-if="a" :date="date" />
         </div>
     </AppLayout>
 </template>
