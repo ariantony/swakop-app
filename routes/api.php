@@ -25,4 +25,5 @@ Route::name('api.')->group(function () {
     Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');
     Route::post('/transactions/{transaction}/detail', [App\Http\Controllers\TransactionController::class, 'detailPaginate'])->name('transaction.detail.paginate');
     Route::post('/ins/{transaction}/detail', [App\Http\Controllers\InController::class, 'detailPaginate'])->name('in.detail.paginate');
+    Route::post('/compare', [App\Http\Controllers\SettingController::class, 'compare'])->name('compare');
 });

@@ -4,9 +4,9 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import Select from '@vueform/multiselect'
 import { useForm } from '@inertiajs/inertia-vue3'
 import Swal from 'sweetalert2'
+import axios from 'axios'
 
 const self = getCurrentInstance()
-
 const products = ref([])
 
 const form = useForm({
@@ -66,10 +66,31 @@ const grandTotal = () => {
   return transactions.value.reduce((total, transaction) => getPriceByTransaction(transaction) * transaction.qty + total, 0)
 }
 
-const remove = transaction => {
+const remove = async transaction => {
+  const response = await Swal.fire({
+    title: 'Masukan kode',
+    icon: 'question',
+    showCloseButton: true,
+    showCancelButton: true,
+    input: 'password',
+    inputPlaceholder: 'Masukan kode',
+    inputValidator: async code => {
+      try {
+        const response = await axios.post(route('api.compare'), {
+          code,
+        })
+      } catch (e) {
+        return 'Kode salah'
+      }
+    },
+  })
+
+  if (!response.isConfirmed)
+    return
+
   const product = find(transaction)
   product['stock_' + transaction.type] += transaction.qty
-  transactions.value = transactions.value.filter(t => t.product_id === transaction.product_id && t.type !== transaction.type)
+  transactions.value = transactions.value.filter(t => t.product_id === transaction.product_id ? t.type !== transaction.type : true)
 }
 
 const reformat = e => {
@@ -178,6 +199,7 @@ onMounted(fetch)
             required 
             ref="product"
             noOptionsText="Mohon tunggu..."
+            @change="nextTick(add)"
           />
         </div>
 
