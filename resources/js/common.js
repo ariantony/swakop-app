@@ -21,7 +21,17 @@ export const dateindo = (value, withTime = false) => {
   return result;
 }
 
+export const periodindo = (period) => {
+  const libMonth = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+  const month = period.substring(4, 6);
+  const year = period.substring(0, 4);
+  console.log(period, month, year)
+  return `${libMonth[parseInt(month) - 1]} ${year}`;
+}
+
 export default {
   rupiah,
   dateindo,
+  periodindo,
 }
