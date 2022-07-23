@@ -59,6 +59,13 @@ const close = () => {
 }
 
 const option = e => {
+  const product = products.value.find(p => p.barcode === e)
+
+  if (product) {
+    form.product = product.id
+    return add()
+  }
+
   create.barcode = e
   open.value = true
 }
