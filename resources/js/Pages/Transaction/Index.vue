@@ -21,6 +21,13 @@ const current = useForm({
 
 const transactions = ref([])
 
+const outOfStock = product => Swal.fire({
+      text: `Stok product "${product.name}" tidak tersedia`,
+      icon: 'error',
+      showCloseButton: true,
+      timer: 5000,
+    })
+
 const add = () => {
   const has = transactions.value.find(t => {
     return t.product_id === current.product_id && t.type === current.type
@@ -28,12 +35,15 @@ const add = () => {
 
   const product = products.value.find(p => p.id === current.product_id)
 
-  if (product['stock_' + current.type] < 1)
+  if (!product)
     return
+
+  if (product['stock_' + current.type] < 1)
+    return outOfStock(product)
 
   if (has) {
     if (product['stock_' + current.type] < current.qty)
-      return
+      return outOfStock(product)
       
     has.qty += current.qty
     product['stock_' + current.type] -= current.qty
@@ -47,6 +57,8 @@ const add = () => {
       current.reset()
       self.refs.product.focus()
       self.refs.product.close()
+    } else {
+      outOfStock(product)
     }
   }
 }
@@ -147,6 +159,8 @@ const increment = transaction => {
   if (getStockOf(transaction) > 0) {
     transaction.qty += 1
     product['stock_' + transaction.type] -= 1
+  } else {
+    outOfStock(product)
   }
 }
 
@@ -163,8 +177,6 @@ const fetch = async () => {
   try {
     const response = await axios.get(route('api.product.where.has.stock'))
     products.value = response.data
-
-    console.log(products.value)
   } catch (e) {
     const response = await Swal.fire({
       title: 'Pengambilan data produk gagal',
