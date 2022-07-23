@@ -43,8 +43,9 @@ class PresenceController extends Controller
                         return $query->whereDate('created_at', $from);
                     })
                     ->when($from != $to, function ($query) use ($from, $to) {
-                        return $query->whereBetween('created_at', [$from, $to]);
+                        return $query->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
                     })
+                    ->oldest()
                     ->get()->each(fn ($p) => $p->date = $p->created_at->format('Y-m-d'))->groupBy('date');
 
         $presences = $presences->map(fn ($p) => [
@@ -57,6 +58,7 @@ class PresenceController extends Controller
             'user' => $user,
             'from' => $from->format('Y-m-d'),
             'to' => $to->format('Y-m-d'),
+            'length' => count($presences),
         ]);
     }
 

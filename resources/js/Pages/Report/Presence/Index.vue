@@ -69,6 +69,7 @@ const generate = () => form.post(route('presence.generate'))
                       :format-locale="id"
                       format="d MMMM y"
                       :dayNames="['Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb', 'Mn']"
+                      :monthChangeOnScroll="false"
                     />
                   </div>
                 </div>
