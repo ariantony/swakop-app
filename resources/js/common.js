@@ -26,7 +26,7 @@ export const periodindo = (period) => {
 
   const month = period.substring(4, 6);
   const year = period.substring(0, 4);
-  console.log(period, month, year)
+
   return `${libMonth[parseInt(month) - 1]} ${year}`;
 }
 
