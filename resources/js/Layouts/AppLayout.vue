@@ -257,8 +257,8 @@ onMounted(() => {
                         <Button v-if="isAdmin()" iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
                         <Button iconClass="bx-history" text="Riwayat Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
                     </SidebarLinks>
-                    <SidebarLinks :active="route().current('presence.*')" text="Laporan" icon="bxs-report">
-                        <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :active="false"/>
+                    <SidebarLinks :active="route().current('presence.*') || route().current('income-statement.*')" text="Laporan" icon="bxs-report">
+                        <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income-statement.index')" :active="route().current('income-statement.*')"/>
                         <Button iconClass="bx-receipt" text="Harian" :active="false"/>
                         <Button v-if="isAdmin()" iconClass="bxs-user-detail" text="Absensi" :href="route('presence.index')" :active="route().current('presence.*')"/>
                     </SidebarLinks>
