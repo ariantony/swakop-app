@@ -121,14 +121,14 @@ class InController extends Controller
 
             $transaction = Transaction::create([
                 'user_id' => $request->user()->id,
-                'total_cost' => $price->price_per_unit * $request->qty,
+                'total_cost' => $price->cost_selling_per_unit * $request->qty,
             ]);
 
             $detail = $transaction->details()->create([
                 'product_id' => $product->id,
                 'type' => 'buy',
                 'qty_unit' => $request->qty,
-                'cost_unit' => $price->price_per_unit,
+                'cost_unit' => $price->cost_selling_per_unit,
             ]);
 
             DB::commit();
@@ -164,14 +164,14 @@ class InController extends Controller
         try {
             $transaction = Transaction::create([
                 'user_id' => $request->user()->id,
-                'total_cost' => $request->qty * $price->price_per_unit,
+                'total_cost' => $request->qty * $price->cost_selling_per_unit,
             ]);
 
             $detail = $transaction->details()->create([
                 'product_id' => $product->id,
                 'type' => 'buy',
                 'qty_unit' => $request->qty,
-                'cost_unit' => $price->price_per_unit,
+                'cost_unit' => $price->cost_selling_per_unit,
             ]);
 
             DB::commit();
@@ -182,39 +182,5 @@ class InController extends Controller
 
             return redirect()->back()->with('error', $e->getMessage());
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
     }
 }

@@ -34,7 +34,9 @@ Route::middleware([
     Route::resource('price', App\Http\Controllers\PriceController::class)->middleware('role:admin');
     Route::resource('in', App\Http\Controllers\InController::class)->middleware('role:admin');
     Route::post('/in/add', [App\Http\Controllers\InController::class, 'add'])->name('in.add')->middleware('role:admin');
-    Route::get('transaction/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
+    Route::get('/transaction/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
+    Route::get('/transaction/history/return', [App\Http\Controllers\TransactionController::class, 'returnHistory'])->name('transaction.return.history');
+    Route::delete('/transaction/{transaction}/return', [App\Http\Controllers\TransactionController::class, 'retur'])->name('transaction.return');
     Route::resource('transaction', App\Http\Controllers\TransactionController::class);
     Route::resource('presence', App\Http\Controllers\PresenceController::class)->middleware('role:admin');
     Route::post('presence/generate', [App\Http\Controllers\PresenceController::class, 'generate'])->name('presence.generate')->middleware('role:admin');

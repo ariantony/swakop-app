@@ -21,15 +21,17 @@ const current = useForm({
 
 const transactions = ref([])
 
-const limit = () => {
-  Swal.fire({
-    title: 'Error!',
-    text: 'Stok barang terpilih habis!',
-    icon: 'warning',
-    showCancelButton: false,
-  })
-  current.product_id = 0
+const outOfStock = (product, type) => {
+  const stock = product['stock_' + type]
+
+  return Swal.fire({
+      text: `Stok ${type} product "${product.name}" ${stock > 0 ? 'hanya tersedia ' + stock : 'tidak tersedia'}`,
+      icon: stock > 0 ? 'info' : 'warning',
+      showCloseButton: true,
+      timer: 5000,
+    })
 }
+
 const add = () => {
   if (!current.product_id) return
 
@@ -39,12 +41,15 @@ const add = () => {
 
   const product = products.value.find(p => p.id === current.product_id)
 
-  if (product['stock_' + current.type] < 1)
+  if (!product)
     return
+
+  if (product['stock_' + current.type] < 1)
+    return outOfStock(product, current.type)
 
   if (has) {
     if (product['stock_' + current.type] < current.qty)
-      return
+      return outOfStock(product, current.type)
       
     has.qty += current.qty
     product['stock_' + current.type] -= current.qty
@@ -58,6 +63,8 @@ const add = () => {
       current.reset()
       self.refs.product.focus()
       self.refs.product.close()
+    } else {
+      outOfStock(product, current.type)
     }
   }
 }
@@ -66,9 +73,9 @@ const getPriceByTransaction = transaction => {
   const product = products.value.find(p => p.id === transaction.product_id)
   
   if (!product) return 0
-  if (transaction.type === 'unit') return product.price.price_per_unit
-  if (transaction.type === 'box') return product.price.price_per_box
-  if (transaction.type === 'carton') return product.price.price_per_carton
+  if (transaction.type === 'unit') return product.price.cost_selling_per_unit
+  if (transaction.type === 'box') return product.price.cost_selling_per_box
+  if (transaction.type === 'carton') return product.price.cost_selling_per_carton
 }
 
 const grandTotal = () => {
@@ -158,6 +165,8 @@ const increment = transaction => {
   if (getStockOf(transaction) > 0) {
     transaction.qty += 1
     product['stock_' + transaction.type] -= 1
+  } else {
+    outOfStock(product, transaction.type)
   }
 }
 
@@ -171,9 +180,8 @@ const decrement = transaction => {
 }
 
 const fetch = async () => {
-  Swal.showLoading()
   try {
-    const response = await axios.get(route('api.product.all'))
+    const response = await axios.get(route('api.product.where.has.stock'))
     products.value = response.data
     self.refs.product.focus()
     self.refs.product.close()
@@ -205,7 +213,7 @@ onMounted(fetch)
           <Select
             v-model="current.product_id"
             :options="products.map(p => ({
-              label: `${p.code} - ${p.barcode} - ${p.name}`,
+              label: `${p.code || ''} - ${p.barcode} - ${p.name}`,
               value: p.id,
             }))"
             :searchable="true"

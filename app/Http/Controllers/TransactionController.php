@@ -50,9 +50,9 @@ class TransactionController extends Controller
                 'type' => 'sell',
                 'qty_' . $transaction['type'] => $transaction['qty'],
                 'cost_' . $transaction['type'] => match ($transaction['type']) {
-                    'unit' => $product->price->price_per_unit,
-                    'box' => $product->price->price_per_box,
-                    'carton' => $product->price->price_per_carton,
+                    'unit' => $product->price->cost_selling_per_unit,
+                    'box' => $product->price->cost_selling_per_box,
+                    'carton' => $product->price->cost_selling_per_carton,
                 },
             ]);
         }
@@ -149,6 +149,8 @@ class TransactionController extends Controller
             foreach ($columns as $column) {
                 $query->orWhere($column, 'like', $search);
             }
+
+            $query->orWhere('id', 'like', $search);
         })
         ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
         ->paginate($request->input('per_page', 10));
@@ -180,5 +182,60 @@ class TransactionController extends Controller
         })
         ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'asc') ?: 'asc')
         ->paginate($request->input('per_page', 10));
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function returnHistory()
+    {
+        return Inertia::render('Transaction/Return');
+    }
+
+    /**
+     * @param \App\Models\Transaction $transaction
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function returnPaginate(Request $request, Transaction $transaction)
+    {
+        $model = new Transaction();
+        $columns = array_filter($model->getFillable(), fn ($column) => !in_array($column, $model->getHidden()));
+
+        $request->validate([
+            'search' => 'nullable|string',
+            'order.key' => 'nullable|string',
+            'order.dir' => 'nullable|string|in:asc,desc',
+            'per_page' => 'nullable|integer',
+        ]);
+
+        return Transaction::with('details')->whereRelation('details', 'type', 'return')->where(function (Builder $query) use (&$request, &$model, &$columns) {
+            $search = '%' . $request->input('search') . '%';
+
+            foreach ($columns as $column) {
+                $query->orWhere($column, 'like', $search);
+            }
+
+            $query->orWhere('id', 'like', $search);
+        })
+        ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
+        ->paginate($request->input('per_page', 10));
+    }
+
+    /**
+     * @param \App\Models\Transaction $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function retur(Transaction $transaction)
+    {
+        if ($transaction->details()->update(['type' => 'return'])) {
+            return redirect()->back()->with('success', __(
+                'Transaksi berhasil di kembalikan',
+            ));
+        }
+
+        return redirect()->back()->with('error', __(
+            'Proses pengembalian gagal, coba lagi beberapa saat',
+        ));
     }
 }
