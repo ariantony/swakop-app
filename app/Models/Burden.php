@@ -12,6 +12,6 @@ class Burden extends Model
     protected $fillable = [
         'name',
         'cost',
-        'active',
+        'period',
     ];
 }

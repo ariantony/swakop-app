@@ -66,7 +66,7 @@ class BurdenController extends Controller
     public function store(Request $request)
     {
         $post = $request->validate([
-            'name' => 'required|string|max:255|unique:burdens',
+            'name' => 'required|string|max:255',
             'cost' => 'required|numeric',
             'period' => 'required',
         ]);
@@ -113,7 +113,7 @@ class BurdenController extends Controller
     public function update(Request $request, Burden $burden)
     {
         $post = $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('burdens')->ignore($burden->id)],
+            'name' => ['required', 'string', 'max:255'],
             'cost' => 'required|numeric',
             'period' => 'required',
         ]);
