@@ -77,3 +77,12 @@ Inertia.on('finish', () => {
         });
     }
 })
+
+const token = () => {
+    const { $token } = usePage().props.value
+    $token && (axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`)
+}
+
+Inertia.on('start', token)
+Inertia.on('finish', token)
+Inertia.on('before', token)
