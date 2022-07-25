@@ -159,10 +159,12 @@ const submit = () => {
     showCancelButton: true,
   }).then(response => response.isConfirmed && (
     useForm({ transactions: transactions.value }).post(route('transaction.store'), {
-      onSuccess() {
+      onSuccess: () => {
         form.reset()
         current.reset()
         transactions.value = []
+        
+        self.refs.cash && (self.refs.cash.value = 0)
       },
     })
   ))
