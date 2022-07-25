@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('api.')->group(function () {
+    // Masterdata
     Route::get('/product/where-has-stock', [App\Http\Controllers\ProductController::class, 'whereHasStock'])->name('product.where.has.stock');
     Route::get('/product/without-group-and-price', [App\Http\Controllers\ProductController::class, 'withoutGroupAndPrice'])->name('product.without.group.and.price');
     Route::post('/product/paginate', [App\Http\Controllers\ProductController::class, 'paginate'])->name('product.paginate');
@@ -22,12 +23,20 @@ Route::name('api.')->group(function () {
     Route::post('/product/{product}/price', [App\Http\Controllers\PriceController::class, 'paginate'])->name('product.price.paginate');
     Route::post('/users', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
     Route::post('/burdens', [App\Http\Controllers\BurdenController::class, 'paginate'])->name('burden.paginate');
+
+    // Stock In
+    Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');
+    Route::post('/ins/{transaction}/detail', [App\Http\Controllers\InController::class, 'detailPaginate'])->name('in.detail.paginate');
+
+    // Stock Out & Return
     Route::post('/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('transaction.paginate')->middleware(['auth:sanctum']);
     Route::post('/transaction/return', [App\Http\Controllers\TransactionController::class, 'returnPaginate'])->name('transaction.return.paginate');
-    Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');
     Route::post('/transactions/{transaction}/detail', [App\Http\Controllers\TransactionController::class, 'detailPaginate'])->name('transaction.detail.paginate');
-    Route::post('/ins/{transaction}/detail', [App\Http\Controllers\InController::class, 'detailPaginate'])->name('in.detail.paginate');
+
+    // Setting
     Route::post('/compare', [App\Http\Controllers\SettingController::class, 'compare'])->name('compare');
+
+    // Dashboard
     Route::post('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::post('/selling', [App\Http\Controllers\DashboardController::class, 'selling'])->name('selling');
     Route::post('/profit', [App\Http\Controllers\DashboardController::class, 'profit'])->name('profit');
