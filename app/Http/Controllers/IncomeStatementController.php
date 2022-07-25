@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Burden;
 use App\Models\Transaction;
@@ -49,10 +50,12 @@ class IncomeStatementController extends Controller
 
         $grossProfit = $totalSell - $hpp['total'];
 
+        $salaries = User::with('roles')->whereRelation('roles', 'name', 'kasir')->sum('basic_salary');
+
         $getBurden = Burden::where('period', $year . $month)->get();
         $burden = [
             'list' => $getBurden,
-            'total' => $getBurden->sum('cost'),
+            'total' => $getBurden->sum('cost') + $salaries,
         ];
 
         $netProfit = $grossProfit - $burden['total'];
@@ -61,6 +64,7 @@ class IncomeStatementController extends Controller
             'totalSell' => $totalSell,
             'hpp' => $hpp,
             'grossProfit' => $grossProfit,
+            'salaries' => $salaries,
             'burden' => $burden,
             'netProfit' => $netProfit,
             'period' => $period,
