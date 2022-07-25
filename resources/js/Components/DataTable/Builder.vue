@@ -11,7 +11,7 @@ const { href } = defineProps({
   },
   colspan: {
     type: Number,
-    default: 1,
+    default: 1000,
   },
 })
 
@@ -78,7 +78,7 @@ onUnmounted(() => interval.value && clearInterval(interval.value))
             <slot v-for="(item, i) in paginator.data" :key="i" :index="i" :item="item" :refresh="refresh" name="tbody" />
 
           <tr v-if="!paginator.data?.length">
-            <td :colspan="colspan" class="py-4 text-xl text-center font-semibold first-letter:capitalize">
+            <td :colspan="1000" class="py-4 text-xl text-center font-semibold first-letter:capitalize">
               Tidak ada data ditemukan.
             </td>
           </tr>
