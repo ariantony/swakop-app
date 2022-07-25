@@ -5,6 +5,13 @@ import Th from '@/Components/DataTable/Th.vue'
 const { product } = defineProps({
   product: Object,
 })
+
+const redaction = (type) => {
+  if (type === 'buy') return 'Beli'
+  if (type === 'sell') return 'Jual'
+  if (type === 'return') return 'Retur'
+}
+
 </script>
 
 <template>
@@ -17,7 +24,7 @@ const { product } = defineProps({
         <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false" colspan="1">subtotal per</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false" rowspan="2">total</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false" rowspan="2">tanggal transaksi</Th>
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false" rowspan="2">user</Th>
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false" rowspan="2">kasir</Th>
       </tr>
       
       <tr>
@@ -40,21 +47,21 @@ const { product } = defineProps({
       <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">carton</Th> -->
       <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">total</Th>
       <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">tanggal transaksi</Th>
-      <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">user</Th>
+      <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">kasir</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
       <tr>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase">{{ item.type }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
-        <!-- <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_box }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_carton }}</td> -->
+        <td class="border p-2 border-x-2 border-slate-300 text-center uppercase">{{ redaction(item.type) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.qty_unit }}</td>
+        <!-- <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.qty_box }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.qty_carton }}</td> -->
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_unit) }}</td>
         <!-- <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_box) }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_carton) }}</td> -->
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_all) }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ new Date(item.transaction.created_at).toLocaleString('id') }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ item.transaction.user.name }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ dateindo(item.transaction.created_at, true) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.transaction.user.name }}</td>
       </tr>
     </template>
   </Builder>

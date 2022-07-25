@@ -138,7 +138,7 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
   <div v-else class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
     <form @submit.prevent="submit" class="flex flex-col bg-slate-50 w-full max-w-5xl rounded-md">
       <div class="flex items-center justify-between space-x-2 bg-slate-200 rounded-t-md py-2 px-4">
-        <div class="lowercase first-letter:capitalize text-2xl font-semibold">tambah harga produk "{{ product.name }}"</div>
+        <div class="lowercase first-letter:capitalize text-2xl font-semibold">tambah harga produk <span class="uppercase">"{{ product.name }}"</span></div>
 
         <div class="flex items-center space-x-2">
           <button @click.prevent="show = true" type="button" class="rounded-md bg-red-500 text-white px-1">

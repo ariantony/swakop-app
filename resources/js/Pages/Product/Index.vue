@@ -37,7 +37,10 @@ const show = () => {
   })
 }
 
-const close = () => open.value = false
+const close = () => {
+  open.value = false
+  form.reset()
+}
 
 const reset = () => {
   render.value = false
@@ -165,7 +168,7 @@ onMounted(() => {
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="group_id" class="lowercase first-letter:capitalize w-1/3">group</label>
+                  <label for="group_id" class="lowercase first-letter:capitalize w-1/3">Kelompok barang</label>
                   <Select
                     v-model="form.group_id"
                     :options="groups.map(g => ({

@@ -162,5 +162,6 @@ return [
         'daterange' => 'rentang tanggal',
         'user_id' => 'user',
         'period' => 'periode',
+        'group_id' => 'kelompok barang',
     ],
 ];
