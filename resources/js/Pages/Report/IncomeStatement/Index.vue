@@ -20,7 +20,7 @@ const format = date => {
     return `${month} ${date.year}`
 }
 
-const generate = () => form.post(route('income-statement.generate'))
+const generate = () => form.post(route('income.statement.generate'))
 
 </script>
 

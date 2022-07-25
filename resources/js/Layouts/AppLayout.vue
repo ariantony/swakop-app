@@ -91,36 +91,6 @@ onMounted(() => {
                                     <img :src="url('assets/images/logo-swakop.png')" class="w-32" alt="Logo Swakop">
                                 </Link>
                             </div>
-
-                            <!-- Navigation Links -->
-                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <JetNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </JetNavLink>
-                            </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <Dropdown>
-                                    <template v-slot:trigger="{toggle}">
-                                        <button @click.prevent="toggle" class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition" :class="route().current('masterdata.goods') ? 'border-indigo-400' : 'border-transparent' ">Masterdata</button>
-                                    </template>
-                                    <template #body>
-                                        <transition
-                                            enter-active-class="transition ease-out duration-200"
-                                            enter-from-class="transform opacity-0 scale-95"
-                                            enter-to-class="transform opacity-100 scale-100"
-                                            leave-active-class="transition ease-in duration-75"
-                                            leave-from-class="transform opacity-100 scale-100"
-                                            leave-to-class="transform opacity-0 scale-95"
-                                        >
-                                            <JetDropdownLink :href="route('masterdata.goods')" :active="route().current('masterdata/goods')">
-                                                <div class="flex items-center">
-                                                    <div class="flex pr-4 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"><i class="bx bxr-package mr-2"></i>Barang</div>
-                                                </div>
-                                            </JetDropdownLink>
-                                        </transition>
-                                    </template>
-                                </Dropdown>
-                            </div> -->
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -260,8 +230,8 @@ onMounted(() => {
                         <Button iconClass="bx-history" text="Riwayat Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
                         <Button v-if="isAdmin()" iconClass="bx-undo" text="Riwayat Pengembalian" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
                     </SidebarLinks>
-                    <SidebarLinks :active="route().current('presence.*') || route().current('income-statement.*') || route().current('daily.report.*')" text="Laporan" icon="bxs-report">
-                        <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income-statement.index')" :active="route().current('income-statement.*')"/>
+                    <SidebarLinks :active="route().current('presence.*') || route().current('income.statement.*') || route().current('daily.report.*')" text="Laporan" icon="bxs-report">
+                        <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income.statement.index')" :active="route().current('income.statement.*')"/>
                         <Button iconClass="bx-receipt" text="Harian" :href="route('daily.report.index')" :active="route().current('daily.report.*')"/>
                         <Button v-if="isAdmin()" iconClass="bxs-user-detail" text="Absensi" :href="route('presence.index')" :active="route().current('presence.*')"/>
                     </SidebarLinks>
@@ -272,14 +242,6 @@ onMounted(() => {
                     <slot />
                 </main>
             </div>
-
-            <!-- Page Heading -->
-            <!-- <header v-if="$slots.header" class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header> -->
-
 
         </div>
     </div>

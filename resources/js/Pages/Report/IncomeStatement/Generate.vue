@@ -54,7 +54,7 @@ const print = () => {
                 <i class="bx bx-download mr-1 text-xl"></i> Download
               </div>
             </button>
-            <Link :href="route('income-statement.index')" class="bg-slate-600 rounded-md px-3 py-1 font-semibold">
+            <Link :href="route('income.statement.index')" class="bg-slate-600 rounded-md px-3 py-1 font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-arrow-back mr-1 text-xl"></i> Kembali
               </div>
