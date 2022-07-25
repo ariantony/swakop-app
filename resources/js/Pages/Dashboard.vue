@@ -38,6 +38,22 @@ const fetch = async () => {
         data.value.month = response.data.month
         data.value.today = response.data.today
         data.value.customer = response.data.customer
+        
+        Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        }).fire({
+            icon: 'success',
+            title: 'Menampilkan data pada periode ' + id.localize.month(date.value.month) + ' - ' + date.value.year
+        })
+
     } catch (e) {
         const response = await Swal.fire({
             title: 'Terjadi kesalahan',
@@ -65,7 +81,7 @@ onMounted(fetch)
 <template>
     <AppLayout title="Dashboard">
         <div class="flex items-center justify-between">
-            <p class="text-xl font-bold capitalize">dashboard</p>
+            <p class="text-3xl font-bold capitalize">dashboard</p>
 
             <div class="flex items-center space-x-2">
                 <DatePicker
@@ -73,13 +89,14 @@ onMounted(fetch)
                     locale="id"
                     :format="format"
                     @update:modelValue="fetch"
-                    monthPicker />
+                    monthPicker
+                    autoApply />
             </div>
         </div>
 
         <div class="grid grid-cols-4 gap-4">
             <Link :href="route('transaction.index')" class="bg-primary text-white rounded-xl px-4 py-8 flex flex-col justify-center space-y-1">
-                <h1 class="text-3xl capitalize underline">mulai transaksi</h1>
+                <h1 class="text-3xl capitalize text-center">mulai transaksi</h1>
             </Link>
 
             <div class="bg-white rounded-xl px-4 py-8 flex items-center space-x-4 justify-between">
@@ -88,7 +105,7 @@ onMounted(fetch)
                     <p class="text-gray-900 text-2xl capitalize">{{ rupiah(data.month) }}</p>
                 </div>
 
-                <i class="bx bx-circle-three-quarter text-5xl"></i>
+                <i class="bx bx-money-withdraw text-5xl"></i>
             </div>
 
             <div class="bg-white rounded-xl px-4 py-8 flex items-center space-x-4 justify-between">
@@ -97,7 +114,7 @@ onMounted(fetch)
                     <p class="text-gray-900 text-2xl capitalize">{{ data.customer }}</p>
                 </div>
 
-                <i class="bx bx-circle-three-quarter text-5xl rotate-45"></i>
+                <i class="bx bx-user-circle text-5xl"></i>
             </div>
 
             <div class="bg-white rounded-xl px-4 py-8 flex items-center space-x-4 justify-between">
@@ -107,7 +124,7 @@ onMounted(fetch)
                     <p class="text-sm">{{ now() }} <i class="bx bx-calendar text-md"></i></p>
                 </div>
 
-                <i class="bx bx-circle-three-quarter text-5xl rotate-90"></i>
+                <i class="bx bx-money text-5xl"></i>
             </div>
         </div>
 

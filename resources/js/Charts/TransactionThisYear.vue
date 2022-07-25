@@ -76,7 +76,7 @@ const option = ref({
   yAxis: [
     {
       type: 'value',
-      name: 'Precipitation',
+      name: 'Nilai',
       min: 0,
       // interval: 50,
       axisLabel: {

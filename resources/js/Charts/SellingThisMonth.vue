@@ -165,7 +165,7 @@ onMounted(fetch)
 
 <template>
   <div class="bg-white rounded-md">
-    <h1 class="text-3xl font-semibold px-4 pt-2">
+    <h1 class="text-2xl font-semibold px-4 pt-2">
       Grafik penjualan bulan {{ id.localize.month(date.month) }} {{ date.year }}
     </h1>
     <VChart class="h-96 rounded-md" :option="option" />
