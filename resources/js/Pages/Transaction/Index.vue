@@ -143,6 +143,16 @@ const submit = () => {
     })
   }
 
+  if (transactions.value.length === 0) {
+    return Swal.fire({
+      title: 'Peringatan',
+      text: 'Tidak ada barang yang akan dijual',
+      icon: 'warning',
+    }).then(response => {
+      self.refs?.product?.focus()
+    })
+  }
+
   return Swal.fire({
     title: 'Akhiri proses transaksi?',
     icon: 'question',
@@ -223,7 +233,7 @@ onMounted(fetch)
           <Select
             v-model="current.product_id"
             :options="products.map(p => ({
-              label: `${p.code || ''} - ${p.barcode} - ${p.name}`,
+              label: `${p.code ? p.code + '-' : ''} ${p.barcode} - ${p.name}`,
               value: p.id,
             }))"
             :searchable="true"
@@ -300,10 +310,10 @@ onMounted(fetch)
                   <i @click.prevent="increment(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-plus cursor-pointer"></i>
                 </div>
               </td>
-              <td class="border py-1 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td>
-              <td class="border py-1 text-center">{{ rupiah(getPriceByTransaction(transaction)) }}</td>
-              <td class="border py-1 text-center">{{ rupiah(getPriceByTransaction(transaction) * transaction.qty) }}</td>
-              <td class="border py-1 text-center">
+              <td class="border py-1 px-3 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td>
+              <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction)) }}</td>
+              <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction) * transaction.qty) }}</td>
+              <td class="border py-1 px-3 text-center">
                 <button @click.prevent="remove(transaction)" class="bg-red-600 rounded-md px-3 py-2 text-white">
                   <i class="bx bx-trash"></i>
                 </button>
@@ -331,7 +341,7 @@ onMounted(fetch)
         </div>
 
         <div class="flex items-center justify-end space-x-2">
-          <button type="submit" class="bg-green-600 rounded-md px-3 py-1 text-sm text-white font-semibold">
+          <button type="submit" class="bg-blue-600 rounded-md px-3 py-1 text-sm text-white font-semibold">
             <div class="flex items-center space-x-1">
               <i class="bx bx-check"></i>
               <p class="lowercase first-letter:capitalize">checkout</p>
