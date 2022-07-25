@@ -85,26 +85,26 @@ const grandTotal = () => {
 }
 
 const remove = async transaction => {
-  const response = await Swal.fire({
-    title: 'Masukan kode',
-    icon: 'question',
-    showCloseButton: true,
-    showCancelButton: true,
-    input: 'password',
-    inputPlaceholder: 'Masukan kode',
-    inputValidator: async code => {
-      try {
-        const response = await axios.post(route('api.compare'), {
-          code,
-        })
-      } catch (e) {
-        return 'Kode salah'
-      }
-    },
-  })
+  // const response = await Swal.fire({
+  //   title: 'Masukan kode',
+  //   icon: 'question',
+  //   showCloseButton: true,
+  //   showCancelButton: true,
+  //   input: 'password',
+  //   inputPlaceholder: 'Masukan kode',
+  //   inputValidator: async code => {
+  //     try {
+  //       const response = await axios.post(route('api.compare'), {
+  //         code,
+  //       })
+  //     } catch (e) {
+  //       return 'Kode salah'
+  //     }
+  //   },
+  // })
 
-  if (!response.isConfirmed)
-    return
+  // if (!response.isConfirmed)
+  //   return
 
   const product = find(transaction)
   product['stock_' + transaction.type] += transaction.qty
@@ -133,6 +133,16 @@ const reformat = e => {
 }
 
 const submit = () => {
+  if (form.cash <= grandTotal()) {
+    return Swal.fire({
+      title: 'Peringatan',
+      text: 'Jumlah bayar harus melebihi dari total pembelian',
+      icon: 'warning',
+    }).then(response => {
+      self.refs?.cash?.focus()
+    })
+  }
+
   return Swal.fire({
     title: 'Akhiri proses transaksi?',
     icon: 'question',
@@ -312,7 +322,7 @@ onMounted(fetch)
       <form @submit.prevent="submit" class="bg-white w-full max-w-sm rounded-md p-4 flex flex-col space-y-4">
         <div class="flex items-center justify-between space-x-2">
           <label class="lowercase first-letter:capitalize">cash</label>
-          <input @input.prevent="reformat" type="text" class="bg-transparent rounded-md placeholder:capitalize text-right" placeholder="cash" required>
+          <input ref="cash" @input.prevent="reformat" type="text" class="bg-transparent rounded-md placeholder:capitalize text-right" placeholder="cash" required>
         </div>
 
         <div class="flex items-center justify-between space-x-2">
