@@ -84,6 +84,14 @@ class PriceController extends Controller
         $post['price_per_box'] = 0;
         $post['price_per_carton'] = 0;
 
+        $last = Price::where('product_id', $post['product_id'])->latest()->first();
+        
+        if ($last) {
+            $last->update([
+                'expire_date' => now(),
+            ]);
+        } 
+
         if ($price = Price::create($post)) {
             return redirect()->back()->with([
                 'success' => 'Harga baru berhasil ditambahkan.',
@@ -138,7 +146,7 @@ class PriceController extends Controller
 
         if ($price->update($request->all())) {
             return redirect()->back()->with([
-                'success' => 'price has been updated',
+                'success' => 'Harga berhasil diperbarui.',
             ]);
         }
 
@@ -157,7 +165,7 @@ class PriceController extends Controller
     {
         if ($price->delete()) {
             return redirect()->back()->with([
-                'success' => 'price has been deleted',
+                'success' => 'Harga berhasil di hapus.',
             ]);
         }
 

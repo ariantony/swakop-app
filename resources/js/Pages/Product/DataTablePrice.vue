@@ -46,7 +46,7 @@ const { product } = defineProps({
         <!-- <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.price_per_box) }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.price_per_carton) }}</td> -->
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ dateindo(item.effective_date) }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.created_at === item.updated_at ? 'Masih Berlaku' : dateindo(item.expired_at) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.created_at === item.updated_at ? 'Masih Berlaku' : dateindo(item.expire_date) }}</td>
         <!-- <td class="border p-2 border-x-2 border-slate-300">
           <button @click.prevent="edit(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm text-white">
             <div class="flex items-center space-x-1">
