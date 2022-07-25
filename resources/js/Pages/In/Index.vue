@@ -151,7 +151,7 @@ onMounted(fetch)
                   <Select 
                     v-model="form.product"
                     :options="products.map(p => ({
-                      label: `${p.code || ''} - ${p.name} - ${p.barcode}`,
+                      label: `${p.code ? p.code + '-' : ''} ${p.barcode} - ${p.name}`,
                       value: p.id,
                     }))"
                     :searchable="true"
@@ -178,7 +178,7 @@ onMounted(fetch)
             <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-white text-sm transition-all">
               <div class="flex items-center space-x-1">
                 <i class="bx bx-plus"></i>
-                <p class="uppercase font-semibold">tambah</p>
+                <p class="capitalize font-semibold">tambah</p>
               </div>
             </button>
           </div>
@@ -199,18 +199,19 @@ onMounted(fetch)
   </AppLayout>
 
   <transition name="fade">
-    <div  v-if="detail" class="fixed top-0 left-0 w-full h-screen bg-slate-600 bg-opacity-70"></div>
+    <div  v-if="detail || open" class="fixed top-0 left-0 w-full h-screen bg-slate-600 bg-opacity-70"></div>
   </transition>
 
   <transition name="slide-fade">
     <Detail v-if="detail" :transaction="detail" :close="() => detail = null" />
   </transition>
 
-  <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-40 flex items-center justify-center">
-      <form @submit.prevent="store" class="w-full max-w-xl bg-slate-50 rounded-md">
+  <transition name="slide-fade">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
+      <form @submit.prevent="store" class="w-full max-w-6xl bg-slate-50 rounded-md">
         <div class="flex flex-col rounded-md">
-          <div class="flex items-center justify-end space-x-2 bg-slate-200 rounded-t-md p-2">
+          <div class="flex items-center justify-between space-x-2 bg-slate-100 rounded-t-md p-2">
+            <h1 class="text-bold text-2xl font-semibold">Tambah Produk Baru + Pembelian</h1>
             <button @click.prevent="close" type="button" class="rounded-md bg-red-500 text-white px-1">
               <i class="bx bx-x text-xl"></i>
             </button>
@@ -219,8 +220,8 @@ onMounted(fetch)
           <div class="flex flex-col space-y-4 p-4">
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
-                <label for="code" class="lowercase first-letter:capitalize w-1/3">kode produk</label>
-                <input ref="code" type="text" name="code" v-model="create.code" class="bg-white rounded px-3 py-1 w-full" placeholder="kode produk">
+                <label for="code" class="lowercase first-letter:capitalize w-1/4">kode produk</label>
+                <input ref="code" type="text" name="code" v-model="create.code" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="kode produk">
               </div>
 
               <div v-if="create.errors.code" class="text-right text-sm text-red-500">{{ create.errors.code }}</div>
@@ -228,8 +229,8 @@ onMounted(fetch)
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
-                <label for="name" class="lowercase first-letter:capitalize w-1/3">nama produk</label>
-                <input ref="name" type="text" name="name" v-model="create.name" class="bg-white rounded px-3 py-1 w-full" placeholder="nama produk" required>
+                <label for="name" class="lowercase first-letter:capitalize w-1/4">nama produk</label>
+                <input ref="name" type="text" name="name" v-model="create.name" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="nama produk" required>
               </div>
 
               <div v-if="create.errors.name" class="text-right text-sm text-red-500">{{ create.errors.name }}</div>
@@ -237,8 +238,8 @@ onMounted(fetch)
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
-                <label for="barcode" class="lowercase first-letter:capitalize w-1/3">barcode</label>
-                <input ref="barcode" type="text" name="barcode" v-model="create.barcode" class="bg-slate-100 rounded px-3 py-1 w-full" placeholder="barcode" disabled required>
+                <label for="barcode" class="lowercase first-letter:capitalize w-1/4">barcode</label>
+                <input ref="barcode" type="text" name="barcode" v-model="create.barcode" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="barcode" disabled required>
               </div>
 
               <div v-if="create.errors.barcode" class="text-right text-sm text-red-500">{{ create.errors.barcode }}</div>
@@ -248,12 +249,12 @@ onMounted(fetch)
               <div class="flex items-center space-x-2">
                 <label for="group_id" class="lowercase first-letter:capitalize w-1/3">Kelompok</label>
                 <Select
-                 v-model="create.group_id"
-                 :options="groups.map(g => ({
+                  v-model="create.group_id"
+                  :options="groups.map(g => ({
                   label: `${g.code} - ${g.name}`,
                   value: g.id,
-                 }))"
-                 :searchable="true" />
+                  }))"
+                  :searchable="true" />
               </div>
 
               <div v-if="create.errors.group_id" class="text-right text-sm text-red-500">{{ create.errors.group_id }}</div>
@@ -261,8 +262,8 @@ onMounted(fetch)
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
-                <label for="price_buy_unit" class="lowercase first-letter:capitalize w-1/3">harga beli per unit</label>
-                <input ref="price_buy_unit" type="text" name="price_buy_unit" @input.prevent="create.price.buy.unit = reformat($event)" class="bg-white rounded px-3 py-1 w-full" placeholder="harga beli per unit" required>
+                <label for="price_buy_unit" class="lowercase first-letter:capitalize w-1/4">harga beli per unit</label>
+                <input ref="price_buy_unit" type="text" name="price_buy_unit" @input.prevent="create.price.buy.unit = reformat($event)" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" placeholder="harga beli per unit" required>
               </div>
 
               <div v-if="create.errors.price?.buy?.unit" class="text-right text-sm text-red-500">{{ create.errors.price?.buy?.unit }}</div>
@@ -270,8 +271,8 @@ onMounted(fetch)
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
-                <label for="price_sell_unit" class="lowercase first-letter:capitalize w-1/3">harga jual per unit</label>
-                <input ref="price_sell_unit" type="text" name="price_sell_unit" @input.prevent="create.price.sell.unit = reformat($event)" class="bg-white rounded px-3 py-1 w-full" placeholder="harga jual per unit" required>
+                <label for="price_sell_unit" class="lowercase first-letter:capitalize w-1/4">harga jual per unit</label>
+                <input ref="price_sell_unit" type="text" name="price_sell_unit" @input.prevent="create.price.sell.unit = reformat($event)" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" placeholder="harga jual per unit" required>
               </div>
 
               <div v-if="create.errors.price?.sell?.unit" class="text-right text-sm text-red-500">{{ create.errors.price?.sell?.unit }}</div>
@@ -279,19 +280,19 @@ onMounted(fetch)
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
-                <label for="qty" class="lowercase first-letter:capitalize w-1/3">qty</label>
-                <input ref="qty" type="number" name="qty" v-model="create.qty" class="bg-white rounded px-3 py-1 w-full" placeholder="qty" min="1" required>
+                <label for="qty" class="lowercase first-letter:capitalize w-1/4">qty</label>
+                <input ref="qty" type="number" name="qty" v-model="create.qty" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="qty" min="1" required>
               </div>
 
               <div v-if="create.errors.qty" class="text-right text-sm text-red-500">{{ create.errors.qty }}</div>
             </div>
           </div>
 
-          <div class="flex items-center justify-end space-x-2 px-2 py-1 bg-slate-200 rounded-b-md">
-            <button class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-white transition-all text-sm">
+          <div class="flex items-center justify-end space-x-2 px-2 py-1 bg-slate-100 rounded-b-md">
+            <button class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-white transition-all">
               <div class="flex items-center space-x-1">
                 <i class="bx bx-check"></i>
-                <p class="uppercase font-semibold">buat</p>
+                <p class="capitalize font-semibold">buat</p>
               </div>
             </button>
           </div>

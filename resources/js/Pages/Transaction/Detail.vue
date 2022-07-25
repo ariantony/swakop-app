@@ -34,7 +34,10 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
 
       <div class="p-4 max-h-[28rem] overflow-auto">
         <div class="flex items-center justify-between py-2 mb-4 border-b-2 border-slate-300">
-          <h2 class="text-xl">Tanggal Transaksi : {{ new Date(transaction.created_at).toLocaleDateString('id') }}</h2>
+          <h2 class="text-xl">Tanggal Transaksi : {{ dateindo(transaction.created_at) }}</h2>
+          <div v-if="transaction.details[0].type === 'return'" class="bg-red-500 rounded-md p-2 px-6 text-white font-bold">
+            <p class="uppercase">RETUR</p>
+          </div>
           <h2 class="text-xl">Kasir : {{ transaction.user.name }}</h2>
         </div>
         <DataTable :transaction="transaction" />

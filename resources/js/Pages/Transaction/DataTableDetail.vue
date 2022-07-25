@@ -44,9 +44,9 @@ const { transaction } = defineProps({
       <tr>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.product.name }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
-        <!-- <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_box }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_carton }}</td> -->
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.qty_unit }}</td>
+        <!-- <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.qty_box }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.qty_carton }}</td> -->
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_unit) }}</td>
         <!-- <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_box) }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_carton) }}</td> -->
