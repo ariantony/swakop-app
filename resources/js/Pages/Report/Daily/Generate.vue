@@ -32,8 +32,8 @@ const print = () => {
       Swal.showLoading()
     }
   })
-  setTimeout(Swal.close, 1800)
-  setTimeout(window.print, 2000)
+  setTimeout(Swal.close, 800)
+  setTimeout(window.print, 1000)
 }
 
 </script>
