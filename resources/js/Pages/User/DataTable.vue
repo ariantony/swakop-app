@@ -34,7 +34,7 @@ const { edit, destroy } = defineProps({
         <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.username }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.email }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.basic_salary) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.basic_salary) }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="edit(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">

@@ -31,8 +31,8 @@ const { edit, destroy, toggle } = defineProps({
       <tr>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
         <td class="border p-2 border-x-2 border-slate-300">{{ item.name }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ rupiah(item.cost) }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ periodindo(item.period) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost) }}</td>
+        <td class="border p-2 border-x-2 border-slate-300">{{ periodindo(item.period) }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="edit(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">

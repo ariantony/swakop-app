@@ -205,7 +205,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="cost" class="lowercase first-letter:capitalize w-1/4">gaji pokok</label>
-                  <input ref="sixth" @input.prevent="reformat()" type="text" name="basic_salary" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="gaji pokok">
+                  <input ref="sixth" @input.prevent="reformat()" type="text" name="basic_salary" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" autocomplete="off" placeholder="gaji pokok">
                 </div>
                 <div v-if="form.errors.basic_salary" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.basic_salary }}</div>
               </div>

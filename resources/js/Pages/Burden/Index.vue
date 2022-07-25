@@ -31,7 +31,10 @@ const show = () => {
   })
 }
 
-const close = () => open.value = false
+const close = () => {
+  open.value = false
+  form.reset()
+}
 
 const reset = () => {
   render.value = false
@@ -171,7 +174,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="cost" class="lowercase first-letter:capitalize w-1/4">biaya</label>
-                  <input @input.prevent="reformat(this.$refs.second.value)" ref="second" type="text" name="cost" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="biaya">
+                  <input @input.prevent="reformat(this.$refs.second.value)" ref="second" type="text" name="cost" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" autocomplete="off" placeholder="biaya">
                 </div>
                 <div v-if="form.errors.cost" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.cost }}</div>
               </div>
