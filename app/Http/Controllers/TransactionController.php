@@ -143,17 +143,19 @@ class TransactionController extends Controller
             'per_page' => 'nullable|integer',
         ]);
 
-        return Transaction::with('details')->whereRelation('details', 'type', 'sell')->where(function (Builder $query) use (&$request, &$model, &$columns) {
-            $search = '%' . $request->input('search') . '%';
+        return Transaction::with('details')
+                            ->when(!$request->user()->hasRole('admin'), fn ($query) => $query->where('user_id', $request->user()->id))
+                            ->whereRelation('details', 'type', 'sell')->where(function (Builder $query) use (&$request, &$model, &$columns) {
+                                $search = '%' . $request->input('search') . '%';
 
-            foreach ($columns as $column) {
-                $query->orWhere($column, 'like', $search);
-            }
+                                foreach ($columns as $column) {
+                                    $query->orWhere($column, 'like', $search);
+                                }
 
-            $query->orWhere('id', 'like', $search);
-        })
-        ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
-        ->paginate($request->input('per_page', 10));
+                                $query->orWhere('id', 'like', $search);
+                            })
+                            ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
+                            ->paginate($request->input('per_page', 10));
     }
 
     /**
