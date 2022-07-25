@@ -41,6 +41,18 @@ class HandleInertiaRequests extends Middleware
             'error' => session()->get('error'),
             '$url' => url('/'),
             'isAdmin' => (bool) $request?->user()?->hasRole('admin'),
+            '$token' => function () use ($request) {
+                $user = $request->user();
+
+                if (!$user) {
+                    return;
+                }
+
+                $user->tokens()->delete();
+                $token = $user->createToken(uniqid());
+
+                return $token->plainTextToken;
+            },
         ]);
     }
 }

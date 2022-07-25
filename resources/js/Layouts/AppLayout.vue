@@ -68,6 +68,8 @@ onMounted(() => {
     resizeSidebar();
     window.addEventListener('resize', resizeSidebar);
 
+    const { $token } = usePage().props.value
+    $token && (axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`)
 });
 </script>
 

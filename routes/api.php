@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::name('api.')->group(function () {
+Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::get('/product/where-has-stock', [App\Http\Controllers\ProductController::class, 'whereHasStock'])->name('product.where.has.stock');
     Route::get('/product/without-group-and-price', [App\Http\Controllers\ProductController::class, 'withoutGroupAndPrice'])->name('product.without.group.and.price');
     Route::post('/product/paginate', [App\Http\Controllers\ProductController::class, 'paginate'])->name('product.paginate');
@@ -32,3 +32,5 @@ Route::name('api.')->group(function () {
     Route::post('/selling', [App\Http\Controllers\DashboardController::class, 'selling'])->name('selling');
     Route::post('/profit', [App\Http\Controllers\DashboardController::class, 'profit'])->name('profit');
 });
+
+Route::middleware(['auth:sanctum'])->get('/user', fn (Request $request) => $request->user())->name('api.user');
