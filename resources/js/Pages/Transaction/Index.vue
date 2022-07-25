@@ -33,6 +33,8 @@ const outOfStock = (product, type) => {
 }
 
 const add = () => {
+  if (!current.product_id) return
+
   const has = transactions.value.find(t => {
     return t.product_id === current.product_id && t.type === current.type
   })
@@ -181,6 +183,9 @@ const fetch = async () => {
   try {
     const response = await axios.get(route('api.product.where.has.stock'))
     products.value = response.data
+    self.refs.product.focus()
+    self.refs.product.close()
+    Swal.close()
   } catch (e) {
     const response = await Swal.fire({
       title: 'Pengambilan data produk gagal',

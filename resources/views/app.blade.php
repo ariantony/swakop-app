@@ -10,7 +10,7 @@
         <link rel="shortcut icon" href="{{ url('assets/images/favicon.png') }}" type="image/x-icon">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="{{ url('assets/fonts/nunito.css') }}">
 
         <!-- Icons -->
         <link rel="stylesheet" href="{{ url('assets/boxicons/css/boxicons.css') }}">

@@ -116,7 +116,7 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
   <div v-if="show" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
     <div class="flex flex-col bg-slate-50 w-full max-w-7xl max-w rounded-md">
       <div class="flex items-center justify-between space-x-2 bg-slate-200 rounded-t-md py-2 px-4">
-        <div class="lowercase first-letter:capitalize text-2xl font-semibold">harga produk "{{ product.name }}"</div>
+        <div class="lowercase first-letter:capitalize text-2xl font-semibold">harga produk <span class="uppercase">"{{ product.name }}"</span></div>
 
         <div class="flex items-center space-x-4">
           <button @click.prevent="show = false" class="rounded-md bg-green-600 text-white px-3 py-1 flex items-center">
@@ -155,7 +155,7 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
           <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
               <label for="cost_selling_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga pokok per satuan</label>
-              <input ref="cost_selling_per_unit" @input.prevent="reformat($event.target, 'cost_selling_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga pokok per satuan">
+              <input ref="cost_selling_per_unit" @input.prevent="reformat($event.target, 'cost_selling_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3 text-right" placeholder="Harga pokok per satuan">
             </div>
 
             <div v-if="form.errors.cost_selling_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_unit }}</div>
@@ -182,7 +182,7 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
           <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
               <label for="price_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga jual per satuan</label>
-              <input ref="price_per_unit" @input.prevent="reformat($event.target, 'price_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga jual per satuan">
+              <input ref="price_per_unit" @input.prevent="reformat($event.target, 'price_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3 text-right" placeholder="Harga jual per satuan">
             </div>
 
             <div v-if="form.errors.price_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_unit }}</div>

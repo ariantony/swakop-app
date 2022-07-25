@@ -77,8 +77,8 @@ onMounted(() => {
 
         <JetBanner />
 
-        <div class="min-h-screen bg-gray-100">
-            <nav ref="topbar" class="bg-white border-b border-gray-100">
+        <div class="min-h-screen bg-gray-100 print:bg-white">
+            <nav ref="topbar" class="bg-white border-b border-gray-100 print:hidden">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -245,7 +245,7 @@ onMounted(() => {
 
             <!-- Sidebar -->
             <div ref="w" class="flex">
-                <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto">
+                <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto print:hidden">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
                     <SidebarLinks v-if="isAdmin()" :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*')" text="Master Data" icon="bx-data">
                         <Button iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
@@ -258,10 +258,10 @@ onMounted(() => {
                         <Button iconClass="bx-history" text="Riwayat Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
                         <Button iconClass="bx-undo" text="Riwayat Pengembalian" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
                     </SidebarLinks>
-                    <SidebarLinks :active="false" text="Laporan" icon="bxs-report">
-                        <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :active="false"/>
-                        <Button iconClass="bx-receipt" text="Harian" :active="false"/>
-                        <Button v-if="isAdmin()" iconClass="bxs-user-detail" text="Absensi" :active="false"/>
+                    <SidebarLinks :active="route().current('presence.*') || route().current('income-statement.*') || route().current('daily.report.*')" text="Laporan" icon="bxs-report">
+                        <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income-statement.index')" :active="route().current('income-statement.*')"/>
+                        <Button iconClass="bx-receipt" text="Harian" :href="route('daily.report.index')" :active="route().current('daily.report.*')"/>
+                        <Button v-if="isAdmin()" iconClass="bxs-user-detail" text="Absensi" :href="route('presence.index')" :active="route().current('presence.*')"/>
                     </SidebarLinks>
                     <Button v-if="isAdmin()" iconClass="bx-cog" text="Pengaturan" :href="route('setting.index')" :active="route().current('setting.*')"/>
                 </div>

@@ -38,7 +38,12 @@ Route::middleware([
     Route::get('/transaction/history/return', [App\Http\Controllers\TransactionController::class, 'returnHistory'])->name('transaction.return.history');
     Route::delete('/transaction/{transaction}/return', [App\Http\Controllers\TransactionController::class, 'retur'])->name('transaction.return');
     Route::resource('transaction', App\Http\Controllers\TransactionController::class);
-    Route::patch('/burden/{burden}/toggle', [App\Http\Controllers\BurdenController::class, 'toggle'])->name('burden.toggle')->middleware('role:admin');
+    Route::resource('presence', App\Http\Controllers\PresenceController::class)->middleware('role:admin');
+    Route::post('presence/generate', [App\Http\Controllers\PresenceController::class, 'generate'])->name('presence.generate')->middleware('role:admin');
+    Route::resource('income-statement', App\Http\Controllers\IncomeStatementController::class)->middleware('role:admin');
+    Route::post('income-statement/generate', [App\Http\Controllers\IncomeStatementController::class, 'generate'])->name('income-statement.generate')->middleware('role:admin');
+    Route::resource('daily-report', App\Http\Controllers\DailyController::class)->name('index', 'daily.report.index');
+    Route::post('daily-report/generate', [App\Http\Controllers\DailyController::class, 'generate'])->name('daily.report.generate');
     Route::prefix('setting/')->middleware('role:admin')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');
         Route::patch('master-password/update', [App\Http\Controllers\SettingController::class, 'masterPasswordUpdate'])->name('setting.master-password.update');
