@@ -22,6 +22,7 @@ export const dateindo = (value, withTime = false) => {
 }
 
 export const periodindo = (period) => {
+  if (!period) return
   const libMonth = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
   const month = period.substring(4, 6);
