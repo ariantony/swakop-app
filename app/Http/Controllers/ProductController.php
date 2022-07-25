@@ -35,9 +35,9 @@ class ProductController extends Controller
         })->map(function ($product) {
             return array_merge($product, [
                 'price' => collect($product['price'])->only([
-                    'cost_selling_per_unit',
-                    'cost_selling_per_box',
-                    'cost_selling_per_carton',
+                    'price_per_unit',
+                    'price_per_box',
+                    'price_per_carton',
                 ])
             ]);
         })->filter(function ($product) {

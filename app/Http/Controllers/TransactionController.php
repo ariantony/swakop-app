@@ -50,9 +50,9 @@ class TransactionController extends Controller
                 'type' => 'sell',
                 'qty_' . $transaction['type'] => $transaction['qty'],
                 'cost_' . $transaction['type'] => match ($transaction['type']) {
-                    'unit' => $product->price->cost_selling_per_unit,
-                    'box' => $product->price->cost_selling_per_box,
-                    'carton' => $product->price->cost_selling_per_carton,
+                    'unit' => $product->price->price_per_unit,
+                    'box' => $product->price->price_per_box,
+                    'carton' => $product->price->price_per_carton,
                 },
             ]);
         }

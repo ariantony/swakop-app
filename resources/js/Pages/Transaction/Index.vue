@@ -73,9 +73,9 @@ const getPriceByTransaction = transaction => {
   const product = products.value.find(p => p.id === transaction.product_id)
   
   if (!product) return 0
-  if (transaction.type === 'unit') return product.price.cost_selling_per_unit
-  if (transaction.type === 'box') return product.price.cost_selling_per_box
-  if (transaction.type === 'carton') return product.price.cost_selling_per_carton
+  if (transaction.type === 'unit') return product.price.price_per_unit
+  if (transaction.type === 'box') return product.price.price_per_box
+  if (transaction.type === 'carton') return product.price.price_per_carton
 }
 
 const grandTotal = () => {
@@ -133,7 +133,7 @@ const reformat = e => {
 }
 
 const submit = () => {
-  if (form.cash <= grandTotal()) {
+  if (form.cash < grandTotal()) {
     return Swal.fire({
       title: 'Peringatan',
       text: 'Jumlah bayar harus melebihi dari total pembelian',

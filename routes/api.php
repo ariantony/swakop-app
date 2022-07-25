@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
+Route::name('api.')->group(function () {
     Route::get('/product/where-has-stock', [App\Http\Controllers\ProductController::class, 'whereHasStock'])->name('product.where.has.stock');
     Route::get('/product/without-group-and-price', [App\Http\Controllers\ProductController::class, 'withoutGroupAndPrice'])->name('product.without.group.and.price');
     Route::post('/product/paginate', [App\Http\Controllers\ProductController::class, 'paginate'])->name('product.paginate');
@@ -22,7 +22,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('/product/{product}/price', [App\Http\Controllers\PriceController::class, 'paginate'])->name('product.price.paginate');
     Route::post('/users', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
     Route::post('/burdens', [App\Http\Controllers\BurdenController::class, 'paginate'])->name('burden.paginate');
-    Route::post('/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('transaction.paginate');
+    Route::post('/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('transaction.paginate')->middleware(['auth:sanctum']);
     Route::post('/transaction/return', [App\Http\Controllers\TransactionController::class, 'returnPaginate'])->name('transaction.return.paginate');
     Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');
     Route::post('/transactions/{transaction}/detail', [App\Http\Controllers\TransactionController::class, 'detailPaginate'])->name('transaction.detail.paginate');
