@@ -50,7 +50,7 @@ class DailyController extends Controller
         return Inertia::render('Report/Daily/Generate', [
             'sell' => $detail,
             'total' => $sell->sum('total_cost'),
-            'user' => User::find($request->user_id),
+            'cashier' => User::find($request->user_id),
             'day' => $date,
 
         ]);

@@ -55,7 +55,7 @@ class PresenceController extends Controller
 
         return Inertia::render('Report/Presence/Generate', [
             'data' => $presences,
-            'user' => $user,
+            'cashier' => $user,
             'from' => $from->format('Y-m-d'),
             'to' => $to->format('Y-m-d'),
             'length' => count($presences),

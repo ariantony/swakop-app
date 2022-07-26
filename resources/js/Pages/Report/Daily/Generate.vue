@@ -11,10 +11,10 @@ import { id } from 'date-fns/locale';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Select from '@vueform/multiselect'
 
-const { sell, total, user, day } = defineProps({
+const { sell, total, cashier, day } = defineProps({
   sell: Array,  
   total: Number,
-  user: Object,
+  cashier: Object,
   day: String,
 })
 
@@ -45,7 +45,7 @@ const print = () => {
     <Card>
       <template #header>
         <div class="flex items-center justify-between space-x-2 text-white p-2">
-          <h1 class="ml-4 text-black text-2xl font-semibold capitalize">Laporan Harian "{{ user.name }}"</h1>
+          <h1 class="ml-4 text-black text-2xl font-semibold capitalize">Laporan Harian "{{ cashier.name }}"</h1>
           <div class="flex flex-none space-x-2">
             <button @click.prevent="print" type="button" class="bg-pink-600 rounded-md px-3 py-1 font-semibold">
               <div class="flex items-center">
@@ -100,7 +100,7 @@ const print = () => {
 
       <template #print>
         <div class="flex items-center justify-center font-semibold mb-10">
-          <h1 class="text-black text-2xl">Laporan Penjualan Harian "{{ user.name }}"</h1>
+          <h1 class="text-black text-2xl">Laporan Penjualan Harian "{{ cashier.name }}"</h1>
         </div>
         <div class="flex items-center justify-end text-lg font-semibold mb-4">
           <p>Tanggal : {{ dateindo(day) }} </p>
