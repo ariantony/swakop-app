@@ -10,31 +10,6 @@ const { detail } = defineProps({
 })
 
 const a = ref(true)
-
-const retur = async transaction => {
-  const response = await Swal.fire({
-    title: 'Apakah anda yakin?',
-    text: 'Masukan kode pembatalan',
-    icon: 'question',
-    showCloseButton: true,
-    showCancelButton: true,
-    input: 'password',
-    inputPlaceholder: 'Masukan kode',
-    inputValidator: async code => {
-      try {
-        const response = await axios.post(route('api.compare'), { code })
-      } catch (e) {
-        return 'Kode salah'
-      }
-    },
-  })
-
-  response.isConfirmed && Inertia.on('success', () => {
-    a.value = false
-    nextTick(() => a.value = true)
-  })
-  response.isConfirmed && Inertia.delete(route('transaction.return', transaction.id))
-}
 </script>
 
 <template>
@@ -72,13 +47,6 @@ const retur = async transaction => {
             <button @click.prevent="detail(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-list-ul mr-1 text-white text-sm"></i> Detail Transaksi
-              </div>
-            </button>
-
-            <button @click.prevent="retur(item)" class="bg-orange-500 hover:bg-orange-600 rounded-md px-3 py-1 text-sm text-white">
-              <div class="flex items-center space-x-1">
-                <i class="bx bx-undo"></i>
-                <p class="capitalize font-semibold">retur</p>
               </div>
             </button>
           </div>

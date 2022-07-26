@@ -31,6 +31,7 @@ Route::name('api.')->group(function () {
     // Stock Out & Return
     Route::post('/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('transaction.paginate')->middleware(['auth:sanctum']);
     Route::post('/transaction/return', [App\Http\Controllers\TransactionController::class, 'returnPaginate'])->name('transaction.return.paginate');
+    Route::get('/transaction/{transaction}/find', [App\Http\Controllers\TransactionController::class, 'find'])->name('transaction.find');
     Route::post('/transactions/{transaction}/detail', [App\Http\Controllers\TransactionController::class, 'detailPaginate'])->name('transaction.detail.paginate');
 
     // Setting

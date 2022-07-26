@@ -40,8 +40,9 @@ Route::middleware([
 
     // Stock Out & Return
     Route::get('/transaction/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
+    Route::get('/transaction/return', [App\Http\Controllers\TransactionController::class, 'retur'])->name('transaction.return.index');
     Route::get('/transaction/history/return', [App\Http\Controllers\TransactionController::class, 'returnHistory'])->name('transaction.return.history');
-    Route::delete('/transaction/{transaction}/return', [App\Http\Controllers\TransactionController::class, 'retur'])->name('transaction.return');
+    Route::patch('/transaction/{transaction}/return', [App\Http\Controllers\TransactionController::class, 'returnCreate'])->name('transaction.return');
     Route::resource('transaction', App\Http\Controllers\TransactionController::class);
 
     // Presence Report

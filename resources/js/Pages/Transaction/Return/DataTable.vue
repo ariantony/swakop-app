@@ -47,6 +47,7 @@ const retur = async transaction => {
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="payment_method">metode pembayaran</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="total_cost">total belanja</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="created_at">tanggal transaksi</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="note">catatan</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
       </tr>
     </template>
@@ -57,6 +58,7 @@ const retur = async transaction => {
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">metode pembayaran</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">total belanja</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">tanggal transaksi</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">note</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
@@ -67,6 +69,7 @@ const retur = async transaction => {
         <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.payment_method }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost) }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ new Date(item.created_at).toLocaleDateString('id') }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.note }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="detail(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">
