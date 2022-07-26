@@ -2,8 +2,8 @@
 import { getCurrentInstance, nextTick, onMounted, ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Card from '@/Components/Card.vue'
-import DataTable from './DataTableReturn.vue'
-import Detail from './Detail.vue';
+import DataTable from './DataTable.vue'
+import Detail from '../Detail.vue';
 
 const self = getCurrentInstance()
 const render = ref(true)

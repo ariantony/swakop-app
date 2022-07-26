@@ -191,7 +191,7 @@ class TransactionController extends Controller
      */
     public function returnHistory()
     {
-        return Inertia::render('Transaction/Return');
+        return Inertia::render('Transaction/Return/History');
     }
 
     /**
@@ -225,12 +225,34 @@ class TransactionController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\Response
+     */
+    public function retur()
+    {
+        return Inertia::render('Transaction/Return/Index');
+    }
+
+    /**
      * @param \App\Models\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
-    public function retur(Transaction $transaction)
+    public function find(Transaction $transaction)
     {
-        if ($transaction->details()->update(['type' => 'return'])) {
+        return Transaction::whereRelation('details', 'type', 'sell')->with(['details'])->find($transaction->id);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Transaction $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function returnCreate(Request $request, Transaction $transaction)
+    {
+        $request->validate([
+            'note' => 'required|string',
+        ]);
+
+        if ($transaction->details()->update(['type' => 'return']) && $transaction->update(['note' => $request->note])) {
             return redirect()->back()->with('success', __(
                 'Transaksi berhasil di kembalikan',
             ));
