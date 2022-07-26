@@ -80,12 +80,6 @@ const print = () => {
               <td class="border p-2 border-x-2 border-slate-300">{{ item.out_time }}</td>
             </tr>
           </tbody>
-          <tfoot class="bg-slate-100">
-            <th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300">No</th>
-            <th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300">Tanggal</th>
-            <th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300">Jam Masuk</th>
-            <th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300">Jam Keluar</th>
-          </tfoot>
         </table>
         <div class="flex items-center justify-between text-black mt-6">
           <p>Jumlah Hadir : {{ length }}</p>
@@ -114,12 +108,6 @@ const print = () => {
               <td class="border p-2 border-r-2 border-y-slate-300 border-slate-500">{{ item.out_time }}</td>
             </tr>
           </tbody>
-          <tfoot class="bg-slate-100">
-            <th class="px-1 py-2 uppercase border-t-2 border-r-2 border-slate-500">No</th>
-            <th class="px-1 py-2 uppercase border-t-2 border-r-2 border-slate-500">Tanggal</th>
-            <th class="px-1 py-2 uppercase border-t-2 border-r-2 border-slate-500">Jam Masuk</th>
-            <th class="px-1 py-2 uppercase border-t-2 border-r-2 border-slate-500">Jam Keluar</th>
-          </tfoot>
         </table>
         <div class="flex items-center justify-start text-black space-y-2 mt-6">
           <div>Jumlah Hadir : {{ length }}</div>
