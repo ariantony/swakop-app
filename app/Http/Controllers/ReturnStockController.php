@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Throwable;
 
@@ -34,6 +34,32 @@ class ReturnStockController extends Controller
                         ->get()
                         ->filter(fn (Product $product) => $product->stock_unit > 0)
                         ->values();
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function history(Request $request)
+    {
+        $request->validate([
+            'search' => 'nullable|string',
+            'per_page' => 'nullable|integer|max:1000',
+            'order.key' => 'nullable|string',
+            'order.dir' => 'nullable|in:asc,desc',
+        ]);
+
+        return Transaction::whereRelation('details', 'type', 'return buy')
+                            ->where(function (Builder $query) use ($request) {
+                                $search = '%' . $request->search . '%';
+                                
+                                $query->whereRelation('user', 'name', 'like', $search)
+                                        ->orWhereRelation('details', 'qty_unit', 'like', $search)
+                                        ->orWhereRelation('details', 'cost_unit', 'like', $search)
+                                        ->orWhere('total_cost', 'like', $search);
+                            })
+                            ->orderBy($request->input('order.key') ?: 'created_at', $request->input('order.dir') ?: 'asc')
+                            ->paginate($request->per_page ?: 10);
     }
 
     /**

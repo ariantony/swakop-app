@@ -6,11 +6,15 @@ import Card from '@/Components/Card.vue';
 import Select from '@vueform/multiselect'
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import DataTable from './DataTable.vue'
+import DataTableDetail from './DataTableDetail.vue';
 
 const self = getCurrentInstance()
 const product = ref({
   name: '',
 })
+const a = ref(true)
+const transaction = ref(null)
 const products = ref([])
 const form = useForm({
   product: null,
@@ -26,7 +30,11 @@ const show = () => {
 
 const close = () => {
   open.value = false
+  transaction.value = null
   form.reset()
+
+  a.value = false
+  nextTick(() => a.value = true)
 }
 
 const fetch = async () => {
@@ -73,6 +81,10 @@ const submit = async () => {
   })
 }
 
+const detail = t => {
+  transaction.value = t
+}
+
 const esc = e => e.key === 'Escape' && close()
 
 onMounted(fetch)
@@ -104,6 +116,18 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             noOptionsText="Mohon tunggu..."
             @change="nextTick(show)" />
         </div>
+      </template>
+    </Card>
+
+    <Card v-if="a">
+      <template #header>
+        <div class="flex items-center justify-start space-x-2 text-white p-2">
+          <h1 class="ml-4 text-black text-2xl font-semibold">History</h1>
+        </div>
+      </template>
+
+      <template #body>
+        <DataTable :detail="detail" />
       </template>
     </Card>
   </AppLayout>
@@ -165,6 +189,25 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
           </template>
         </Card>
       </form>
+    </div>
+  </transition>
+
+  <transition name="fade">
+    <div v-if="transaction" class="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-40 flex items-center justify-center overflow-auto">
+      <div class="w-full max-w-5xl rounded-md">
+        <Card>
+          <template #header>
+            <div class="flex items-center justify-between space-x-2 text-white p-2">
+              <h1 class="ml-4 text-black text-2xl font-semibold">Detail transaksi</h1>
+              <i @click.prevent="close" class="bx bx-x px-2 py-1 rounded-md bg-red-500 hover:bg-red-600 text-white transition-all cursor-pointer"></i>
+            </div>
+          </template>
+
+          <template #body>
+            <DataTableDetail v-if="transaction" :transaction="transaction" />
+          </template>
+        </Card>
+      </div>
     </div>
   </transition>
 </template>

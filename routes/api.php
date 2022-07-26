@@ -43,6 +43,7 @@ Route::name('api.')->group(function () {
     Route::post('/profit', [App\Http\Controllers\DashboardController::class, 'profit'])->name('profit');
 
     Route::get('/return-stock/products', [App\Http\Controllers\ReturnStockController::class, 'products'])->name('return-stock.products');
+    Route::post('/return-stock/history', [App\Http\Controllers\ReturnStockController::class, 'history'])->name('return-stock.history');
 });
 
 Route::middleware(['auth:sanctum'])->get('/user', fn (Request $request) => $request->user())->name('api.user');
