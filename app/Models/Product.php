@@ -76,6 +76,14 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function returnBuy()
+    {
+        return $this->details()->where('type', 'return buy');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function retur()
     {
         return $this->details()->where('type', 'return sell');
@@ -90,8 +98,9 @@ class Product extends Model
             get: function () {
                 $buy = $this->buy->sum('qty_unit');
                 $sell = $this->sell->sum('qty_unit');
+                $returnBuy = $this->returnBuy->sum('qty_unit');
 
-                return $buy - $sell;
+                return $buy - $sell - $returnBuy;
             },
         );
     }
@@ -105,8 +114,9 @@ class Product extends Model
             get: function () {
                 $buy = $this->buy->sum('qty_box');
                 $sell = $this->sell->sum('qty_box');
+                $returnBuy = $this->returnBuy->sum('qty_box');
 
-                return $buy - $sell;
+                return $buy - $sell - $returnBuy;
             },
         );
     }
@@ -120,8 +130,9 @@ class Product extends Model
             get: function () {
                 $buy = $this->buy->sum('qty_carton');
                 $sell = $this->sell->sum('qty_carton');
+                $returnBuy = $this->returnBuy->sum('qty_carton');
 
-                return $buy - $sell;
+                return $buy - $sell - $returnBuy;
             },
         );
     }

@@ -61,6 +61,8 @@ Route::middleware([
     Route::resource('daily-report', App\Http\Controllers\DailyController::class)->name('index', 'daily.report.index');
     Route::post('daily-report/generate', [App\Http\Controllers\DailyController::class, 'generate'])->name('daily.report.generate');
 
+    Route::resource('return-stock', App\Http\Controllers\ReturnStockController::class);
+
     // Goods Return Report
     Route::get('goods-return/generate', fn () => redirect()->route('return.report.index'));
     Route::resource('goods-return', App\Http\Controllers\ReturnController::class)->name('index', 'return.report.index');
