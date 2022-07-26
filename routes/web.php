@@ -43,6 +43,7 @@ Route::middleware([
     Route::get('/transaction/return', [App\Http\Controllers\TransactionController::class, 'retur'])->name('transaction.return.index');
     Route::get('/transaction/history/return', [App\Http\Controllers\TransactionController::class, 'returnHistory'])->name('transaction.return.history');
     Route::patch('/transaction/{transaction}/return', [App\Http\Controllers\TransactionController::class, 'returnCreate'])->name('transaction.return');
+    Route::post('/transaction/{transaction}/return/print', [App\Http\Controllers\TransactionController::class, 'returnPrint'])->name('transaction.return.print');
     Route::resource('transaction', App\Http\Controllers\TransactionController::class);
 
     // Presence Report

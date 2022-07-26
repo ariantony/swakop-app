@@ -262,4 +262,23 @@ class TransactionController extends Controller
             'Proses pengembalian gagal, coba lagi beberapa saat',
         ));
     }
+
+    /**
+     * @param \App\Models\Transaction $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function returnPrint(Transaction $transaction)
+    {
+        $find = Transaction::with('details.product')->find($transaction->id);
+
+        if ($find) {
+            return Inertia::render('Transaction/Return/Print', [
+                'transaction' => $find,
+            ]);
+        }
+
+        return redirect()->back()->with('error', __(
+            'Proses pengembalian gagal, coba lagi beberapa saat',
+        ));
+    }
 }
