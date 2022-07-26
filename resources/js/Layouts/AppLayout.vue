@@ -230,10 +230,11 @@ onMounted(() => {
                         <Button iconClass="bx-history" text="Riwayat Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
                         <Button v-if="isAdmin()" iconClass="bx-undo" text="Riwayat Pengembalian" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
                     </SidebarLinks>
-                    <SidebarLinks :active="route().current('presence.*') || route().current('income.statement.*') || route().current('daily.report.*')" text="Laporan" icon="bxs-report">
+                    <SidebarLinks :active="route().current('presence.*') || route().current('income.statement.*') || route().current('daily.report.*') || route().current('return.report.*')" text="Laporan" icon="bxs-report">
                         <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income.statement.index')" :active="route().current('income.statement.*')"/>
                         <Button iconClass="bx-receipt" text="Harian" :href="route('daily.report.index')" :active="route().current('daily.report.*')"/>
                         <Button v-if="isAdmin()" iconClass="bxs-user-detail" text="Absensi" :href="route('presence.index')" :active="route().current('presence.*')"/>
+                        <!-- <Button v-if="isAdmin()" iconClass="bx-reset" text="Retur Barang" :href="route('return.report.index')" :active="route().current('return.report.*')"/> -->
                     </SidebarLinks>
                     <Button v-if="isAdmin()" iconClass="bx-cog" text="Pengaturan" :href="route('setting.index')" :active="route().current('setting.*')"/>
                 </div>
