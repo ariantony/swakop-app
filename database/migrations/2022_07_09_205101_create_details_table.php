@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('transaction_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['buy', 'sell', 'return']);
+            $table->enum('type', ['buy', 'sell', 'return buy', 'return sell']);
             $table->unsignedInteger('qty_unit')->nullable()->default(null);
             $table->unsignedInteger('qty_box')->nullable()->default(null);
             $table->unsignedInteger('qty_carton')->nullable()->default(null);

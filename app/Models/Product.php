@@ -78,7 +78,7 @@ class Product extends Model
      */
     public function retur()
     {
-        return $this->details()->where('type', 'return');
+        return $this->details()->where('type', 'return sell');
     }
 
     /**

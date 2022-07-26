@@ -211,7 +211,7 @@ class TransactionController extends Controller
             'per_page' => 'nullable|integer',
         ]);
 
-        return Transaction::with('details')->whereRelation('details', 'type', 'return')->where(function (Builder $query) use (&$request, &$model, &$columns) {
+        return Transaction::with('details')->whereRelation('details', 'type', 'return sell')->where(function (Builder $query) use (&$request, &$model, &$columns) {
             $search = '%' . $request->input('search') . '%';
 
             foreach ($columns as $column) {
@@ -252,7 +252,7 @@ class TransactionController extends Controller
             'note' => 'required|string',
         ]);
 
-        if ($transaction->details()->update(['type' => 'return']) && $transaction->update(['note' => $request->note])) {
+        if ($transaction->details()->update(['type' => 'return sell']) && $transaction->update(['note' => $request->note])) {
             return redirect()->back()->with('success', __(
                 'Transaksi berhasil di kembalikan',
             ));
