@@ -105,11 +105,18 @@ onMounted(() => {
       <template #header>
         <div class="flex items-center justify-between space-x-2 text-white p-2">
           <h1 class="ml-4 text-black text-2xl font-semibold">Produk</h1>
-          <button @click.prevent="show" class="bg-green-600 rounded-md px-3 py-1 font-semibold">
-            <div class="flex items-center">
-              <i class="bx bx-plus mr-1 text-xl"></i> Tambah
-            </div>
-          </button>
+          <div class="flex flex-none space-x-2">
+            <Link :href="route('product.print')" class="bg-pink-600 rounded-md px-3 py-1 font-semibold">
+              <div class="flex items-center">
+                <i class="bx bx-printer mr-1 text-xl"></i> Print
+              </div>
+            </Link>
+            <button @click.prevent="show" class="bg-green-600 rounded-md px-3 py-1 font-semibold">
+              <div class="flex items-center">
+                <i class="bx bx-plus mr-1 text-xl"></i> Tambah
+              </div>
+            </button>
+          </div>
         </div>
       </template>
       <template #body>

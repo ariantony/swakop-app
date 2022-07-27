@@ -28,6 +28,13 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    // Print Product 
+    Route::get('product/print', [App\Http\Controllers\ProductController::class, 'print'])->name('product.print')->middleware('role:admin');
+    Route::get('product/print/group', fn () => redirect()->route('product.print'))->middleware('role:admin');
+    Route::get('product/print/price', fn () => redirect()->route('product.print'))->middleware('role:admin');
+    Route::post('product/print/group', [App\Http\Controllers\ProductController::class, 'generateGroup'])->name('product.print.group')->middleware('role:admin');
+    Route::post('product/print/price', [App\Http\Controllers\ProductController::class, 'generatePrice'])->name('product.print.price')->middleware('role:admin');
+
     // Masterdata
     Route::resource('user', App\Http\Controllers\UserController::class)->middleware('role:admin');
     Route::resource('product', App\Http\Controllers\ProductController::class)->middleware('role:admin');

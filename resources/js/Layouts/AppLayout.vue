@@ -67,6 +67,10 @@ const resizeSidebar = () => {
 onMounted(() => {
     resizeSidebar();
     window.addEventListener('resize', resizeSidebar);
+    window.addEventListener('beforeprint', () => {
+        const sidebar = document.getElementById('sidebar')
+        sidebar.style.height = '100%';
+    });
 
     const { $token } = usePage().props.value
     $token && (axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`)
@@ -216,7 +220,7 @@ onMounted(() => {
             </nav>
 
             <!-- Sidebar -->
-            <div ref="w" class="flex">
+            <div ref="w" id="sidebar" class="flex print:h-full print:overflow-hidden">
                 <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto print:hidden">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
                     <SidebarLinks v-if="isAdmin()" :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*')" text="Master Data" icon="bx-data">

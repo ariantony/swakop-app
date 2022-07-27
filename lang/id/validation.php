@@ -163,5 +163,6 @@ return [
         'user_id' => 'user',
         'period' => 'periode',
         'group_id' => 'kelompok barang',
+        'products' => 'produk'
     ],
 ];

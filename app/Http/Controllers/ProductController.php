@@ -144,4 +144,55 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Gagal menghapus produk.');
     }
+
+    /**
+     * Print page per group.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function print()
+    {
+        return Inertia::render('Product/Print')->with([
+            'groups' => Group::get(),
+        ]);
+    }
+
+    /**
+     * Generate print page per group.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function generateGroup(Request $request)
+    {
+        $post = $request->validate([
+            'group_id' => 'required|integer|exists:groups,id',
+        ]);
+
+        $products = Product::with('group')->where('group_id', $post['group_id'])->get();
+
+        return Inertia::render('Product/Print/Group', [
+            'products' => $products,
+            'group' => $products->first()->group
+        ]);
+    }
+
+    /**
+     * Generate print page for price.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function generatePrice(Request $request)
+    {
+        $post = $request->validate([
+            'products' => 'required',
+        ]);
+
+        $products = Product::find($post['products']);
+        
+        return Inertia::render('Product/Print/Price', [
+            'products' => $products,
+        ]);
+    }
 }
