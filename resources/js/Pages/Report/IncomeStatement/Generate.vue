@@ -89,7 +89,7 @@ const print = () => {
             </tr>
             <tr>
               <td class="border p-2 border-x-2 border-slate-300 text-center">2</td>
-              <td class="border p-2 border-x-2 border-slate-300">Retur Pengembalian</td>
+              <td class="border p-2 border-x-2 border-slate-300">Retur Pembelian Barang</td>
               <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(hpp.totalReturn) }}</td>
               <td class="border p-2 border-x-2 border-slate-300"></td>
             </tr>
@@ -169,7 +169,7 @@ const print = () => {
             </tr>
             <tr>
               <td class="border p-2 border-x-2 border-slate-300 text-center">2</td>
-              <td class="border p-2 border-x-2 border-slate-300">Retur Pengembalian</td>
+              <td class="border p-2 border-x-2 border-slate-300">Retur Pembelian Barang</td>
               <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(hpp.totalReturn) }}</td>
               <td class="border p-2 border-x-2 border-slate-300"></td>
             </tr>

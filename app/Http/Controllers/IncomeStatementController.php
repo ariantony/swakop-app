@@ -38,7 +38,7 @@ class IncomeStatementController extends Controller
         
         $totalSell = Transaction::with('details')->whereRelation('details', 'type', 'sell')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get()->sum('total_cost');
         $totalBuy = Transaction::with('details')->whereRelation('details', 'type', 'buy')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get()->sum('total_cost');
-        $totalReturn = Transaction::with('details')->whereRelation('details', 'type', 'return sell')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get()->sum('total_cost');
+        $totalReturn = Transaction::with('details')->whereRelation('details', 'type', 'return buy')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get()->sum('total_cost');
 
         $hpp = [
             'totalBuy' => $totalBuy,

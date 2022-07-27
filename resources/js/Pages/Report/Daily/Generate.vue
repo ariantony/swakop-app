@@ -41,11 +41,11 @@ const print = () => {
 <style src="@vueform/multiselect/themes/default.css"></style>
 
 <template>
-  <AppLayout title="Laporan Harian">
+  <AppLayout title="Laporan Penjualan Harian">
     <Card>
       <template #header>
         <div class="flex items-center justify-between space-x-2 text-white p-2">
-          <h1 class="ml-4 text-black text-2xl font-semibold capitalize">Laporan Harian "{{ cashier.name }}"</h1>
+          <h1 class="ml-4 text-black text-2xl font-semibold capitalize">Laporan Penjualan Harian "{{ cashier.name }}"</h1>
           <div class="flex flex-none space-x-2">
             <button @click.prevent="print" type="button" class="bg-pink-600 rounded-md px-3 py-1 font-semibold">
               <div class="flex items-center">

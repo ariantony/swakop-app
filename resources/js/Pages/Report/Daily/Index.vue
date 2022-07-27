@@ -41,11 +41,11 @@ if (! isAdmin()) {
 <style src="@vueform/multiselect/themes/default.css"></style>
 
 <template>
-  <AppLayout title="Laporan Harian">
+  <AppLayout title="Laporan Penjualan Harian">
     <Card>
       <template #header>
         <div class="flex items-center justify-between space-x-2 text-white p-2">
-          <h1 class="ml-4 text-black text-2xl font-semibold">Laporan Harian</h1>
+          <h1 class="ml-4 text-black text-2xl font-semibold">Laporan Penjualan Harian</h1>
         </div>
       </template>
       <template #body>

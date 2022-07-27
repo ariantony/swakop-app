@@ -228,7 +228,7 @@ onMounted(() => {
                         <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.index')"/>
                         <Button v-if="isAdmin()" iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
                         <Button iconClass="bx-undo" text="Retur Pembelian" :href="route('return-stock.index')" :active="route().current('return-stock.*')"/>
-                        <Button v-if="false" iconClass="bx-undo" text="Retur" :href="route('transaction.return.index')" :active="route().current('transaction.return.index')"/>
+                        <Button v-if="false" iconClass="bx-undo" text="Retur Penjualan" :href="route('transaction.return.index')" :active="route().current('transaction.return.index')"/>
                         <SidebarLinks :active="route().current('transaction.history') || route().current('transaction.return.history')" text="Riwayat" icon="bx-history">
                             <Button iconClass="bx-money-withdraw" text="Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
                             <Button v-if="false" iconClass="bx-undo" text="Pengembalian" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
@@ -236,7 +236,7 @@ onMounted(() => {
                     </SidebarLinks>
                     <SidebarLinks :active="route().current('presence.*') || route().current('income.statement.*') || route().current('daily.report.*') || route().current('return.report.*')" text="Laporan" icon="bxs-report">
                         <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income.statement.index')" :active="route().current('income.statement.*')"/>
-                        <Button iconClass="bx-receipt" text="Harian" :href="route('daily.report.index')" :active="route().current('daily.report.*')"/>
+                        <Button iconClass="bx-receipt" text="Penjualan Harian" :href="route('daily.report.index')" :active="route().current('daily.report.*')"/>
                         <Button v-if="isAdmin()" iconClass="bxs-user-detail" text="Absensi" :href="route('presence.index')" :active="route().current('presence.*')"/>
                         <Button v-if="isAdmin()" iconClass="bx-reset" text="Retur Pembelian Barang" :href="route('return.report.index')" :active="route().current('return.report.*')"/>
                     </SidebarLinks>
