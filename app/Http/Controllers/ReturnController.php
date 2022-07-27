@@ -34,7 +34,7 @@ class ReturnController extends Controller
         $year = $request->period['year'];
         $period = $year . $month;
         
-        $return = Transaction::with('details.product')->whereRelation('details', 'type', 'return sell')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
+        $return = Transaction::with('details.product')->whereRelation('details', 'type', 'return buy')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
         
         $detail = $return->map(fn ($item) => $item->details)->flatten()->groupBy('product_id')->map(function ($detail) {
             return [

@@ -27,11 +27,11 @@ const generate = () => form.post(route('return.report.generate'))
 <style src="@vueform/multiselect/themes/default.css"></style>
 
 <template>
-  <AppLayout title="Laporan Laba Rugi">
+  <AppLayout title="Laporan Retur Pembelian Barang">
     <Card>
       <template #header>
         <div class="flex items-center justify-between space-x-2 text-white p-2">
-          <h1 class="ml-4 text-black text-2xl font-semibold">Laporan Pengembalian Barang</h1>
+          <h1 class="ml-4 text-black text-2xl font-semibold">Laporan Retur Pengembalian Barang</h1>
         </div>
       </template>
       <template #body>
