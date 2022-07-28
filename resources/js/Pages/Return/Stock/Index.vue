@@ -133,8 +133,12 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   </AppLayout>
 
   <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-40 flex items-center justify-center overflow-auto">
-      <form @submit.prevent="submit" class="w-full max-w-xl">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-screen bg-slate-600 bg-opacity-70"></div>
+  </transition>
+
+  <transition name="slide-fade">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
+      <form @submit.prevent="submit" class="relative w-full max-w-3xl bg-slate-100 rounded-md z-10">
         <Card>
           <template #header>
             <div class="flex items-center justify-between space-x-2 text-white p-2">
