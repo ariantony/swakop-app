@@ -158,7 +158,7 @@ const submit = () => {
     icon: 'question',
     showCancelButton: true,
   }).then(response => response.isConfirmed && (
-    useForm({ transactions: transactions.value }).post(route('transaction.store'), {
+    useForm({ transactions: transactions.value, pay: form.cash }).post(route('transaction.store'), {
       onSuccess: () => {
         form.reset()
         current.reset()
@@ -168,6 +168,37 @@ const submit = () => {
       },
     })
   ))
+}
+
+const print = async (item) => {
+  try {
+    // Swal.fire({
+    //   title: 'Menyiapkan file...',
+    //   text: 'Mohon tunggu hingga preview file muncul',
+    //   showConfirmButton: false,
+    //   allowOutsideClick: false,
+    //   allowEscapeKey: false,
+    //   allowEnterKey: false,
+    //   didOpen : () => {
+    //     Swal.showLoading()
+    //   }
+    // })
+    // setTimeout(Swal.close, 800)
+    const iframe = document.createElement('iframe')
+    iframe.src = route('api.transaction.print', item.id)
+    iframe.style.width = '0'
+    iframe.style.height = '0'
+    document.body.appendChild(iframe)
+  } catch (e) {
+    const response = await Swal.fire({
+      title: 'Tidak dapat mencetak',
+      text: 'Apakah anda ingin mencoba kembali?',
+      icon: 'question',
+      showCancelButton: true,
+      showCloseButton: true,
+    })
+    response.isConfirmed && print(item)
+  }
 }
 
 const getStockOf = transaction => {

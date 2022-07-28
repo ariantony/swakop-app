@@ -35,6 +35,7 @@ class TransactionController extends Controller
             'transactions.*.product_id' => 'required|exists:products,id',
             'transactions.*.qty' => 'required|integer|min:1',
             'transactions.*.type' => 'required|string|in:unit,box,carton',
+            'pay' => 'required|integer|min:0',
         ]);
 
         $productIds = array_unique(array_column($request->transactions, 'product_id'));
@@ -89,6 +90,7 @@ class TransactionController extends Controller
         $tx = Transaction::create([
             'user_id' => $request->user()->id,
             'total_cost' => $total,
+            'pay' => $request->pay,
         ]);
 
         if ($tx) {
@@ -277,6 +279,26 @@ class TransactionController extends Controller
             ]);
         }
 
+        return redirect()->back()->with('error', __(
+            'Proses pengembalian gagal, coba lagi beberapa saat',
+        ));
+    }
+    
+    /**
+     * Print the invoice of the transaction.
+     * @param \App\Models\Transaction $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function invoicePrint(Transaction $transaction)
+    {
+        $find = Transaction::with('details.product')->find($transaction->id);
+        if ($find) {
+            return Inertia::render('Transaction/Invoice', [
+                'transaction' => $find,
+                'totalItem' => $find->details->sum('qty_unit'),
+            ]);
+        }
+        
         return redirect()->back()->with('error', __(
             'Proses pengembalian gagal, coba lagi beberapa saat',
         ));

@@ -14,9 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->text('note')
-                    ->nullable()
-                    ->default(null);
+            $table->after('total_cost', function (Blueprint $table) {
+                $table->text('pay')
+                        ->nullable()
+                        ->default(null);
+                $table->text('note')
+                        ->nullable()
+                        ->default(null);
+            });
         });
     }
 

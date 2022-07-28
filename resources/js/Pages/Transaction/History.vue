@@ -4,6 +4,7 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import Card from '@/Components/Card.vue'
 import DataTable from './DataTable.vue'
 import Detail from './Detail.vue';
+import Swal from 'sweetalert2';
 
 const self = getCurrentInstance()
 const render = ref(true)
@@ -15,6 +16,37 @@ const show = () => {
 }
 
 const close = () => open.value = false
+
+const print = async (item) => {
+  try {
+    Swal.fire({
+      title: 'Menyiapkan file...',
+      text: 'Mohon tunggu hingga preview file muncul',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      didOpen : () => {
+        Swal.showLoading()
+      }
+    })
+    setTimeout(Swal.close, 800)
+    const iframe = document.createElement('iframe')
+    iframe.src = route('api.transaction.print', item.id)
+    iframe.style.width = '0'
+    iframe.style.height = '0'
+    document.body.appendChild(iframe)
+  } catch (e) {
+    const response = await Swal.fire({
+      title: 'Tidak dapat mencetak',
+      text: 'Apakah anda ingin mencoba kembali?',
+      icon: 'question',
+      showCancelButton: true,
+      showCloseButton: true,
+    })
+    response.isConfirmed && print(item)
+  }
+}
 
 onMounted(() => {
   window.addEventListener('keyup', e => {
@@ -34,7 +66,8 @@ onMounted(() => {
       <template #body>
         <DataTable
           v-if="render"
-          :detail="(transaction) => detail = transaction" />
+          :detail="(transaction) => detail = transaction"
+          :print="print" />
       </template>
     </Card>
   </AppLayout>

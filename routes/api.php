@@ -28,11 +28,12 @@ Route::name('api.')->group(function () {
     Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');
     Route::post('/ins/{transaction}/detail', [App\Http\Controllers\InController::class, 'detailPaginate'])->name('in.detail.paginate');
 
-    // Stock Out & Return
+    // Stock Out & Return Sell
     Route::post('/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('transaction.paginate')->middleware(['auth:sanctum']);
     Route::post('/transaction/return', [App\Http\Controllers\TransactionController::class, 'returnPaginate'])->name('transaction.return.paginate');
     Route::get('/transaction/{transaction}/find', [App\Http\Controllers\TransactionController::class, 'find'])->name('transaction.find');
     Route::post('/transactions/{transaction}/detail', [App\Http\Controllers\TransactionController::class, 'detailPaginate'])->name('transaction.detail.paginate');
+    Route::get('/transactions/{transaction}/print', [App\Http\Controllers\TransactionController::class, 'invoicePrint'])->name('transaction.print');
 
     // Setting
     Route::post('/compare', [App\Http\Controllers\SettingController::class, 'compare'])->name('compare');
@@ -42,6 +43,7 @@ Route::name('api.')->group(function () {
     Route::post('/selling', [App\Http\Controllers\DashboardController::class, 'selling'])->name('selling');
     Route::post('/profit', [App\Http\Controllers\DashboardController::class, 'profit'])->name('profit');
 
+    // Return Buy
     Route::get('/return-stock/products', [App\Http\Controllers\ReturnStockController::class, 'products'])->name('return-stock.products');
     Route::post('/return-stock/history', [App\Http\Controllers\ReturnStockController::class, 'history'])->name('return-stock.history');
 });
