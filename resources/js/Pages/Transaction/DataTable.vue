@@ -5,8 +5,9 @@ import { Inertia } from '@inertiajs/inertia';
 import { nextTick, ref } from 'vue';
 import Swal from 'sweetalert2'
 
-const { detail } = defineProps({
+const { detail, print } = defineProps({
   detail: Function,
+  print: Function,
 })
 
 const a = ref(true)
@@ -44,6 +45,11 @@ const a = ref(true)
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ new Date(item.created_at).toLocaleDateString('id') }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
+            <button @click.prevent="print(item)" class="bg-orange-600 rounded-md px-3 py-1 text-sm font-semibold">
+              <div class="flex items-center">
+                <i class="bx bx-receipt mr-1 text-white text-sm"></i> Cetak Struk
+              </div>
+            </button>
             <button @click.prevent="detail(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-list-ul mr-1 text-white text-sm"></i> Detail Transaksi
