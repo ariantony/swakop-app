@@ -116,7 +116,10 @@ onMounted(fetch)
               <div class="flex flex-col space-y-2 mb-2 w-full">
                 <div class="flex items-center space-x-4 w-full">
                   <label for="products" class="w-1/4">Pilih Produk</label>
-                  <div v-if="fprice.products.includes(0)">semua produk</div>
+                  <div v-if="fprice.products.includes(0)" class="flex items-center space-x-1">
+                    <p>semua produk</p>
+                    <i @click.prevent="fprice.products = []" class="bx bx-x"></i>
+                  </div>
                   <Select  
                     v-if="!fprice.products.includes(0)"
                     v-model="fprice.products"
