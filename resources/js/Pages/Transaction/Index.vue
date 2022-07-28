@@ -165,29 +165,20 @@ const submit = () => {
         transactions.value = []
         
         self.refs.cash && (self.refs.cash.value = 0)
+
+        print()
       },
     })
   ))
 }
 
-const print = async (item) => {
+const print = async () => {
   try {
-    // Swal.fire({
-    //   title: 'Menyiapkan file...',
-    //   text: 'Mohon tunggu hingga preview file muncul',
-    //   showConfirmButton: false,
-    //   allowOutsideClick: false,
-    //   allowEscapeKey: false,
-    //   allowEnterKey: false,
-    //   didOpen : () => {
-    //     Swal.showLoading()
-    //   }
-    // })
-    // setTimeout(Swal.close, 800)
     const iframe = document.createElement('iframe')
-    iframe.src = route('api.transaction.print', item.id)
+    iframe.src = route('api.transaction.latest.print')
     iframe.style.width = '0'
     iframe.style.height = '0'
+    iframe.onload = () => Swal.close()
     document.body.appendChild(iframe)
   } catch (e) {
     const response = await Swal.fire({
@@ -197,7 +188,7 @@ const print = async (item) => {
       showCancelButton: true,
       showCloseButton: true,
     })
-    response.isConfirmed && print(item)
+    response.isConfirmed && print()
   }
 }
 

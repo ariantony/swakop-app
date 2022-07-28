@@ -303,4 +303,14 @@ class TransactionController extends Controller
             'Proses pengembalian gagal, coba lagi beberapa saat',
         ));
     }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function latestInvoicePrint()
+    {
+        return $this->invoicePrint(
+            Transaction::latest()->first(),
+        );
+    }
 }

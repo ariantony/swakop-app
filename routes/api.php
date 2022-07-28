@@ -34,6 +34,7 @@ Route::name('api.')->group(function () {
     Route::get('/transaction/{transaction}/find', [App\Http\Controllers\TransactionController::class, 'find'])->name('transaction.find');
     Route::post('/transactions/{transaction}/detail', [App\Http\Controllers\TransactionController::class, 'detailPaginate'])->name('transaction.detail.paginate');
     Route::get('/transactions/{transaction}/print', [App\Http\Controllers\TransactionController::class, 'invoicePrint'])->name('transaction.print');
+    Route::get('/transactions/print/latest', [App\Http\Controllers\TransactionController::class, 'latestInvoicePrint'])->name('transaction.latest.print');
 
     // Setting
     Route::post('/compare', [App\Http\Controllers\SettingController::class, 'compare'])->name('compare');
