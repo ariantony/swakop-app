@@ -189,7 +189,7 @@ class ProductController extends Controller
             'products' => 'required',
         ]);
 
-        $products = Product::find($post['products']);
+        $products = Product::with(['buy', 'sell', 'returnBuy'])->find($post['products']);
         
         return Inertia::render('Product/Print/Price', [
             'products' => $products,

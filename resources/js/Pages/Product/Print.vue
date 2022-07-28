@@ -27,8 +27,12 @@ const fprice = useForm({
 const generateGroup = () => fgroup.post(route('product.print.group'))
 const generatePrice = () => fprice.post(route('product.print.price'))
 
-const handleSelectAll = (value) => {
-  
+const change = () => {
+  nextTick(() => {
+    if (fprice.products.includes(0)) {
+      fprice.products = [0, ...products.value.map(p => p.id)]
+    }
+  })
 }
 
 const fetch = async () => {
@@ -112,7 +116,9 @@ onMounted(fetch)
               <div class="flex flex-col space-y-2 mb-2 w-full">
                 <div class="flex items-center space-x-4 w-full">
                   <label for="products" class="w-1/4">Pilih Produk</label>
+                  <div v-if="fprice.products.includes(0)">semua produk</div>
                   <Select  
+                    v-if="!fprice.products.includes(0)"
                     v-model="fprice.products"
                     mode="tags"
                     :options="[{
@@ -128,8 +134,7 @@ onMounted(fetch)
                     noOptionsText="Mohon tunggu..."
                     class="w-3/4"
                     ref="multiselect"
-                    @input="handleSelectAll"
-                    @change="nextTick(() => fprice.products.includes(0) && (fprice.products = products.map(p => p.id)))"
+                    @change="change"
                   />
                 </div>
                 <div class="text-red-500 text-right text-sm first-letter:capitalize" v-html="fprice.errors.products || '&nbsp;'"></div>
