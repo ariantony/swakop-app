@@ -129,6 +129,7 @@ onMounted(fetch)
                     class="w-3/4"
                     ref="multiselect"
                     @input="handleSelectAll"
+                    @change="nextTick(() => fprice.products.includes(0) && (fprice.products = products.map(p => p.id)))"
                   />
                 </div>
                 <div class="text-red-500 text-right text-sm first-letter:capitalize" v-html="fprice.errors.products || '&nbsp;'"></div>
