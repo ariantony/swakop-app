@@ -69,8 +69,8 @@ const print = () => {
             <tr>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">No</th>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">Produk</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Qty Per</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Subtotal Per</th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Qty </th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Subtotal </th>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">Subtotal</th>
             </tr>
             <tr>
@@ -110,8 +110,8 @@ const print = () => {
             <tr>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">No</th>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">Produk</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Qty Per</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Subtotal Per</th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Qty </th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Subtotal </th>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">Subtotal</th>
             </tr>
             <tr>

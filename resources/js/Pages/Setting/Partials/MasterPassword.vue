@@ -31,7 +31,7 @@ const updateMasterPassword = () => {
         </template>
 
         <template #description>
-            Master Password digunakan oleh admin untuk melakukan cancel transaksi yang diajukan oleh kasir. Tindakan ini akan mengembalikan stok barang.
+            <!-- Master Password digunakan oleh admin untuk melakukan cancel transaksi yang diajukan oleh kasir. Tindakan ini akan mengembalikan stok barang. -->
         </template>
 
         <template #form>

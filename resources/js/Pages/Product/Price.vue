@@ -154,8 +154,8 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
           </div>
           <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
-              <label for="cost_selling_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga pokok per satuan</label>
-              <input ref="cost_selling_per_unit" @input.prevent="reformat($event.target, 'cost_selling_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3 text-right" placeholder="Harga pokok per satuan">
+              <label for="cost_selling_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga pokok satuan</label>
+              <input ref="cost_selling_per_unit" @input.prevent="reformat($event.target, 'cost_selling_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3 text-right" placeholder="Harga pokok satuan">
             </div>
 
             <div v-if="form.errors.cost_selling_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_unit }}</div>
@@ -163,8 +163,8 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
 
           <!-- <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
-              <label for="cost_selling_per_box" class="lowercase first-letter:capitalize w-1/3">Harga pokok per box / renceng</label>
-              <input ref="cost_selling_per_box" @input.prevent="reformat($event.target, 'cost_selling_per_box')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga pokok per box / renceng">
+              <label for="cost_selling_per_box" class="lowercase first-letter:capitalize w-1/3">Harga pokok box / renceng</label>
+              <input ref="cost_selling_per_box" @input.prevent="reformat($event.target, 'cost_selling_per_box')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga pokok box / renceng">
             </div>
 
             <div v-if="form.errors.cost_selling_per_box" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_box }}</div>
@@ -172,8 +172,8 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
 
           <!-- <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
-              <label for="cost_selling_per_carton" class="lowercase first-letter:capitalize w-1/3">Harga pokok per karton</label>
-              <input ref="cost_selling_per_carton" @input.prevent="reformat($event.target, 'cost_selling_per_carton')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga pokok per karton">
+              <label for="cost_selling_per_carton" class="lowercase first-letter:capitalize w-1/3">Harga pokok karton</label>
+              <input ref="cost_selling_per_carton" @input.prevent="reformat($event.target, 'cost_selling_per_carton')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga pokok karton">
             </div>
 
             <div v-if="form.errors.cost_selling_per_carton" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_carton }}</div>
@@ -181,8 +181,8 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
           
           <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
-              <label for="price_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga jual per satuan</label>
-              <input ref="price_per_unit" @input.prevent="reformat($event.target, 'price_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3 text-right" placeholder="Harga jual per satuan">
+              <label for="price_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga jual satuan</label>
+              <input ref="price_per_unit" @input.prevent="reformat($event.target, 'price_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3 text-right" placeholder="Harga jual satuan">
             </div>
 
             <div v-if="form.errors.price_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_unit }}</div>
@@ -190,8 +190,8 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
 
           <!-- <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
-              <label for="price_per_box" class="lowercase first-letter:capitalize w-1/3">Harga jual per box / renceng</label>
-              <input ref="price_per_box" @input.prevent="reformat($event.target, 'price_per_box')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga jual per box / renceng">
+              <label for="price_per_box" class="lowercase first-letter:capitalize w-1/3">Harga jual box / renceng</label>
+              <input ref="price_per_box" @input.prevent="reformat($event.target, 'price_per_box')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga jual box / renceng">
             </div>
 
             <div v-if="form.errors.price_per_box" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_box }}</div>
@@ -199,8 +199,8 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
 
           <!-- <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
-              <label for="price_per_carton" class="lowercase first-letter:capitalize w-1/3">Harga jual per karton</label>
-              <input ref="price_per_carton" @input.prevent="reformat($event.target, 'price_per_carton')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga jual per karton">
+              <label for="price_per_carton" class="lowercase first-letter:capitalize w-1/3">Harga jual karton</label>
+              <input ref="price_per_carton" @input.prevent="reformat($event.target, 'price_per_carton')" type="text" class="bg-transparent border rounded-md w-2/3" placeholder="Harga jual karton">
             </div>
 
             <div v-if="form.errors.price_per_carton" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_carton }}</div>

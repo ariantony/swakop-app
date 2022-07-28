@@ -327,7 +327,7 @@ onMounted(fetch)
             </tr>
 
             <tr>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">per satuan</th>
+              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">satuan</th>
               <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">subtotal</th>
             </tr>
           </thead>

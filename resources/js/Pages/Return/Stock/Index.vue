@@ -122,7 +122,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     <Card v-if="a">
       <template #header>
         <div class="flex items-center justify-start space-x-2 text-white p-2">
-          <h1 class="ml-4 text-black text-2xl font-semibold">History</h1>
+          <h1 class="ml-4 text-black text-2xl font-semibold">Riwayat Retur Pengembalian Pembelian</h1>
         </div>
       </template>
 

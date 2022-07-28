@@ -231,7 +231,7 @@ onMounted(() => {
                     <SidebarLinks :active="route().current('transaction.*') || route().current('in.*') || route().current('return-stock.*')" text="Transaksi" icon="bx-dollar-circle">
                         <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.index')"/>
                         <Button v-if="isAdmin()" iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
-                        <Button iconClass="bx-undo" text="Retur Pembelian" :href="route('return-stock.index')" :active="route().current('return-stock.*')"/>
+                        <Button v-if="isAdmin()" iconClass="bx-undo" text="Retur Pembelian" :href="route('return-stock.index')" :active="route().current('return-stock.*')"/>
                         <Button v-if="false" iconClass="bx-undo" text="Retur Penjualan" :href="route('transaction.return.index')" :active="route().current('transaction.return.index')"/>
                         <SidebarLinks :active="route().current('transaction.history') || route().current('transaction.return.history')" text="Riwayat" icon="bx-history">
                             <Button iconClass="bx-money-withdraw" text="Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>

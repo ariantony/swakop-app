@@ -13,12 +13,12 @@ const { product } = defineProps({
     <template v-slot:thead="{table}">
       <tr>
         <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false">no</Th>
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_selling_per_unit">HPP Per Satuan</Th>
-        <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_selling_per_box">HPP Per Box / Renceng</Th>
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_selling_per_carton">HPP Per Karton</Th> -->
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="price_per_unit">Harga Jual Per Satuan</Th>
-        <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="price_per_box">Harga Jual Per Box / Renceng</Th>
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="price_per_carton">Harga Jual Per Karton</Th> -->
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_selling_per_unit">HPP Satuan</Th>
+        <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_selling_per_box">HPP Box / Renceng</Th>
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_selling_per_carton">HPP Karton</Th> -->
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="price_per_unit">Harga Jual Satuan</Th>
+        <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="price_per_box">Harga Jual Box / Renceng</Th>
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="price_per_carton">Harga Jual Karton</Th> -->
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="effective_date">Tanggal Efektif</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="expire_date">Efektif Hingga</Th>
         <!-- <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false">action</Th> -->
@@ -26,12 +26,12 @@ const { product } = defineProps({
     </template>
     <template #tfoot>
       <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false">no</Th>
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">HPP Per Satuan</Th>
-        <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">HPP Per Box / Renceng</Th>
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">HPP Per Karton</Th> -->
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">Harga Jual Per Satuan</Th>
-        <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">Harga Jual Per Box / Renceng</Th>
-        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">Harga Jual Per Karton</Th> -->
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">HPP Satuan</Th>
+        <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">HPP Box / Renceng</Th>
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">HPP Karton</Th> -->
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">Harga Jual Satuan</Th>
+        <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">Harga Jual Box / Renceng</Th>
+        <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">Harga Jual Karton</Th> -->
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">Tanggal Efektif</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">Efektif Hingga</Th>
         <!-- <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false">action</Th> -->

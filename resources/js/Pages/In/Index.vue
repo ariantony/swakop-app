@@ -138,7 +138,7 @@ onMounted(fetch)
     <Card>
       <template #header>
         <div class="flex items-center justify-start space-x-2 text-white p-2">
-          <h1 class="ml-4 text-black text-2xl font-semibold">Input stock masuk</h1>
+          <h1 class="ml-4 text-black text-2xl font-semibold">Transaksi Pembelian</h1>
         </div>
       </template>
       <template #body>

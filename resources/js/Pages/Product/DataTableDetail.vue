@@ -20,8 +20,8 @@ const redaction = (type) => {
       <tr>
         <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false" rowspan="2">no</Th>
         <Th class="px-1 py-2 uppercase border-2 border-slate-300" :table="table" name="type" rowspan="2">tipe</Th>
-        <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false" colspan="1">qty per</Th>
-        <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false" colspan="1">subtotal per</Th>
+        <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false" colspan="1">qty</Th>
+        <Th class="px-1 py-2 uppercase border-2 border-slate-300" :sortable="false" colspan="1">subtotal</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false" rowspan="2">total</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false" rowspan="2">tanggal transaksi</Th>
         <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false" rowspan="2">kasir</Th>
