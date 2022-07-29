@@ -53,6 +53,9 @@ Route::middleware([
     Route::post('/transaction/{transaction}/return/print', [App\Http\Controllers\TransactionController::class, 'returnPrint'])->name('transaction.return.print');
     Route::resource('transaction', App\Http\Controllers\TransactionController::class);
 
+    // Return Stock
+    Route::resource('return-stock', App\Http\Controllers\ReturnStockController::class);
+
     // Presence Report
     Route::get('presence/generate', fn () => redirect()->route('presence.index'))->middleware('role:admin');
     Route::resource('presence', App\Http\Controllers\PresenceController::class)->middleware('role:admin');
@@ -68,12 +71,10 @@ Route::middleware([
     Route::resource('daily-report', App\Http\Controllers\DailyController::class)->name('index', 'daily.report.index');
     Route::post('daily-report/generate', [App\Http\Controllers\DailyController::class, 'generate'])->name('daily.report.generate');
 
-    Route::resource('return-stock', App\Http\Controllers\ReturnStockController::class);
-
     // Goods Return Report
-    Route::get('goods-return/generate', fn () => redirect()->route('return.report.index'));
-    Route::resource('goods-return', App\Http\Controllers\ReturnController::class)->name('index', 'return.report.index');
-    Route::post('goods-return/generate', [App\Http\Controllers\ReturnController::class, 'generate'])->name('return.report.generate');
+    Route::get('goods-return/generate', fn () => redirect()->route('return.report.index'))->middleware('role:admin');
+    Route::resource('goods-return', App\Http\Controllers\ReturnController::class)->name('index', 'return.report.index')->middleware('role:admin');
+    Route::post('goods-return/generate', [App\Http\Controllers\ReturnController::class, 'generate'])->name('return.report.generate')->middleware('role:admin');
 
     // Setting
     Route::prefix('setting/')->middleware('role:admin')->group(function () {
