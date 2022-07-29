@@ -26,6 +26,20 @@ window.print()
 
 </script>
 
+<style>
+  @media print {
+    @page {
+      margin: 0;
+    }
+    body {
+      display: table;
+      table-layout: fixed;
+      height: auto;
+      margin: 0mm;
+    }
+  }
+</style>
+
 <template>
   <Card>
     <template #print>
@@ -37,7 +51,7 @@ window.print()
           <h1 class="text-sm">BATUCURI</h1>
           <h1 class="text-sm">Hp : 081221673528</h1>
         </div>
-        <div class="flex items-center justify-between border-y-2 border-solid space-x-1">
+        <div class="flex items-center justify-between border-y-2 border-black border-solid space-x-1">
           <h1 class="text-xs">Invoice : {{ transaction.id.toString().padStart(6, '0') }}</h1>
           <h1 class="text-xs">Kasir : {{ transaction.user.name }}</h1>
         </div>
@@ -62,7 +76,7 @@ window.print()
             <td colspan="2" class="text-right px-2 py-1">{{ price(transaction.pay - transaction.total_cost) }}</td>
           </tr>
         </table>
-        <div class="flex items-center justify-start space-y-1 mt-2 border-y-2 border-solid text-xs">
+        <div class="flex items-center justify-start space-y-1 mt-2 border-y-2 border-black border-solid text-xs">
           <div>Tgl. {{ new Date().toLocaleString('en-GB').replaceAll(',', '').replaceAll('/', '-') }}</div>
         </div>
       </div>

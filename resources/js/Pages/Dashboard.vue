@@ -90,6 +90,7 @@ onMounted(fetch)
                     :format="format"
                     @update:modelValue="fetch"
                     monthPicker
+                    :clearable="false" 
                     autoApply />
             </div>
         </div>

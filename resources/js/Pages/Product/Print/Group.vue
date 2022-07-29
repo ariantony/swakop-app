@@ -33,7 +33,23 @@ const print = () => {
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
+<style>
+  @media print {
+    table { break-inside:auto !important; }
+    tr    { break-inside:avoid !important; break-after:auto !important; }
+    thead { display:table-header-group !important; }
+    tfoot { display:table-footer-group !important; }
 
+    @page { 
+      size: auto;
+      margin: 10mm 0 10mm 0;
+    }
+    body {
+      margin:0 !important;
+      padding:0 !important;
+    }
+  }
+</style>
 <template>
   <AppLayout title="Print Produk">
     <Card>
@@ -111,7 +127,7 @@ const print = () => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, i) in products" :key="i" :item="item" class="print:break-inside-avoid">
+            <tr v-for="(item, i) in products" :key="i" :item="item">
               <td class="border p-2 border-x-2 border-slate-300 text-center">{{ i + 1 }}</td>
               <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.code }}</td>
               <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
