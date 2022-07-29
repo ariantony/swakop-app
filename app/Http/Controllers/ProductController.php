@@ -171,6 +171,10 @@ class ProductController extends Controller
 
         $products = Product::with('group')->where('group_id', $post['group_id'])->get();
 
+        if ($products->count() === 0) {
+            return redirect()->back()->with('error', 'Tidak ada produk dalam kelompok barang ini.');
+        }
+
         return Inertia::render('Product/Print/Group', [
             'products' => $products,
             'group' => $products->first()->group
