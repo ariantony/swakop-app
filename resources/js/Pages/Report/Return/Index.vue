@@ -12,7 +12,10 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 const self = getCurrentInstance()
 const form = useForm({
-  period : '',
+  period : ref({
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+  }),
 })
 
 const format = date => {

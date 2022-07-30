@@ -18,13 +18,8 @@ const { users } = defineProps({
 const self = getCurrentInstance()
 const form = useForm({
   user_id: '',
-  date : ''
+  date : new Date()
 })
-
-const format = date => {
-    const month = id.localize.month(date.month) 
-    return `${month} ${date.year}`
-}
 
 const generate = () => form.post(route('daily.report.generate'))
 

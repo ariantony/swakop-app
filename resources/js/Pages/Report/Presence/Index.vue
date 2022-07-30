@@ -16,9 +16,12 @@ const { users } = defineProps({
 })
 
 const self = getCurrentInstance()
+const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+const lastDay = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
+
 const form = useForm({
   user_id : '',
-  daterange: []
+  daterange: [firstDay, lastDay]
 })
 
 const generate = () => form.post(route('presence.generate'))
