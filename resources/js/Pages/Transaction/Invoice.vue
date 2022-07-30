@@ -43,7 +43,7 @@ window.print()
 <template>
   <Card>
     <template #print>
-      <div class="pb-12 font-light">
+      <div class="pb-12 font-light border-b-2 border-slate-900">
         <div class="flex flex-col items-center justify-center mb-10">
           <h1 class="text-2xl font-semibold">Swakop</h1>
           <br>
@@ -68,16 +68,20 @@ window.print()
             <td colspan="2" class="text-right px-2 py-1">{{ price(transaction.total_cost) }}</td>
           </tr>
           <tr>
-            <td colspan="2">Tunai</td>
+            <td colspan="2">Cash</td>
             <td colspan="2" class="text-right px-2 py-1">{{ price(transaction.pay) }}</td>
           </tr>
           <tr>
-            <td colspan="2">Kembalian</td>
+            <td colspan="2">Change</td>
             <td colspan="2" class="text-right px-2 py-1">{{ price(transaction.pay - transaction.total_cost) }}</td>
           </tr>
         </table>
         <div class="flex items-center justify-start space-y-1 mt-2 border-y-2 border-black border-solid text-xs">
           <div>Tgl. {{ new Date().toLocaleString('en-GB').replaceAll(',', '').replaceAll('/', '-') }}</div>
+        </div>
+        <div class="flex flex-col items-center justify-center space-y-1 mt-2 text-xs font-semibold uppercase">
+          <div>Thanks for shop with us</div>
+          <p>...</p>
         </div>
       </div>
     </template>
