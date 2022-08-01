@@ -1,5 +1,8 @@
-@extends('errors::minimal')
+@extends('errors::layout')
 
-@section('title', __('Server Error'))
+@section('title', '500 Server Error')
 @section('code', '500')
-@section('message', __('Server Error'))
+@section('message', 'Jika anda melihat halaman ini, harap refresh browser.')
+@section('action')
+  <a href="{{ route('dashboard') }}" class="text-xs"> Refresh</a>
+@endsection
