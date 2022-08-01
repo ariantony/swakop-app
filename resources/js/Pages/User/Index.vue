@@ -15,7 +15,6 @@ const form = useForm({
   id: null,
   name: '',
   username: '',
-  email: '',
   password: '',
   password_confirmation: '',
   basic_salary: 0,
@@ -28,10 +27,9 @@ const show = () => {
   nextTick(() => {
     if(form.errors.name) self.refs.first.focus()
     else if(form.errors.username) self.refs.second.focus()
-    else if(form.errors.email) self.refs.third.focus()
-    else if(form.errors.password) self.refs.fourth.focus()
-    else if (form.errors.password_confirmation) self.refs.fifth.focus()
-    else if (form.errors.basic_salary) self.refs.sixth.focus()
+    else if(form.errors.password) self.refs.third.focus()
+    else if (form.errors.password_confirmation) self.refs.fourth.focus()
+    else if (form.errors.basic_salary) self.refs.fifth.focus()
   })
 }
 
@@ -58,13 +56,12 @@ const edit = user => {
   form.id = user.id
   form.name = user.name
   form.username = user.username
-  form.email = user.email
   form.password = ''
   form.password_confirmation = ''
   form.basic_salary = user.basic_salary
 
   nextTick(() => {
-    self.refs.sixth.value = rupiah(form.basic_salary)
+    self.refs.fifth.value = rupiah(form.basic_salary)
   })
   show()
 }
@@ -94,7 +91,7 @@ const destroy = user => {
 const submit = () => form.id ? update() : store()
 
 const reformat = () => {
-  var val = new String(self.refs.sixth.value),
+  var val = new String(self.refs.fifth.value),
       replaced = val.replace(/[^,\d]/g, '').toString(),
       split = replaced.split(','),
       remaining = split[0].length % 3,
@@ -110,7 +107,7 @@ const reformat = () => {
   result = split[1] != undefined ? result + ',' + split[1] : result;
 
   nextTick(() => {
-    self.refs.sixth.value = `Rp ${result}`
+    self.refs.fifth.value = `Rp ${result}`
     form.basic_salary = parseInt(result.replaceAll('.', ''))
   })
 }
@@ -180,16 +177,8 @@ onMounted(() => {
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="email" class="lowercase first-letter:capitalize w-1/4">email</label>
-                  <input ref="third" type="email" name="email" v-model="form.email" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="email">
-                </div>
-                <div v-if="form.errors.email" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.email }}</div>
-              </div>
-
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
                   <label for="password" class="lowercase first-letter:capitalize w-1/4">password</label>
-                  <input ref="fourth" type="password" name="password" v-model="form.password" class="w-3/4 bg-transparent border border-slate-200 rounded-md uppercase placeholder:capitalize" autocomplete="off" placeholder="password">
+                  <input ref="third" type="password" name="password" v-model="form.password" class="w-3/4 bg-transparent border border-slate-200 rounded-md uppercase placeholder:capitalize" autocomplete="off" placeholder="password">
                 </div>
                 <div v-if="form.errors.password" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.password }}</div>
               </div>
@@ -197,7 +186,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="password_confirmation" class="lowercase first-letter:capitalize w-1/4">konfirmasi password</label>
-                  <input ref="fifth" type="password" name="password_confirmation" v-model="form.password_confirmation" class="w-3/4 bg-transparent border border-slate-200 rounded-md uppercase placeholder:capitalize" autocomplete="off" placeholder="konfirmasi Password">
+                  <input ref="fourth" type="password" name="password_confirmation" v-model="form.password_confirmation" class="w-3/4 bg-transparent border border-slate-200 rounded-md uppercase placeholder:capitalize" autocomplete="off" placeholder="konfirmasi Password">
                 </div>
                 <div v-if="form.errors.password_confirmation" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.password_confirmation }}</div>
               </div>
@@ -205,7 +194,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="cost" class="lowercase first-letter:capitalize w-1/4">gaji pokok</label>
-                  <input ref="sixth" @input.prevent="reformat()" type="text" name="basic_salary" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" autocomplete="off" placeholder="gaji pokok">
+                  <input ref="fifth" @input.prevent="reformat()" type="text" name="basic_salary" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" autocomplete="off" placeholder="gaji pokok">
                 </div>
                 <div v-if="form.errors.basic_salary" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.basic_salary }}</div>
               </div>
