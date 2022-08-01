@@ -167,25 +167,26 @@ onMounted(() => {
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="barcode" class="lowercase first-letter:capitalize w-1/4">barcode</label>
-                  <input ref="barcode" type="text" name="barcode" v-model="form.barcode" class="w-3/4 bg-white border border-slate-200 rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="barcode">
-                </div>
-                <div v-if="form.errors.barcode" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.barcode }}</div>
-              </div>
-
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
                   <label for="group_id" class="lowercase first-letter:capitalize w-1/3">Kelompok barang</label>
                   <Select
                     v-model="form.group_id"
                     :options="groups.map(g => ({
-                      label: `${g.code} - ${g.name}`,
+                      label: `${g.code} - ${String(g.name).toUpperCase()}`,
                       value: g.id,
                     }))"
                     :searchable="true" />
                 </div>
                 <div v-if="form.errors.group_id" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.group_id }}</div>
               </div>
+
+              <div class="flex flex-col space-y-2">
+                <div class="flex items-center space-x-2">
+                  <label for="barcode" class="lowercase first-letter:capitalize w-1/4">barcode</label>
+                  <input ref="barcode" type="text" name="barcode" v-model="form.barcode" class="w-3/4 bg-white border border-slate-200 rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="barcode">
+                </div>
+                <div v-if="form.errors.barcode" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.barcode }}</div>
+              </div>
+
             </div>
           </template>
 
