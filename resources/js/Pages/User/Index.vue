@@ -15,7 +15,6 @@ const form = useForm({
   id: null,
   name: '',
   username: '',
-  email: '',
   password: '',
   password_confirmation: '',
   basic_salary: 0,
@@ -28,7 +27,6 @@ const show = () => {
   nextTick(() => {
     if(form.errors.name) self.refs.first.focus()
     else if(form.errors.username) self.refs.second.focus()
-    else if(form.errors.email) self.refs.third.focus()
     else if(form.errors.password) self.refs.fourth.focus()
     else if (form.errors.password_confirmation) self.refs.fifth.focus()
     else if (form.errors.basic_salary) self.refs.sixth.focus()
@@ -58,7 +56,6 @@ const edit = user => {
   form.id = user.id
   form.name = user.name
   form.username = user.username
-  form.email = user.email
   form.password = ''
   form.password_confirmation = ''
   form.basic_salary = user.basic_salary
@@ -176,14 +173,6 @@ onMounted(() => {
                   <input ref="second" type="text" name="username" v-model="form.username" class="w-3/4 bg-transparent border border-slate-200 rounded-md lowercase placeholder:capitalize" autocomplete="off" placeholder="username">
                 </div>
                 <div v-if="form.errors.username" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.username }}</div>
-              </div>
-
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="email" class="lowercase first-letter:capitalize w-1/4">email</label>
-                  <input ref="third" type="email" name="email" v-model="form.email" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" autocomplete="off" placeholder="email">
-                </div>
-                <div v-if="form.errors.email" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.email }}</div>
               </div>
 
               <div class="flex flex-col space-y-2">

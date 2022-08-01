@@ -71,14 +71,13 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|email|max:255|unique:users',
             'password' => 'required|string',
             'password_confirmation' => 'required|same:password',
             'basic_salary' => 'required|numeric',
         ]);
 
         $post = $request->only([
-            'name', 'username', 'email', 'password', 'basic_salary',
+            'name', 'username', 'password', 'basic_salary',
         ]);
 
         foreach ($post as $key => $val) {
@@ -88,6 +87,8 @@ class UserController extends Controller
                 $post[$key] = Hash::make($val);
             }
         }
+
+        $post['email'] = fake()->unique()->email();
 
         if ($user = User::create($post)) {
             $user->assignRole('kasir');
@@ -131,7 +132,6 @@ class UserController extends Controller
         $post = $request->validate([
             'name' => 'required|string|max:255',
             'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => 'required|string',
             'password_confirmation' => 'required|same:password',
             'basic_salary' => 'required|numeric',
