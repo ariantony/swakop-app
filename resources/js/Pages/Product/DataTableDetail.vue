@@ -9,9 +9,9 @@ const { product } = defineProps({
 const redaction = (type) => {
   if (type === 'buy') return 'Beli'
   if (type === 'sell') return 'Jual'
-  if (type === 'return sell') return 'Retur'
+  if (type === 'return buy') return 'Retur'
 }
-
+console.log(product)
 </script>
 
 <template>
