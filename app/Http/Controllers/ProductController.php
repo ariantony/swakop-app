@@ -48,6 +48,14 @@ class ProductController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
+    public function whereHasPrice()
+    {
+        return Product::without(['group'])->with(['buy', 'sell', 'returnBuy'])->whereRelation('price', 'price_per_unit', '>', 0)->get();
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function withoutGroupAndPrice()
     {
         return Product::without(['group', 'price'])->get(['id', 'code', 'name', 'barcode'])->map(function (Product $product) {

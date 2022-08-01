@@ -9,7 +9,7 @@ const { edit, destroy } = defineProps({
 </script>
 
 <template>
-  <Builder :href="route('api.user.paginate')" :colspan="6">
+  <Builder :href="route('api.user.paginate')" :colspan="5">
     <template v-slot:thead="{table}">
       <tr>
         <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>

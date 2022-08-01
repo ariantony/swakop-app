@@ -36,6 +36,8 @@ class PresenceController extends Controller
 
         $from = new Carbon($request->daterange[0]);
         $to = new Carbon($request->daterange[1]);
+        $from->addDays(1);
+        $to->addDays(1);
         $user = User::find($request->user_id);
 
         $presences = $user->presences()

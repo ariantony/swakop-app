@@ -17,7 +17,10 @@ const form = useForm({
   id: null,
   name: '',
   cost: '',
-  period: '',
+  period: {
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+  },
 })
 const burdens = ref([])
 
@@ -59,7 +62,9 @@ const edit = burden => {
     year: burden.period.substring(0, 4),
   }
 
-  reformat(form.cost)
+  nextTick(() => {
+    self.refs.second.value = rupiah(form.cost)
+  })
   show()
 }
 
@@ -87,14 +92,14 @@ const destroy = burden => {
 
 const submit = () => form.id ? update() : store()
 
-const reformat = (value) => {
-  var val = new String(value),
+const reformat = () => {
+  var val = new String(self.refs.second.value),
       replaced = val.replace(/[^,\d]/g, '').toString(),
       split = replaced.split(','),
       remaining = split[0].length % 3,
       result = split[0].substring(0, remaining),
       thousand = split[0].substring(remaining).match(/\d{3}/gi),
-      separator;
+      separator
 
   if (thousand) {
     separator = remaining ? '.' : '';
@@ -105,7 +110,7 @@ const reformat = (value) => {
 
   nextTick(() => {
     self.refs.second.value = `Rp ${result}`
-    form.cost = parseInt(result.replaceAll('.', ''))
+    form.cost = parseInt(result.replaceAll('.', '').replaceAll(',', '.'))
   })
 }
 
@@ -174,7 +179,7 @@ onMounted(() => {
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="cost" class="lowercase first-letter:capitalize w-1/4">biaya</label>
-                  <input @input.prevent="reformat(this.$refs.second.value)" ref="second" type="text" name="cost" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" autocomplete="off" placeholder="biaya">
+                  <input @input.prevent="reformat" ref="second" type="text" name="cost" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" autocomplete="off" placeholder="biaya">
                 </div>
                 <div v-if="form.errors.cost" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.cost }}</div>
               </div>

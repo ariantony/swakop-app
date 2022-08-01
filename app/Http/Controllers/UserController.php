@@ -88,8 +88,7 @@ class UserController extends Controller
             }
         }
 
-        $post['email'] = fake()->unique()->email();
-
+        $post['email'] = $post['username'] . '@swakop.app';
         if ($user = User::create($post)) {
             $user->assignRole('kasir');
             return redirect()->back()->with('success', 'User berhasil ditambahkan.');
