@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::name('api.')->group(function () {
     // Masterdata
     Route::get('/product/where-has-stock', [App\Http\Controllers\ProductController::class, 'whereHasStock'])->name('product.where.has.stock');
+    Route::get('/product/where-has-price', [App\Http\Controllers\ProductController::class, 'whereHasPrice'])->name('product.where.has.price');
     Route::get('/product/without-group-and-price', [App\Http\Controllers\ProductController::class, 'withoutGroupAndPrice'])->name('product.without.group.and.price');
     Route::post('/product/paginate', [App\Http\Controllers\ProductController::class, 'paginate'])->name('product.paginate');
     Route::post('/product/{product}/detail', [App\Http\Controllers\DetailController::class, 'paginate'])->name('product.detail.paginate');
