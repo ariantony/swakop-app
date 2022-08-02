@@ -82,7 +82,7 @@ class ReturnStockController extends Controller
     {
         $rules = [
             'product' => 'required|integer|exists:products,id',
-            'qty' => 'required|integer|min:0',
+            'qty' => 'required|integer|min:1',
             'note' => 'required|string',
         ];
 
@@ -90,7 +90,7 @@ class ReturnStockController extends Controller
             $product = Product::find($request->product);
 
             Validator::make($request->all(), [
-                'qty' => ['required', 'integer', 'min:0', 'max:' . $product->stock_unit],
+                'qty' => ['required', 'integer', 'min:1', 'max:' . $product->stock_unit],
             ])->validate();
         })->validate();
 
