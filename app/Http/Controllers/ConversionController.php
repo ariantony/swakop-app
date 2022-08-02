@@ -70,8 +70,8 @@ class ConversionController extends Controller
         $post = $request->validate([
             'from_id' => 'required|integer|exists:products,id',
             'to_id' => 'required|integer|exists:products,id',
-            'large' => 'required|numeric',
-            'small_per_large' => 'required|numeric',
+            'large' => 'required|numeric|min:1',
+            'small_per_large' => 'required|numeric|min:1',
         ]);
 
         if ($conversion = Conversion::create($post)) {
