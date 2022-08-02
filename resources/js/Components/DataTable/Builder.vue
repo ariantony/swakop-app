@@ -42,6 +42,10 @@ const table = {
 
 const interval = ref(null)
 
+defineExpose({
+  refresh,
+})
+
 onMounted(() => refresh())
 onUnmounted(() => interval.value && clearInterval(interval.value))
 </script>

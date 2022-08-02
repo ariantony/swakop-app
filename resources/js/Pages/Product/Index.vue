@@ -14,6 +14,7 @@ const { groups } = defineProps({
   groups: Array,
 })
 const self = getCurrentInstance()
+const table = ref(null)
 const render = ref(true)
 const open = ref(false)
 const form = useForm({
@@ -40,6 +41,9 @@ const show = () => {
 const close = () => {
   open.value = false
   form.reset()
+  table.value?.refresh()
+  price.value = null
+  transaction.value = null
 }
 
 const reset = () => {
@@ -121,7 +125,7 @@ onMounted(() => {
       </template>
       <template #body>
         <DataTable
-          v-if="render" 
+          ref="table" 
           :edit="edit" 
           :destroy="destroy" 
           :detail="(product) => transaction = product" 
@@ -204,9 +208,9 @@ onMounted(() => {
   </transition>
 
   <transition name="slide-fade">
-    <Detail v-if="transaction" :product="transaction" :close="() => transaction = null" />
+    <Detail v-if="transaction" :product="transaction" :close="close" />
   </transition>
   <transition name="slide-fade">
-    <Price v-if="price" :product="price" :close="() => price = null" />
+    <Price v-if="price" :product="price" :close="close" />
   </transition>
 </template>

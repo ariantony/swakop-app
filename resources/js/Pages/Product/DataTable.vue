@@ -1,6 +1,7 @@
 <script setup>
 import Builder from '@/Components/DataTable/Builder.vue'
 import Th from '@/Components/DataTable/Th.vue'
+import { ref } from 'vue'
 
 const { edit, destroy, detail } = defineProps({
   edit: Function,
@@ -8,10 +9,16 @@ const { edit, destroy, detail } = defineProps({
   detail: Function,
   price: Function,
 })
+
+const table = ref(null)
+
+defineExpose({
+  refresh: () => table.value?.refresh(),
+})
 </script>
 
 <template>
-  <Builder :href="route('api.product.paginate')" :colspan="8">
+  <Builder ref="table" :href="route('api.product.paginate')" :colspan="8">
     <template v-slot:thead="{table}">
       <tr>
         <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false" rowspan="2">no</Th>
