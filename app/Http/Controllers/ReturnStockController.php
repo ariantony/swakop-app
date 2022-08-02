@@ -83,6 +83,7 @@ class ReturnStockController extends Controller
         $rules = [
             'product' => 'required|integer|exists:products,id',
             'qty' => 'required|integer|min:0',
+            'note' => 'required|string',
         ];
 
         Validator::make($request->all(), $rules)->after(function () use ($request) {
@@ -101,6 +102,7 @@ class ReturnStockController extends Controller
             $transaction = Transaction::create([
                 'user_id' => $request->user()->id,
                 'total_cost' => $product->price->cost_selling_per_unit * $request->qty,
+                'note' => $request->note,
             ]);
     
             $transaction->details()->create([

@@ -19,6 +19,7 @@ const products = ref([])
 const form = useForm({
   product: null,
   qty: 0,
+  note: '',
 })
 
 const open = ref(false)
@@ -173,10 +174,19 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-1">
                 <div class="flex items-center space-x-2">
                   <label class="flex-none w-1/4">Jumlah yang akan di retur</label>
-                  <input v-model="form.qty" type="number" :max="product.stock_unit" min="0" class="w-full rounded-md font-semibold" placeholder="Jumlah stock yang akan di retur" required />
+                  <input v-model="form.qty" type="number" :max="product.stock_unit" min="1" class="w-full rounded-md font-semibold" placeholder="Jumlah stock yang akan di retur" required />
                 </div>
 
                 <p v-if="form.errors.qty" class="text-sm text-right text-red-500">{{ form.errors.qty }}</p>
+              </div>
+
+              <div class="flex flex-col space-y-1">
+                <div class="flex items-center space-x-2">
+                  <label class="flex-none w-1/4">Keterangan</label>
+                  <textarea v-model="form.note" name="note" class="w-full rounded-md" placeholder="Keterangan" required></textarea>
+                </div>
+
+                <p v-if="form.errors.note" class="text-sm text-right text-red-500">{{ form.errors.note }}</p>
               </div>
             </div>
           </template>
