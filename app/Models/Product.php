@@ -20,6 +20,10 @@ class Product extends Model
     protected $with = [
         'price',
         'group',
+        'buy',
+        'sell',
+        'returnBuy',
+        'retur',
     ];
 
     /**
@@ -90,6 +94,21 @@ class Product extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function from()
+    {
+        return $this->hasMany(Conversion::class, 'from_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function to()
+    {
+        return $this->hasMany(Conversion::class, 'to_id', 'id');
+    }
+    /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function stockUnit() : Attribute
@@ -99,8 +118,10 @@ class Product extends Model
                 $buy = $this->buy->sum('qty_unit');
                 $sell = $this->sell->sum('qty_unit');
                 $returnBuy = $this->returnBuy->sum('qty_unit');
+                $subtractor = $this->from->sum('large');
+                $addition = $this->to->sum('addition');
 
-                return $buy - $sell - $returnBuy;
+                return $buy - $sell - $returnBuy - $subtractor + $addition;
             },
         );
     }

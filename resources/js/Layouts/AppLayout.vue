@@ -223,8 +223,9 @@ onMounted(() => {
             <div ref="w" id="sidebar" class="flex print:h-full print:overflow-hidden">
                 <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto print:hidden">
                     <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
-                    <SidebarLinks v-if="isAdmin()" :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*')" text="Master Data" icon="bx-data">
+                    <SidebarLinks v-if="isAdmin()" :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*') || route().current('conversion.*')" text="Master Data" icon="bx-data">
                         <Button iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
+                        <Button iconClass="bx-transfer" text="Konversi Stok" :href="route('conversion.index')" :active="route().current('conversion.*')"/>
                         <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
                         <Button iconClass="bx-bookmark" text="Beban" :href="route('burden.index')" :active="route().current('burden.*')"/>
                     </SidebarLinks>

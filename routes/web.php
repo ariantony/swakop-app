@@ -41,6 +41,9 @@ Route::middleware([
     Route::resource('burden', App\Http\Controllers\BurdenController::class)->middleware('role:admin');
     Route::resource('price', App\Http\Controllers\PriceController::class)->middleware('role:admin');
 
+    // Conversion
+    Route::resource('conversion', App\Http\Controllers\ConversionController::class)->middleware('role:admin');
+
     // Stock In
     Route::resource('in', App\Http\Controllers\InController::class)->middleware('role:admin');
     Route::post('/in/add', [App\Http\Controllers\InController::class, 'add'])->name('in.add')->middleware('role:admin');
