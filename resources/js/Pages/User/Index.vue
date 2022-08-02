@@ -27,9 +27,9 @@ const show = () => {
   nextTick(() => {
     if(form.errors.name) self.refs.first.focus()
     else if(form.errors.username) self.refs.second.focus()
-    else if(form.errors.password) self.refs.third.focus()
-    else if (form.errors.password_confirmation) self.refs.fourth.focus()
-    else if (form.errors.basic_salary) self.refs.fifth.focus()
+    else if(form.errors.password) self.refs.fourth.focus()
+    else if (form.errors.password_confirmation) self.refs.fifth.focus()
+    else if (form.errors.basic_salary) self.refs.sixth.focus()
   })
 }
 
