@@ -75,9 +75,7 @@ const fetch = async () => {
 }
 
 onMounted(fetch)
-onMounted(() => {
-  console.log(table.value.refresh)
-})
+
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
