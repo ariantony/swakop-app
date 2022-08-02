@@ -32,7 +32,7 @@ class InController extends Controller
      */
     public function paginate(Request $request)
     {
-        $model = new Transaction();
+        $model = new Detail();
         $columns = array_filter($model->getFillable(), fn ($column) => !in_array($column, $model->getHidden()));
 
         $request->validate([
@@ -47,16 +47,16 @@ class InController extends Controller
                         ->where(function (Builder $query) use ($request) {
                             $search = '%' . $request->search . '%';
 
-                            $query->where(function (Builder $query) use ($search) {
-                                $query->orWhere('qty_unit', 'like', $search)
-                                        ->orWhere('cost_unit', 'like', $search)
-                                        ->orWhere('created_at', 'like', $search);
-                            });
+                            // $query->where(function (Builder $query) use ($search) {
+                            //     $query->orWhere('qty_unit', 'like', $search)
+                            //             ->orWhere('cost_unit', 'like', $search)
+                            //             ->orWhere('created_at', 'like', $search);
+                            // });
 
-                            $query->orWhereRelation('product', 'name', 'like', $search)
-                                    ->orWhereRelation('transaction', function (Builder $query) use ($search) {
-                                        $query->orWhereRelation('user', 'name', 'like', $search);
-                                    });
+                            $query->orWhereRelation('product', 'name', 'like', $search);
+                                    // ->orWhereRelation('transaction', function (Builder $query) use ($search) {
+                                    //     $query->orWhereRelation('user', 'name', 'like', $search);
+                                    // });
                         })
                         ->orderBy($request->input('order.key') ?: 'created_at', $request->input('order.dir') ?: 'desc')
                         ->paginate($request->per_page);
