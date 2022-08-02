@@ -91,11 +91,11 @@ onUnmounted(() => interval.value && clearInterval(interval.value))
     </div>
 
     <div v-if="paginator.total > form.per_page" class="flex items-center space-x-2">
-      <div class="flex-none w-1/2">
+      <div class="flex-none w-1/4">
         <p>Menampilkan {{ paginator.per_page }} data dari data ke {{ paginator.from }} sampai {{ paginator.to }}. Total semua data {{ paginator.total }}.</p>
       </div>
 
-      <div class="flex items-center justify-end overflow-x-auto w-1/2">
+      <div class="flex items-center justify-end overflow-x-auto w-full">
         <div class="w-full flex items-center justify-end">
           <button
             v-for="(link, i) in paginator.links"
