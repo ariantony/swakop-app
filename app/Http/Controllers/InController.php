@@ -42,17 +42,24 @@ class InController extends Controller
             'per_page' => 'nullable|integer',
         ]);
 
-        return Transaction::with('details')
-                            ->whereRelation('details', 'type', 'buy')
-                            ->where(function (Builder $query) use (&$request, &$model, &$columns) {
-                                $search = '%' . $request->input('search') . '%';
+        return Detail::with(['product', 'transaction'])
+                        ->where('type', 'buy')
+                        ->where(function (Builder $query) use ($request) {
+                            $search = '%' . $request->search . '%';
 
-                                foreach ($columns as $column) {
-                                    $query->orWhere($column, 'like', $search);
-                                }
-                            })
-                            ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
-                            ->paginate($request->input('per_page', 10));
+                            $query->where(function (Builder $query) use ($search) {
+                                $query->orWhere('qty_unit', 'like', $search)
+                                        ->orWhere('cost_unit', 'like', $search)
+                                        ->orWhere('created_at', 'like', $search);
+                            });
+
+                            $query->orWhereRelation('product', 'name', 'like', $search)
+                                    ->orWhereRelation('transaction', function (Builder $query) use ($search) {
+                                        $query->orWhereRelation('user', 'name', 'like', $search);
+                                    });
+                        })
+                        ->orderBy($request->input('order.key') ?: 'created_at', $request->input('order.dir') ?: 'desc')
+                        ->paginate($request->per_page);
     }
 
     /**
