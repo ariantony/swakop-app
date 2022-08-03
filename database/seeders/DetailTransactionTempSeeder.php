@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Detail;
 use App\Models\Transaction;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class TransactionFirstStockSeeder extends Seeder
+class DetailTransactionTempSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,14 +16,17 @@ class TransactionFirstStockSeeder extends Seeder
      */
     public function run()
     {
-        $csvFile = fopen(base_path("database/csv/transactions.csv"), "r");
+        $csvFile = fopen(base_path("database/csv/details_temp.csv"), "r");
         $firstline = true;
         while (($data = fgetcsv($csvFile, 0, ",")) !== FALSE) {
             if (!$firstline) {
-                Transaction::create([
-                    'user_id' => $data[1],
-                    'total_cost' => $data[2],
-                    'payment_method' => $data[3],
+                Detail::create([
+                    'transaction_id' => $data[1],
+                    'product_id' => $data[2],
+                    'type' => $data[3],
+                    'qty_unit' => $data[4],
+                    'cost_unit' => $data[5],
+                    'subtotal' => $data[6],
                 ]);
             }
             $firstline = false;

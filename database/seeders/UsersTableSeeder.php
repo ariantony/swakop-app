@@ -21,8 +21,8 @@ class UsersTableSeeder extends Seeder
             'id' => 1,
             'name' => 'Admin',
             'email' => 'admin@swakop.app',
-            'username' => 'nur',
-            'password' => Hash::make('261220WED'),
+            'username' => env('APP_ENV') === 'local' ? 'admin' : 'nur',
+            'password' => Hash::make(env('APP_ENV') === 'local' ? 'admin' : '261220WED'),
             'shift' => 1,
             'basic_salary' => 2000000,
         ]);
