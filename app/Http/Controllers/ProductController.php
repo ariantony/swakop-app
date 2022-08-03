@@ -102,9 +102,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $post = $request->validate([
-            'code' => 'required|unique:products',
+            // 'code' => 'required|unique:products',
             'name' => 'required|string',
-            'barcode' => 'required|string|unique:products',
+            // 'barcode' => 'required|string|unique:products',
             'group_id' => 'required|integer|exists:groups,id',
         ]);
 
@@ -125,9 +125,9 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $post = $request->validate([
-            'code' => ['required', Rule::unique('products')->ignore($product->id)],
+            // 'code' => ['required', Rule::unique('products')->ignore($product->id)],
             'name' => 'required|string',
-            'barcode' => ['required', 'string', Rule::unique('products')->ignore($product->id)],
+            // 'barcode' => ['required', 'string', Rule::unique('products')->ignore($product->id)],
             'group_id' => ['required', 'integer', 'exists:groups,id'],
         ]);
 
