@@ -19,10 +19,14 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             GroupSeeder::class,
             // ProductSeeder::class,
-            ProductFixSeeder::class,
-            PriceSeeder::class,
-            TransactionFirstStockSeeder::class,
-            DetailTransactionFirstStockSeeder::class,
+            // ProductFixSeeder::class,
+            // PriceSeeder::class,
+            // TransactionFirstStockSeeder::class,
+            // DetailTransactionFirstStockSeeder::class,
+            FixProductSeeder::class,
+            FixPriceSeeder::class,
+            FixTransactionSeeder::class,
+            FixDetailSeeder::class,
         ]);
     }
 }
