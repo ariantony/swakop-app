@@ -19,7 +19,7 @@ class GroupSeeder extends Seeder
             'DPR' => 'diapers',
             'HCR' => 'detergent / home care',
             'BDC' => 'body care',
-            'OBT' => 'obat obatan',
+            'MDC' => 'obat obatan',
             'BBC' => 'baby care',
             'TSE' => 'tissue',
             'MIN' => 'mie instan',
@@ -32,6 +32,7 @@ class GroupSeeder extends Seeder
             'ICM' => 'ice cream',
             'RKK' => 'rokok',
             'ATK' => 'alat tulis kantor',
+            'BKR' => 'roti / bakery',
         ];
 
         foreach ($group as $key => $value) {
