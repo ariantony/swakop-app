@@ -43,6 +43,8 @@ defineProps({
     title: String,
 });
 
+const sopen = ref(true);
+
 const { $token } = usePage().props.value
 axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`
 
@@ -77,6 +79,22 @@ onMounted(() => {
 });
 </script>
 
+<style>
+    .slide-enter-active {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .slide-leave-active {
+        transition: all 0.3s ease-in;
+    }
+
+    .slide-enter-from,
+    .slide-leave-to {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+</style>
+
 <template>
     <div>
         <Head :title="title" />
@@ -88,13 +106,14 @@ onMounted(() => {
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
-                        <div class="flex">
+                        <div class="flex justify-between items-center w-52">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
                                     <img :src="url('assets/images/logo-swakop.png')" class="w-32" alt="Logo Swakop">
                                 </Link>
                             </div>
+                            <button @click="sopen = !sopen" type="button" class="text-2xl w-12 h-12 rounded-md"><i class="bx bx-menu mt-2"></i></button>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -221,34 +240,36 @@ onMounted(() => {
 
             <!-- Sidebar -->
             <div ref="w" id="sidebar" class="flex print:h-full print:overflow-hidden">
-                <div class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto print:hidden">
-                    <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
-                    <SidebarLinks v-if="isAdmin()" :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*') || route().current('conversion.*')" text="Master Data" icon="bx-data">
-                        <Button iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
-                        <Button iconClass="bx-transfer" text="Konversi Stok" :href="route('conversion.index')" :active="route().current('conversion.*')"/>
-                        <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
-                        <Button iconClass="bx-bookmark" text="Beban" :href="route('burden.index')" :active="route().current('burden.*')"/>
-                    </SidebarLinks>
-                    <SidebarLinks :active="route().current('transaction.*') || route().current('in.*') || route().current('return-stock.*')" text="Transaksi" icon="bx-dollar-circle">
-                        <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.index')"/>
-                        <Button v-if="isAdmin()" iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
-                        <Button v-if="isAdmin()" iconClass="bx-undo" text="Retur Pembelian" :href="route('return-stock.index')" :active="route().current('return-stock.*')"/>
-                        <Button v-if="false" iconClass="bx-undo" text="Retur Penjualan" :href="route('transaction.return.index')" :active="route().current('transaction.return.index')"/>
-                        <SidebarLinks :active="route().current('transaction.history') || route().current('transaction.return.history')" text="Riwayat" icon="bx-history">
-                            <Button iconClass="bx-money-withdraw" text="Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
-                            <Button v-if="false" iconClass="bx-undo" text="Pengembalian" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
+                <transition name="slide" mode="in-out">
+                    <div v-if="sopen" class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto print:hidden">
+                        <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
+                        <SidebarLinks v-if="isAdmin()" :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*') || route().current('conversion.*')" text="Master Data" icon="bx-data">
+                            <Button iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
+                            <Button iconClass="bx-transfer" text="Konversi Stok" :href="route('conversion.index')" :active="route().current('conversion.*')"/>
+                            <Button iconClass="bx-user" text="User" :href="route('user.index')" :active="route().current('user.*')"/>
+                            <Button iconClass="bx-bookmark" text="Beban" :href="route('burden.index')" :active="route().current('burden.*')"/>
                         </SidebarLinks>
-                    </SidebarLinks>
-                    <SidebarLinks :active="route().current('presence.*') || route().current('income.statement.*') || route().current('daily.report.*') || route().current('return.report.*') || route().current('income-statement.*') || route().current('daily-report.*') || route().current('goods-return.*')" text="Laporan" icon="bxs-report">
-                        <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income.statement.index')" :active="route().current('income.statement.*') || route().current('income-statement.*')"/>
-                        <Button iconClass="bx-receipt" text="Penjualan Harian" :href="route('daily.report.index')" :active="route().current('daily.report.*') || route().current('daily-report.*')"/>
-                        <Button v-if="isAdmin()" iconClass="bxs-user-detail" text="Absensi" :href="route('presence.index')" :active="route().current('presence.*')"/>
-                        <Button v-if="isAdmin()" iconClass="bx-reset" text="Retur Pembelian Barang" :href="route('return.report.index')" :active="route().current('return.report.*') || route().current('goods-return.*')"/>
-                    </SidebarLinks>
-                    <Button v-if="isAdmin()" iconClass="bx-cog" text="Pengaturan" :href="route('setting.index')" :active="route().current('setting.*')"/>
-                </div>
+                        <SidebarLinks :active="route().current('transaction.*') || route().current('in.*') || route().current('return-stock.*')" text="Transaksi" icon="bx-dollar-circle">
+                            <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.index')"/>
+                            <Button v-if="isAdmin()" iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
+                            <Button v-if="isAdmin()" iconClass="bx-undo" text="Retur Pembelian" :href="route('return-stock.index')" :active="route().current('return-stock.*')"/>
+                            <Button v-if="false" iconClass="bx-undo" text="Retur Penjualan" :href="route('transaction.return.index')" :active="route().current('transaction.return.index')"/>
+                            <SidebarLinks :active="route().current('transaction.history') || route().current('transaction.return.history')" text="Riwayat" icon="bx-history">
+                                <Button iconClass="bx-money-withdraw" text="Transaksi" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
+                                <Button v-if="false" iconClass="bx-undo" text="Pengembalian" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
+                            </SidebarLinks>
+                        </SidebarLinks>
+                        <SidebarLinks :active="route().current('presence.*') || route().current('income.statement.*') || route().current('daily.report.*') || route().current('return.report.*') || route().current('income-statement.*') || route().current('daily-report.*') || route().current('goods-return.*')" text="Laporan" icon="bxs-report">
+                            <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income.statement.index')" :active="route().current('income.statement.*') || route().current('income-statement.*')"/>
+                            <Button iconClass="bx-receipt" text="Penjualan Harian" :href="route('daily.report.index')" :active="route().current('daily.report.*') || route().current('daily-report.*')"/>
+                            <Button v-if="isAdmin()" iconClass="bxs-user-detail" text="Absensi" :href="route('presence.index')" :active="route().current('presence.*')"/>
+                            <Button v-if="isAdmin()" iconClass="bx-reset" text="Retur Pembelian Barang" :href="route('return.report.index')" :active="route().current('return.report.*') || route().current('goods-return.*')"/>
+                        </SidebarLinks>
+                        <Button v-if="isAdmin()" iconClass="bx-cog" text="Pengaturan" :href="route('setting.index')" :active="route().current('setting.*')"/>
+                    </div>
+                </transition>
                 <!-- Page Content -->
-                <main class="flex flex-col w-full space-y-2 py-10 px-8 overflow-y-auto">
+                <main class="flex flex-col w-full space-y-2 py-10 px-8 overflow-y-auto transition-all">
                     <slot />
                 </main>
             </div>
