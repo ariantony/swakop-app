@@ -12,6 +12,7 @@ const { products } = defineProps({
 })
 
 const self = getCurrentInstance()
+const title = ref([])
 
 const print = () => {
   Swal.fire({
@@ -29,7 +30,65 @@ const print = () => {
   setTimeout(window.print, 1000)
 }
 
+
+const shrink = (i, size = null) => {
+  const el = title.value[i];
+  if (el) {
+    if (!size) {
+      size = 12;
+      el.style.fontSize = size + 'px';
+    }
+    do {
+      size--;
+      el.style.padding = '0.25rem';
+      el.style.fontSize = size + 'px';
+    } while (isOverflow(el));
+  }
+  return 'text-xs'
+}
+
+const isOverflow = (el) => {
+  return el.clientWidth > el.parentElement.clientWidth;
+}
 </script>
+
+<style scoped>
+  @font-face {
+    font-family: 'ArmWrestler';
+    src: url('../../../../../public/assets/fonts/ArmWrestler.woff') format('woff');
+    font-weight: lighter;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Boogaloo';
+    src: url('../../../../../public/assets/fonts/Boogaloo-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Amaranth';
+    src: url('../../../../../public/assets/fonts/Amaranth-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  .product {
+    font-family: 'ArmWrestler';
+  }
+
+  .barcode {
+    font-family: 'Boogaloo';
+  }
+
+  .price {
+    font-family: 'Amaranth';
+  }
+</style>
 
 <template>
   <AppLayout title="Print Harga Produk">
@@ -53,32 +112,46 @@ const print = () => {
       </template>
       <template #body>
         <div class="flex flex-wrap items-center space-x-2">
-          <div v-for="(item, i) in products" :key="i" class="flex flex-col justify-start w-[32%] my-1 border rounded-md bg-white space-y-1 ml-2">
-            <h3 class="flex items-center text-sm bg-red-500 text-white  rounded-sm p-2 font-bold h-14">{{ item.name }}</h3>
-            <div class="flex items-center justify-between">
-              <h3 class="text-xs rounded-sm p-2 font-bold">{{ item.group.code }}</h3>
-              <h3 class="text-xs rounded-sm p-2 font-bold">{{ item.barcode }}</h3>
-            </div>
-            <div class="flex items-center justify-between p-3">
-              <p class="text-5xl font-semibold">Rp</p>
-              <h1 class="text-5xl font-bold">{{ item.price.price_per_unit.toLocaleString('id') }}</h1>
-            </div>
+          <div v-for="(item, i) in products" :key="i" class="flex flex-col justify-start w-5cm h-3cm my-1 border border-black bg-white space-y-2 ml-2">
+            <table class="border-0"><tr class="border-0"><td class="border-0 p-0">
+              <div class="max-w-[188px] relative mb-[36px]">
+                <h3 ref="title" class="absolute min-w-full h-[36px] flex items-center justify-center bg-red-500 text-white p-2 border-b-black border-b product" :class="item.name.length > 20 ? shrink(i) : 'text-sm'">{{ item.name }}</h3>
+              </div>
+              <div class="flex items-center justify-between mb-1">
+                <h3 class="text-xs rounded-sm px-2 font-bold">{{ item.group.code }}</h3>
+                <h3 class="text-xs rounded-sm px-2 barcode">{{ item.barcode }}</h3>
+              </div>
+              <div class="flex items-center justify-between px-3 pb-1 price">
+                <p class="text-2xl font-semibold">Rp</p>
+                <h1 class="text-2xl font-bold">{{ item.price.price_per_unit.toLocaleString('id') }}</h1>
+              </div>
+              <div class="flex items-center justify-center border-t-red-600 border-t">
+                <img :src="url('assets/images/logo-swakop.png')" class="w-16 h-5" alt="Logo Swakop">
+              </div>
+            </td></tr></table>
           </div>
         </div>
       </template>
 
       <template #print>
         <div class="flex flex-wrap items-center space-x-2">
-          <div v-for="(item, i) in products" :key="i" :index="i" class="flex flex-col justify-start w-[32%] my-1 border rounded-md bg-white space-y-1 ml-2">
-            <h3 class="flex items-center  text-sm bg-red-500 text-white rounded-sm p-2 font-bold h-14">{{ item.name }}</h3>
-            <div class="flex items-center justify-between">
-              <h3 class="text-xs rounded-sm px-2 font-bold">{{ item.group.code }}</h3>
-              <h3 class="text-xs rounded-sm px-2 font-bold">{{ item.barcode }}</h3>
-            </div>
-            <div class="flex items-center justify-between p-2">
-              <p class="text-4xl font-semibold">Rp</p>
-              <h1 class="text-4xl font-bold">{{ item.price.price_per_unit.toLocaleString('id') }}</h1>
-            </div>
+          <div v-for="(item, i) in products" :key="i" class="flex flex-col justify-start w-5cm h-3cm my-1 border border-black bg-white space-y-2 ml-2">
+            <table class="border-0"><tr class="border-0"><td class="border-0 p-0">
+              <div class="max-w-[188px] relative mb-[36px]">
+                <h3 ref="title" class="absolute min-w-full h-[36px] flex items-center justify-center bg-red-500 text-white p-2 border-b-black border-b product" :class="item.name.length > 20 ? shrink(i) : 'text-sm'">{{ item.name }}</h3>
+              </div>
+              <div class="flex items-center justify-between mb-1">
+                <h3 class="text-xs rounded-sm px-2 font-bold">{{ item.group.code }}</h3>
+                <h3 class="text-xs rounded-sm px-2 barcode">{{ item.barcode }}</h3>
+              </div>
+              <div class="flex items-center justify-between px-3 pb-1 price">
+                <p class="text-2xl font-semibold">Rp</p>
+                <h1 class="text-2xl font-bold">{{ item.price.price_per_unit.toLocaleString('id') }}</h1>
+              </div>
+              <div class="flex items-center justify-center border-t-red-600 border-t">
+                <img :src="url('assets/images/logo-swakop.png')" class="w-6 pt-1" alt="Logo Swakop">
+              </div>
+            </td></tr></table>
           </div>
         </div>
       </template>
