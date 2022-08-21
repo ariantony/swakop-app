@@ -99,9 +99,9 @@ class InController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required|string|unique:products,code',
+            // 'code' => 'required|string|unique:products,code',
             'name' => 'required|string',
-            'barcode' => 'required|string|unique:products,barcode',
+            // 'barcode' => 'required|string|unique:products,barcode',
             'group_id' => 'required|integer|exists:groups,id',
             'price.buy.unit' => 'required|integer',
             'price.sell.unit' => 'required|integer',

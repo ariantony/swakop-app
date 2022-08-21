@@ -239,7 +239,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="barcode" class="lowercase first-letter:capitalize w-1/4">barcode</label>
-                <input ref="barcode" type="text" name="barcode" v-model="create.barcode" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="barcode" disabled required>
+                <input ref="barcode" type="text" name="barcode" v-model="create.barcode" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="barcode" disabled>
               </div>
 
               <div v-if="create.errors.barcode" class="text-right text-sm text-red-500">{{ create.errors.barcode }}</div>
