@@ -63,7 +63,7 @@ const add = () => {
     self.refs.product.close()
   } else {
     if (product['stock_' + current.type] > 0 && current.qty <= product['stock_' + current.type]) {
-      transactions.value.push(current.data())
+      transactions.value.unshift(current.data())
       product['stock_' + current.type] -= current.qty
       current.reset()
       self.refs.product.focus()
@@ -257,7 +257,15 @@ const fetch = async () => {
   }
 }
 
-onMounted(fetch)
+onMounted(() => {
+  fetch()
+
+  window.addEventListener('keyup', e => {
+    if (e.key === 'F1') {
+      self?.refs?.cash?.focus()
+    }
+  })
+});
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>

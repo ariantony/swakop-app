@@ -50,7 +50,7 @@ class ProductController extends Controller
      */
     public function whereHasPrice()
     {
-        return Product::without(['group'])->with(['buy', 'sell', 'returnBuy'])->whereRelation('price', 'price_per_unit', '>', 0)->get();
+        return Product::select(['id', 'name', 'code', 'barcode'])->with(['buy', 'sell', 'returnBuy', 'retur', 'group', 'price', 'from', 'to'])->whereRelation('price', 'price_per_unit', '>', 0)->get();
     }
 
     /**
@@ -200,8 +200,12 @@ class ProductController extends Controller
         $post = $request->validate([
             'products' => 'required',
         ]);
-
-        $products = Product::with(['buy', 'sell', 'returnBuy'])->find($post['products']);
+        
+        if (in_array(0, $post['products'])) {
+            $products = Product::with(['group', 'price', 'buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->get();
+        } else {
+            $products = Product::with(['group', 'price', 'buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->find($post['products']);
+        }
         
         return Inertia::render('Product/Print/Price', [
             'products' => $products,

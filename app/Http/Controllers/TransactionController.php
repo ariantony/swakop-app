@@ -87,24 +87,20 @@ class TransactionController extends Controller
             $last + ($transaction['qty_unit'] * $transaction['cost_unit'] + @$transaction['qty_box'] * @$transaction['cost_box'] + @$transaction['qty_carton'] * @$transaction['cost_carton'])
         ), 0);
         
-        $tx = Transaction::create([
+        $tx = Transaction::firstOrCreate([
             'user_id' => $request->user()->id,
             'total_cost' => $total,
             'pay' => $request->pay,
+            'created_at' => now()->format('Y-m-d H:i:s'),
         ]);
 
         if ($tx) {
-            /**
-             * @var \Throwable $error
-             */
             $error = null;
-
             DB::transaction(function () use (&$error, &$transactionByProducts, &$tx) {
                 try {
                     collect($transactionByProducts)->each(fn ($transaction) => $tx->details()->create($transaction));
                 } catch (Throwable $e) {
                     $error = $e;
-
                     return throw $e;
                 }
             });
@@ -112,7 +108,6 @@ class TransactionController extends Controller
             if ($error) {
                 return redirect()->back()->with('error', $error->getMessage());
             }
-
             return redirect()->back()->with('success', 'Transaksi berhasil');
         }
 
