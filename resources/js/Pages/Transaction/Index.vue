@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, nextTick, onMounted, ref } from 'vue'
+import { getCurrentInstance, nextTick, onMounted, ref, Teleport } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Select from '@vueform/multiselect'
 import { useForm } from '@inertiajs/inertia-vue3'
@@ -11,6 +11,11 @@ const products = ref([])
 
 const form = useForm({
   cash: 0,
+})
+
+const temp = useForm({
+  transactions: [],
+  pay: 0,
 })
 
 const current = useForm({
@@ -133,6 +138,10 @@ const reformat = e => {
 }
 
 const submit = () => {
+  if (temp.processing) {
+    return
+  }
+
   if (form.cash < grandTotal()) {
     return Swal.fire({
       title: 'Peringatan',
@@ -157,19 +166,24 @@ const submit = () => {
     title: 'Akhiri proses transaksi?',
     icon: 'question',
     showCancelButton: true,
-  }).then(response => response.isConfirmed && (
-    useForm({ transactions: transactions.value, pay: form.cash }).post(route('transaction.store'), {
-      onSuccess: () => {
-        form.reset()
-        current.reset()
-        transactions.value = []
-        
-        self.refs.cash && (self.refs.cash.value = 0)
+  }).then(({isConfirmed}) => {
+    if (isConfirmed) {
+      temp.transactions = transactions.value
+      temp.pay = form.cash
+      temp.post(route('transaction.store'), {
+        onSuccess: () => {
+          form.reset()
+          current.reset()
+          transactions.value = []
+          
+          self.refs.cash && (self.refs.cash.value = 0)
+          fetch()
 
-        print()
-      },
-    })
-  ))
+          print()
+        },
+      })
+    }
+  })
 }
 
 const print = async () => {
@@ -365,7 +379,7 @@ onMounted(fetch)
         </div>
 
         <div class="flex items-center justify-end space-x-2">
-          <button type="submit" class="bg-blue-600 rounded-md px-3 py-1 text-sm text-white font-semibold">
+          <button type="submit" class="bg-blue-600 rounded-md px-3 py-1 text-sm text-white font-semibold" :class="temp.processing && 'cursor-not-allowed bg-red-500'" :disabled="temp.processing">
             <div class="flex items-center space-x-1">
               <i class="bx bx-check"></i>
               <p class="lowercase first-letter:capitalize">checkout</p>
@@ -375,4 +389,8 @@ onMounted(fetch)
       </form>
     </div>
   </AppLayout>
+
+  <Teleport v-if="temp.processing" to="body">
+    <div class="fixed top-0 left-0 w-full h-full bg-gray-800 opacity-50 z-20"></div>
+  </Teleport>
 </template>
