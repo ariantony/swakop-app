@@ -108,6 +108,10 @@ class ProductController extends Controller
             'group_id' => 'required|integer|exists:groups,id',
         ]);
 
+        $post = $request->only([
+            'code', 'name', 'barcode', 'group_id',
+        ]);
+
         if ($product = Product::create($post)) {
             return redirect()->back()->with('success', 'Produk berhasil dibuat.');
         }
@@ -131,6 +135,10 @@ class ProductController extends Controller
             'group_id' => ['required', 'integer', 'exists:groups,id'],
         ]);
 
+        $post = $request->only([
+            'code', 'name', 'barcode', 'group_id',
+        ]);
+        
         if ($product->update($post)) {
             return redirect()->back()->with('success', 'Produk berhasil diperbaharui.');
         }
