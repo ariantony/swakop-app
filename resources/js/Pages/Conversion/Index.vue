@@ -58,7 +58,7 @@ const submit = () => {
 
 const fetch = async () => {
   try {
-    const response = await axios.get(route('api.product.where.has.stock'))
+    const response = await axios.get(route('api.product.without.group.and.price'))
     products.value = response.data
     Swal.close()
   } catch (e) {
