@@ -37,7 +37,8 @@ Route::middleware([
 
     // Masterdata
     Route::resource('user', App\Http\Controllers\UserController::class)->middleware('role:admin');
-    Route::resource('product', App\Http\Controllers\ProductController::class)->middleware('role:admin');
+    Route::get('product', [App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
+    Route::resource('product', App\Http\Controllers\ProductController::class)->except('index')->middleware('role:admin');
     Route::resource('burden', App\Http\Controllers\BurdenController::class)->middleware('role:admin');
     Route::resource('price', App\Http\Controllers\PriceController::class)->middleware('role:admin');
 

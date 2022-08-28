@@ -243,6 +243,7 @@ onMounted(() => {
                 <transition name="slide" mode="in-out">
                     <div v-if="sopen" class="flex flex-col space-y-1 bg-white w-72 rounded-md p-2 sidebar-height overflow-y-auto print:hidden">
                         <Button iconClass="bxs-dashboard" text="Dashboard" :href="route('dashboard')" :active="route().current('dashboard')"/>
+                        <Button v-if="!isAdmin()" iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
                         <SidebarLinks v-if="isAdmin()" :active="route().current('masterdata.*') || route().current('user.*') || route().current('product.*') || route().current('burden.*') || route().current('conversion.*')" text="Master Data" icon="bx-data">
                             <Button iconClass="bx-package" text="Produk" :href="route('product.index')" :active="route().current('product.*')"/>
                             <Button iconClass="bx-transfer" text="Konversi Stok" :href="route('conversion.index')" :active="route().current('conversion.*')"/>

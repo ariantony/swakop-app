@@ -25,10 +25,10 @@ defineExpose({
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="code" rowspan="2">kode</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name" rowspan="2">nama</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode" rowspan="2">barcode</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" rowspan="2">kelompok barang</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="group_id" rowspan="2">kelompok barang</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="1">harga</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="1">stok</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false" rowspan="2">aksi</Th>
+        <Th v-if="isAdmin()" class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false" rowspan="2">aksi</Th>
       </tr>
 
       <tr>
@@ -49,13 +49,13 @@ defineExpose({
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kelompok barang</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="1">harga</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="1">stok</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
+      <Th v-if="isAdmin()" class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
       <tr>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
         <td class="border p-2 border-x-2 border-slate-300 uppercase">{{ item.code }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase">{{ item.name }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase whitespace-nowrap">{{ item.name }}</td>
         <td class="border p-2 border-x-2 border-slate-300 uppercase">{{ item.barcode }}</td>
         <td class="border p-2 border-x-2 border-slate-300 uppercase text-center">{{ item.group.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.price?.price_per_unit ? rupiah(item.price?.price_per_unit) : '-' }}</td>
@@ -64,7 +64,7 @@ defineExpose({
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_unit }}</td>
         <!-- <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_box }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_carton }}</td> -->
-        <td class="border p-1 ">
+        <td v-if="isAdmin()" class="border p-1">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="detail(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
