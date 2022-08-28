@@ -17,7 +17,7 @@ const self = getCurrentInstance()
 
 const prodname = (name) => {
   const split = name.split(' ')
-  return `${split.at(0)} ${split.at(-3)} ${split.at(-2)} ${split.at(-1)}`
+  return `${split.at(0)} ${typeof split.at(-3) === 'undefined' ? '' : (split.at(-3) === split.at(0) ? '' : split.at(-3))} ${split.at(-2)} ${split.at(-1)}`
 }
 
 const price = value => new Number(value).toLocaleString('in-ID')
@@ -76,11 +76,11 @@ window.print()
             <td colspan="2" class="text-right px-2 py-1">{{ price(transaction.pay - transaction.total_cost) }}</td>
           </tr>
         </table>
-        <div class="flex items-center justify-start space-y-1 mt-2 border-y-2 border-black border-solid text-xs">
+        <div class="flex items-center justify-center space-y-1 mt-2 border-y-2 border-black border-solid text-xs">
           <div>Tgl. {{ new Date().toLocaleString('en-GB').replaceAll(',', '').replaceAll('/', '-') }}</div>
         </div>
         <div class="flex flex-col items-center justify-center space-y-1 mt-2 text-xs font-semibold uppercase">
-          <div>Thanks for shop with us</div>
+          <div style="font-size: 0.7rem">Thanks for shop with us</div>
           <p>...</p>
         </div>
       </div>
