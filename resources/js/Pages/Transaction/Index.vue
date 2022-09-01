@@ -63,6 +63,7 @@ const add = () => {
     self.refs.product.close()
   } else {
     if (product['stock_' + current.type] > 0 && current.qty <= product['stock_' + current.type]) {
+      if (current.qty === '') current.qty = 1
       transactions.value.unshift(current.data())
       product['stock_' + current.type] -= current.qty
       current.reset()
@@ -176,7 +177,7 @@ const submit = () => {
           current.reset()
           transactions.value = []
           
-          self.refs.cash && (self.refs.cash.value = 0)
+          self.refs.cash && (self.refs.cash.value = '')
           fetch()
 
           print()
@@ -263,6 +264,16 @@ onMounted(() => {
   window.addEventListener('keyup', e => {
     if (e.key === 'F1') {
       self?.refs?.cash?.focus()
+      form.cash = ''
+    }
+
+    if (e.key === 'F2') {
+      self?.refs?.qty?.focus()
+      current.qty = ''
+    }
+
+    if (e.key === 'Escape') {
+      self?.refs?.product?.focus()
     }
   })
 });
@@ -292,7 +303,7 @@ onMounted(() => {
 
         <div class="flex items-center space-x-2">
           <label for="name" class="w-1/4 basis-52">Qty</label>
-          <input v-model="current.qty" type="number" name="qty" class="w-full bg-transparent border border-slate-300 rounded-md" min="1">
+          <input v-model="current.qty" ref="qty" type="number" name="qty" class="w-full bg-transparent border border-slate-300 rounded-md" min="1">
           
           <Select
             v-model="current.type"
@@ -374,7 +385,15 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="flex items-center justify-end space-x-4">
+    <div class="flex items-start   justify-between space-x-4">
+      <div class="bg-white w-full max-w-sm rounded-md p-4 flex flex-col space-y-4">
+        <h4 class="text-lg">Shortcut</h4>
+        <ul>
+          <li>Esc : Product</li>
+          <li>F1  : Cash</li>
+          <li>F2  : Quantity</li>
+        </ul>
+      </div>
       <form @submit.prevent="submit" class="bg-white w-full max-w-sm rounded-md p-4 flex flex-col space-y-4">
         <div class="flex items-center justify-between space-x-2">
           <label class="lowercase first-letter:capitalize">cash</label>
