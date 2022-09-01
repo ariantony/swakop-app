@@ -58,7 +58,7 @@ class ProductController extends Controller
      */
     public function withoutGroupAndPrice()
     {
-        return Product::without(['group', 'price'])->get(['id', 'code', 'name', 'barcode'])->map(function (Product $product) {
+        return Product::without(['group', 'price'])->with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->get(['id', 'code', 'name', 'barcode'])->map(function (Product $product) {
             return $product->only([
                 'id', 'code', 'barcode', 'name', 'stock_unit',
             ]);

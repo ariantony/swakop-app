@@ -47,8 +47,14 @@ const create = useForm({
   },
 })
 
+const del = useForm({
+  id: null,
+})
+
 const open = ref(false)
 const detail = ref(null)
+const selected = ref({})
+const toBeDeleted = ref({})
 
 const show = () => {
   open.value = true
@@ -92,8 +98,24 @@ const reformat = (e, target, initial) => {
 }
 
 const add = () => {
-  return form.post(route('in.add'), {
-    onSuccess: () => form.reset(),
+  const selected = products.value.find(p => p.id === form.product)
+  
+  return Swal.fire({
+    title: 'Konfirmasi input stok',
+    icon: 'question',
+    html:
+      `Produk <span class="capitalize font-bold"> ${selected?.name} </span> telah ditambahkan sebelumnya dan saat ini memilki stok sebanyak <span class="font-bold text-blue-600">${selected?.stock_unit}</span> unit. <br>
+      Anda yakin akan menambahkan stok sebanyak <span class="font-bold text-green-600">${form.qty}</span> sehingga total stok produk menjadi <span class="font-bold text-blue-600">${form.qty + selected?.stock_unit}</span> ?`,
+    showCancelButton: true,
+  }).then(({isConfirmed}) => {
+    if (isConfirmed) {
+      form.post(route('in.add'), {
+        onSuccess: () => {
+          form.reset()
+          fetch()
+        },
+      })
+    }
   })
 }
 
@@ -107,6 +129,42 @@ const store = () => {
 
     onError: () => nextTick(show),
   })
+}
+
+const destroy = async (item) => {
+  const selected = products.value.find(p => p.id === item.product_id)
+  try {
+    const response = await axios.post(route('api.in.show', { detail: item.id }))
+    toBeDeleted.value = response.data
+    del.id = item.id
+
+    Swal.fire({
+      title: 'Konfirmasi hapus stok',
+      icon: 'question',
+      html:
+        `Produk <span class="capitalize font-bold"> ${selected?.name} </span> saat ini memilki stok sebanyak <span class="font-bold text-blue-600">${selected?.stock_unit}</span> unit. <br>
+        Anda yakin akan mengurangi stok sebanyak <span class="font-bold text-red-600">${toBeDeleted.value.qty_unit}</span> sehingga total stok produk menjadi <span class="font-bold text-blue-600">${selected?.stock_unit - toBeDeleted.value.qty_unit}</span> ?`,
+      showCancelButton: true,
+    }).then(({ isConfirmed }) => {
+      if (isConfirmed) {
+        del.post(route('in.delete'), {
+          onSuccess: () => {
+            fetch()
+          },
+        })
+      }
+    })
+  } catch (e) {
+    const response = await Swal.fire({
+      title: 'Proses hapus gagal',
+      text: 'Apakah anda ingin mencoba lagi?',
+      icon: 'question',
+      showCancelButton: true,
+      showCloseButton: true,
+    })
+
+    response.isConfirmed && destroy(item)
+  }
 }
 
 Inertia.on('finish', () => rr())
@@ -193,7 +251,7 @@ onMounted(fetch)
         </div>
       </template>
       <template #body>
-        <DataTable v-if="open === false" :detail="(transaction) => detail = transaction" type="buy" />
+        <DataTable v-if="open === false" :detail="(transaction) => detail = transaction" :destroy="destroy" type="buy" />
       </template>
     </Card>
   </AppLayout>

@@ -29,6 +29,7 @@ Route::name('api.')->group(function () {
     // Stock In
     Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');
     Route::post('/ins/{transaction}/detail', [App\Http\Controllers\InController::class, 'detailPaginate'])->name('in.detail.paginate');
+    Route::post('/in/{detail}', [App\Http\Controllers\InController::class, 'show'])->name('in.show');
 
     // Stock Out & Return Sell
     Route::post('/transactions', [App\Http\Controllers\TransactionController::class, 'paginate'])->name('transaction.paginate')->middleware(['auth:sanctum']);

@@ -48,6 +48,7 @@ Route::middleware([
     // Stock In
     Route::resource('in', App\Http\Controllers\InController::class)->middleware('role:admin');
     Route::post('/in/add', [App\Http\Controllers\InController::class, 'add'])->name('in.add')->middleware('role:admin');
+    Route::post('/in/delete', [App\Http\Controllers\InController::class, 'delete'])->name('in.delete')->middleware('role:admin');
 
     // Stock Out & Return
     Route::get('/transaction/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');

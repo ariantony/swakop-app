@@ -190,4 +190,40 @@ class InController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    /**
+     * @param \App\Models\Detail $detail
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Detail $detail)
+    {
+        return $detail;
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:details,id',
+        ]);
+
+        $detail = Detail::find($request->id);
+
+        if (empty($detail)) {
+            return redirect()->back()->with('error', 'Detail data transaksi tidak ditemukan.');
+        }
+        
+        DB::beginTransaction();
+        try {
+            $detail->transaction->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Stock berhasil dihapus.');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
 }
