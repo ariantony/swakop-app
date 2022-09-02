@@ -11,11 +11,10 @@ import { id } from 'date-fns/locale';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Select from '@vueform/multiselect'
 
-const { totalSell, hpp, grossProfit, salaries, burden, netProfit, period } = defineProps({
+const { totalSell, hpp, grossProfit, burden, netProfit, period } = defineProps({
   totalSell: Number,
   grossProfit: Number,
   netProfit: Number,
-  salaries: Number,
   hpp: Array,
   burden: Array,
   period: Number,
@@ -116,12 +115,6 @@ const print = () => {
               <td class="border p-2 border-x-2 border-slate-300"></td>
             </tr>
             <tr>
-              <td class="border p-2 border-x-2 border-slate-300 text-center">{{ burden.list.length + 1 }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 capitalize">Gaji Karyawan</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(salaries) }}</td>
-              <td class="border p-2 border-x-2 border-slate-300"></td>
-            </tr>
-            <tr>
               <td class="border p-2 border-x-2 border-slate-300"></td>
               <td class="border p-2 border-x-2 border-slate-300">Total Beban</td>
               <td class="border p-2 border-x-2 border-slate-300"></td>
@@ -193,12 +186,6 @@ const print = () => {
               <td class="border p-2 border-x-2 border-slate-300 text-center">{{ i + 1 }}</td>
               <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
               <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost) }}</td>
-              <td class="border p-2 border-x-2 border-slate-300"></td>
-            </tr>
-            <tr>
-              <td class="border p-2 border-x-2 border-slate-300 text-center">{{ 2 }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 capitalize">Gaji Karyawan</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(salaries) }}</td>
               <td class="border p-2 border-x-2 border-slate-300"></td>
             </tr>
             <tr>

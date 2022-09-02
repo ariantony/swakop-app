@@ -50,12 +50,12 @@ class IncomeStatementController extends Controller
 
         $grossProfit = $totalSell - $hpp['total'];
 
-        $salaries = User::with('roles')->whereRelation('roles', 'name', 'kasir')->sum('basic_salary');
+        // $salaries = User::with('roles')->whereRelation('roles', 'name', 'kasir')->sum('basic_salary');
 
         $getBurden = Burden::where('period', $year . $month)->get();
         $burden = [
             'list' => $getBurden,
-            'total' => $getBurden->sum('cost') + $salaries,
+            'total' => $getBurden->sum('cost'),
         ];
 
         $netProfit = $grossProfit - $burden['total'];
@@ -64,7 +64,7 @@ class IncomeStatementController extends Controller
             'totalSell' => $totalSell,
             'hpp' => $hpp,
             'grossProfit' => $grossProfit,
-            'salaries' => $salaries,
+            // 'salaries' => $salaries,
             'burden' => $burden,
             'netProfit' => $netProfit,
             'period' => $period,
