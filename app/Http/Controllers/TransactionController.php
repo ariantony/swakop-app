@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
@@ -106,10 +107,21 @@ class TransactionController extends Controller
             });
             
             if ($error) {
+                Log::error('transaction ', [
+                    'data' => json_encode($transactionByProducts),
+                ]);
+
                 return redirect()->back()->with('error', $error->getMessage());
             }
+
+            Log::info('transaction ', [
+                'data' => json_encode($transactionByProducts),
+            ]);
+
             return redirect()->back()->with('success', 'Transaksi berhasil');
         }
+
+
 
         return redirect()->back()->with('error', 'Transaksi gagal. Silahkan coba lagi.');
     }

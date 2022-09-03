@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -155,6 +156,10 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product->delete()) {
+            Log::info('delete product ', [
+                'data' => $product,
+            ]);
+
             return redirect()->back()->with('success', 'Produk berhasil dihapus.');
         }
 
