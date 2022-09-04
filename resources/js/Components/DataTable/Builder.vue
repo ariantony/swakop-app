@@ -17,7 +17,7 @@ const { href } = defineProps({
 
 const form = useForm({
   search: '',
-  per_page: 10,
+  per_page: 100,
   order: {
     key: null,
     dir: null,
