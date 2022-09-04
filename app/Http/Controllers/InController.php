@@ -105,6 +105,7 @@ class InController extends Controller
             'group_id' => 'required|integer|exists:groups,id',
             'price.buy.unit' => 'required|integer',
             'price.sell.unit' => 'required|integer',
+            'qty' => 'required|integer',
         ]);
 
         DB::beginTransaction();
@@ -215,10 +216,15 @@ class InController extends Controller
         if (empty($detail)) {
             return redirect()->back()->with('error', 'Detail data transaksi tidak ditemukan.');
         }
+
+        if (($detail->product->stock_unit - $detail->qty_unit) < 0) {
+            return redirect()->back()->with('error', 'Stock product akan minus jika data terhapus dihapus.');
+        }
+
         
         DB::beginTransaction();
         try {
-            $detail->transaction->delete();
+            $detail->delete();
             DB::commit();
             return redirect()->back()->with('success', 'Stock berhasil dihapus.');
         } catch (Throwable $e) {
