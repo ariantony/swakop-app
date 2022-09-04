@@ -191,6 +191,13 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Tidak ada produk dalam kelompok barang ini.');
         }
 
+        if ($request->method() === 'GET') {
+            return Inertia::render('Product/Print/IframeGroup', [
+                'products' => $products,
+                'group' => $products->first()->group
+            ]);
+        }
+
         return Inertia::render('Product/Print/Group', [
             'products' => $products,
             'group' => $products->first()->group

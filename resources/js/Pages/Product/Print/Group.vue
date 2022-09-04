@@ -26,30 +26,23 @@ const print = () => {
       Swal.showLoading()
     }
   })
-  setTimeout(Swal.close, 800)
-  setTimeout(window.print, 1000)
+  setTimeout(() => {
+    const iframe = document.createElement('iframe')
+    iframe.style.display = 'none'
+    iframe.src = route('product.iframe.group', {
+      group_id: group.id,
+    })
+    document.body.appendChild(iframe)
+    setTimeout(() => {
+      Swal.close()
+    }, 1000)
+  }, 1000)
 }
 
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
-<style>
-  @media print {
-    table { break-inside:auto !important; }
-    tr    { break-inside:avoid !important; break-after:auto !important; }
-    thead { display:table-header-group !important; }
-    tfoot { display:table-footer-group !important; }
 
-    @page { 
-      size: auto;
-      margin: 10mm 0 10mm 0;
-    }
-    body {
-      margin:0 !important;
-      padding:0 !important;
-    }
-  }
-</style>
 <template>
   <AppLayout title="Print Produk">
     <Card>

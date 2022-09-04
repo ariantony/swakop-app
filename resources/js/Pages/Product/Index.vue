@@ -46,6 +46,13 @@ const close = () => {
   transaction.value = null
 }
 
+const closeDetail = () => {
+  open.value = false
+  form.reset()
+  price.value = null
+  transaction.value = null
+}
+
 const reset = () => {
   render.value = false
   nextTick(() => render.value = true)
@@ -208,7 +215,7 @@ onMounted(() => {
   </transition>
 
   <transition name="slide-fade">
-    <Detail v-if="transaction" :product="transaction" :close="close" />
+    <Detail v-if="transaction" :product="transaction" :close="closeDetail" />
   </transition>
   <transition name="slide-fade">
     <Price v-if="price" :product="price" :close="close" />
