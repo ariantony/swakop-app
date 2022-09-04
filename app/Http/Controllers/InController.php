@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Throwable;
 
@@ -184,6 +185,11 @@ class InController extends Controller
 
             DB::commit();
 
+            Log::info('in ', [
+                'transaction' => $transaction,
+                'detail' => $detail,
+            ]);
+
             return redirect()->back()->with('success', 'stock berhasil ditambahkan');
         } catch (Throwable $e) {
             DB::rollBack();
@@ -212,6 +218,7 @@ class InController extends Controller
         ]);
 
         $detail = Detail::find($request->id);
+        $transaction = $detail->transaction;
 
         if (empty($detail)) {
             return redirect()->back()->with('error', 'Detail data transaksi tidak ditemukan.');
@@ -225,6 +232,12 @@ class InController extends Controller
         DB::beginTransaction();
         try {
             $detail->delete();
+
+            Log::info('delete in ', [
+                'transaction' => $transaction,
+                'detail' => $detail,
+            ]);
+
             DB::commit();
             return redirect()->back()->with('success', 'Stock berhasil dihapus.');
         } catch (Throwable $e) {
