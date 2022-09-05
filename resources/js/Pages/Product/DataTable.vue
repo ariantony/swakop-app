@@ -21,24 +21,14 @@ defineExpose({
   <Builder ref="table" :href="route('api.product.paginate')" :colspan="8">
     <template v-slot:thead="{table}">
       <tr>
-        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false" rowspan="2">no</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="code" rowspan="2">kode</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name" rowspan="2">nama</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode" rowspan="2">barcode</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="group_id" rowspan="2">kelompok barang</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="1">harga</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false" colspan="1">stok</Th>
-        <Th v-if="isAdmin()" class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false" rowspan="2">aksi</Th>
-      </tr>
-
-      <tr>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">satuan</Th>
-        <!-- <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">box</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">carton</Th> -->
-        
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">satuan</Th>
-        <!-- <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">box</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">carton</Th> -->
+        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="code">kode</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name">nama</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode">barcode</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="group_id">kelompok barang</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">harga</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stok</Th>
+        <Th v-if="isAdmin()" class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
       </tr>
     </template>
     <template #tfoot>
@@ -47,8 +37,8 @@ defineExpose({
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">barcode</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kelompok barang</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="1">harga</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false" colspan="1">stok</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">harga</Th>
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok</Th>
       <Th v-if="isAdmin()" class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
@@ -57,13 +47,9 @@ defineExpose({
         <td class="border p-2 border-x-2 border-slate-300 uppercase">{{ item.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300 uppercase whitespace-nowrap">{{ item.name }}</td>
         <td class="border p-2 border-x-2 border-slate-300 uppercase">{{ item.barcode }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase text-center">{{ item.group.code }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase text-center">{{ item.group?.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.price?.price_per_unit ? rupiah(item.price?.price_per_unit) : '-' }}</td>
-        <!-- <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_box ? rupiah(item.price?.cost_selling_per_box) : '-' }}</td>
-        <td class="border p-2 border-x-2 border-slate-300">{{ item.price?.cost_selling_per_carton ? rupiah(item.price?.cost_selling_per_carton) : '-' }}</td> -->
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_unit }}</td>
-        <!-- <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_box }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_carton }}</td> -->
         <td v-if="isAdmin()" class="border p-1">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="detail(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
@@ -84,11 +70,11 @@ defineExpose({
               </div>
             </button>
 
-            <button @click.prevent="destroy(item)" class="bg-red-600 rounded-md px-3 py-1 text-sm font-semibold">
+            <!-- <button @click.prevent="destroy(item)" class="bg-red-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-trash mr-1 text-white text-sm"></i> Hapus
               </div>
-            </button>
+            </button> -->
           </div>
         </td>
       </tr>

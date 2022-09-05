@@ -73,20 +73,20 @@ const update = () => {
   })
 }
 
-const destroy = user => {
-  return Swal.fire({
-    title: 'Konfirmasi!',
-    html: 'Anda yakin akan menghapus akun ini? Semua pencatatan data yang berhubungan akun ini akan ikut terhapus.',
-    icon: 'question',
-    showCancelButton: true,
-  }).then(response => {
-    if (response.isConfirmed) {
-      return Inertia.delete(route('user.destroy', user.id), {
-        onSuccess: () => reset(),
-      })
-    }
-  })
-}
+// const destroy = user => {
+//   return Swal.fire({
+//     title: 'Konfirmasi!',
+//     html: 'Anda yakin akan menghapus akun ini? Semua pencatatan data yang berhubungan akun ini akan ikut terhapus.',
+//     icon: 'question',
+//     showCancelButton: true,
+//   }).then(response => {
+//     if (response.isConfirmed) {
+//       return Inertia.delete(route('user.destroy', user.id), {
+//         onSuccess: () => reset(),
+//       })
+//     }
+//   })
+// }
 
 const submit = () => form.id ? update() : store()
 
