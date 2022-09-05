@@ -61,41 +61,35 @@ const print = () => {
         </div>
       </template>
       <template #body>
-        <div class="flex items-center justify-end text-lg font-semibold mb-4">
-          <p>Tanggal : {{ dateindo(day) }} </p>
+        <div class="h-[28rem] overflow-y-auto">
+          <div class="flex items-center justify-end text-lg font-semibold mb-4">
+            <p>Tanggal : {{ dateindo(day) }} </p>
+          </div>
+          <table class="w-full border-collapse border-2 border-slate-300">
+            <thead class="bg-slate-100">
+              <tr>
+                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">No</th>
+                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Produk</th>
+                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Qty </th>
+                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Subtotal </th>
+                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, i, index) in sell" :key="i" :index="index" :item="item">
+                <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost_unit) }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_all) }}</td>
+              </tr>
+              <tr class="text-xl font-bold bg-yellow-300">
+                <td class="border p-2 border-x-2 border-slate-300 text-center" colspan="4">Total Penjualan</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(total) }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <table class="w-full border-collapse border-2 border-slate-300">
-          <thead class="bg-slate-100">
-            <tr>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">No</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">Produk</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Qty </th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Subtotal </th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">Subtotal</th>
-            </tr>
-            <tr>
-              <th class="px-3 py-2 uppercase border-2 border-slate-300">satuan</th>
-              <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="qty_box">box / renceng</Th>
-              <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="qty_carton">karton</Th> -->
-              <th class="px-3 py-2 uppercase border-2 border-slate-300">satuan</th>
-              <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_box">box / renceng</Th>
-              <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_carton">carton</Th> -->
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, i, index) in sell" :key="i" :index="index" :item="item">
-              <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost_unit) }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_all) }}</td>
-            </tr>
-            <tr class="text-xl font-bold bg-yellow-300">
-              <td class="border p-2 border-x-2 border-slate-300 text-center" colspan="4">Total Penjualan</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(total) }}</td>
-            </tr>
-          </tbody>
-        </table>
       </template>
 
       <template #print>
@@ -108,19 +102,11 @@ const print = () => {
         <table class="w-full border-collapse border-2 border-slate-300">
           <thead class="bg-slate-100">
             <tr>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">No</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">Produk</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Qty </th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="1">Subtotal </th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2">Subtotal</th>
-            </tr>
-            <tr>
-              <th class="px-3 py-2 uppercase border-2 border-slate-300">satuan</th>
-              <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="qty_box">box / renceng</Th>
-              <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="qty_carton">karton</Th> -->
-              <th class="px-3 py-2 uppercase border-2 border-slate-300">satuan</th>
-              <!-- <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_box">box / renceng</Th>
-              <Th class="px-3 py-2 uppercase border-2 border-slate-300" :table="table" name="cost_carton">carton</Th> -->
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">No</th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Produk</th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Qty </th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Subtotal </th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Total</th>
             </tr>
           </thead>
           <tbody>
