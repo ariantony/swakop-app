@@ -99,7 +99,17 @@ const reformat = (e, target, initial) => {
 
 const add = () => {
   const selected = products.value.find(p => p.id === form.product)
-  
+
+  if (typeof selected === 'undefined') {
+    return Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Produk tidak ditemukan!',
+    })
+  }
+
+  form.product = selected.id
+
   return Swal.fire({
     title: 'Konfirmasi input stok',
     icon: 'question',
