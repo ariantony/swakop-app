@@ -9,6 +9,7 @@ import DataTable from './DataTable.vue'
 import Detail from './Detail.vue'
 import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
+import { cloneDeep } from 'lodash'
 
 const self = getCurrentInstance()
 const { groups } = defineProps({
@@ -69,6 +70,7 @@ const option = e => {
 
   if (product) {
     form.product = product.id
+
     return add()
   }
 
@@ -98,7 +100,7 @@ const reformat = (e, target, initial) => {
 }
 
 const add = () => {
-  const selected = products.value.find(p => p.id === form.product)
+  const selected = products.value.find(p => p.id === form.product || p.barcode === form.product)
 
   if (typeof selected === 'undefined') {
     return Swal.fire({
@@ -107,8 +109,6 @@ const add = () => {
       text: 'Produk tidak ditemukan!',
     })
   }
-
-  form.product = selected.id
 
   return Swal.fire({
     title: 'Konfirmasi input stok',
@@ -119,6 +119,8 @@ const add = () => {
     showCancelButton: true,
   }).then(({isConfirmed}) => {
     if (isConfirmed) {
+      form.product = typeof form.product === 'string' ? selected.id : form.product
+      
       form.post(route('in.add'), {
         onSuccess: () => {
           form.reset()
