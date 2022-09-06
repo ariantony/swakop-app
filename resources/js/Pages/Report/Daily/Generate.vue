@@ -76,8 +76,8 @@ const print = () => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, i, index) in sell" :key="i" :index="index" :item="item">
-                <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
+              <tr v-for="(item, i) in sell" :key="i" :index="i" :item="item">
+                <td class="border p-2 border-x-2 border-slate-300 text-center">{{ i + 1 }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost_unit) }}</td>
