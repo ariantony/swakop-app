@@ -11,7 +11,7 @@ const redaction = (type) => {
   if (type === 'sell') return 'Jual'
   if (type === 'return buy') return 'Retur'
 }
-console.log(product)
+
 </script>
 
 <template>

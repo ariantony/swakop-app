@@ -138,6 +138,15 @@ const destroy = async (item) => {
     toBeDeleted.value = response.data
     del.id = item.id
 
+    if ((selected?.stock_unit - toBeDeleted.value.qty_unit) < 0) {
+      return Swal.fire({
+        title: 'Peringatan',
+        icon: 'warning',
+        html: `Stok produk <span class="capitalize font-bold">${selected?.name}</span> saat ini hanya tersisa <span class="font-bold text-blue-600">${selected?.stock_unit}</span> unit. <br>
+        Anda tidak dapat menghapus data ini karena akan mengakibatkan stok produk menjadi minus.`
+      })
+    }
+
     Swal.fire({
       title: 'Konfirmasi hapus stok',
       icon: 'question',

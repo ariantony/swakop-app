@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'ArmWrestler';
+  src: url('ArmWrestler.woff') format('woff');
+  font-weight: lighter;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Boogaloo';
+  src: url('Boogaloo-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amaranth';
+  src: url('Amaranth-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+.product {
+  font-family: 'ArmWrestler';
+}
+
+.barcode {
+  font-family: 'Boogaloo';
+}
+
+.price {
+  font-family: 'Amaranth';
+}

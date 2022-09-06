@@ -34,6 +34,8 @@ Route::middleware([
     Route::get('product/print/price', fn () => redirect()->route('product.print'))->middleware('role:admin');
     Route::post('product/print/group', [App\Http\Controllers\ProductController::class, 'generateGroup'])->name('product.print.group')->middleware('role:admin');
     Route::post('product/print/price', [App\Http\Controllers\ProductController::class, 'generatePrice'])->name('product.print.price')->middleware('role:admin');
+    Route::get('product/iframe/print/group', [App\Http\Controllers\ProductController::class, 'generateGroup'])->name('product.iframe.group')->middleware('role:admin');
+    Route::get('product/iframe/print/price', [App\Http\Controllers\ProductController::class, 'generatePrice'])->name('product.iframe.price')->middleware('role:admin');
 
     // Masterdata
     Route::resource('user', App\Http\Controllers\UserController::class)->middleware('role:admin');

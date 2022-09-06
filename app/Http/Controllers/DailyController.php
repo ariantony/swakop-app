@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,8 @@ class DailyController extends Controller
         ]);
         
         $date = explode('T', $request->date)[0];
-        
+        $date = new Carbon($request->date);
+
         $sell = Transaction::with('details.product')->whereRelation('details', 'type', 'sell')->where('user_id', $request->user_id)->whereDate('created_at', $date)->get();
         
         $detail = $sell->map(fn ($item) => $item->details)->flatten()->groupBy('product_id')->map(function ($detail) {
@@ -48,7 +50,7 @@ class DailyController extends Controller
         });
         
         return Inertia::render('Report/Daily/Generate', [
-            'sell' => $detail,
+            'sell' => $detail->sortBy('name')->values(),
             'total' => $sell->sum('total_cost'),
             'cashier' => User::find($request->user_id),
             'day' => $date,

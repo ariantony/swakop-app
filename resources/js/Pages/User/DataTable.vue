@@ -40,11 +40,11 @@ const { edit, destroy } = defineProps({
               </div>
             </button>
 
-            <button @click.prevent="destroy(item)" class="bg-red-600 rounded-md px-3 py-1 text-sm font-semibold">
+            <!-- <button @click.prevent="destroy(item)" class="bg-red-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-trash mr-1 text-white text-sm"></i> Hapus
               </div>
-            </button>
+            </button> -->
           </div>
         </td>
       </tr>

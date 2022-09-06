@@ -46,6 +46,13 @@ const close = () => {
   transaction.value = null
 }
 
+const closeDetail = () => {
+  open.value = false
+  form.reset()
+  price.value = null
+  transaction.value = null
+}
+
 const reset = () => {
   render.value = false
   nextTick(() => render.value = true)
@@ -77,20 +84,20 @@ const update = () => {
   })
 }
 
-const destroy = product => {
-  return Swal.fire({
-    title: 'Konfirmasi!',
-    html: 'Anda yakin akan menghapus produk ini? Semua pencatatan data yang berhubungan produk ini akan ikut terhapus.',
-    icon: 'question',
-    showCancelButton: true,
-  }).then(response => {
-    if (response.isConfirmed) {
-      return Inertia.delete(route('product.destroy', product.id), {
-        onSuccess: () => reset(),
-      })
-    }
-  })
-}
+// const destroy = product => {
+//   return Swal.fire({
+//     title: 'Konfirmasi!',
+//     html: 'Anda yakin akan menghapus produk ini? Semua pencatatan data yang berhubungan produk ini akan ikut terhapus.',
+//     icon: 'question',
+//     showCancelButton: true,
+//   }).then(response => {
+//     if (response.isConfirmed) {
+//       return Inertia.delete(route('product.destroy', product.id), {
+//         onSuccess: () => reset(),
+//       })
+//     }
+//   })
+// }
 
 const submit = () => form.id ? update() : store()
 
@@ -208,7 +215,7 @@ onMounted(() => {
   </transition>
 
   <transition name="slide-fade">
-    <Detail v-if="transaction" :product="transaction" :close="close" />
+    <Detail v-if="transaction" :product="transaction" :close="closeDetail" />
   </transition>
   <transition name="slide-fade">
     <Price v-if="price" :product="price" :close="close" />

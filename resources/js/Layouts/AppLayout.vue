@@ -71,7 +71,9 @@ onMounted(() => {
     window.addEventListener('resize', resizeSidebar);
     window.addEventListener('beforeprint', () => {
         const sidebar = document.getElementById('sidebar')
-        sidebar.style.height = '100%';
+        if (sidebar) {
+            sidebar.style.height = '100%';
+        }
     });
 
     const { $token } = usePage().props.value
