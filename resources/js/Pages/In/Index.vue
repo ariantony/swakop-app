@@ -17,6 +17,7 @@ const { groups } = defineProps({
 })
 
 const products = ref([])
+const product = ref(null)
 const a = ref(true)
 const rr = () => {
   a.value = false
@@ -25,7 +26,7 @@ const rr = () => {
 
 const form = useForm({
   product: null,
-  qty: 1,
+  qty: '',
 })
 
 const create = useForm({
@@ -205,6 +206,7 @@ const fetch = async () => {
 
     response.isConfirmed && fetch()
   }
+  self?.refs?.product.focus()
 }
 
 onMounted(fetch)
@@ -228,6 +230,7 @@ onMounted(fetch)
                 <div class="flex items-center space-x-4 w-full">
                   <label for="product" class="lowercase first-letter:capitalize flex-none">kode produk / nama produk / barcode</label>
                   <Select 
+                    ref="product"
                     v-model="form.product"
                     :options="products.map(p => ({
                       label: `${p.code ? p.code + '-' : ''} ${p.barcode} - ${p.name}`,
