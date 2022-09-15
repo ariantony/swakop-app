@@ -26,6 +26,7 @@ const data = ref({
     month: 0,
     today: 0,
     customer: 0,
+    custToday: 0,
 })
 
 const a = ref(true)
@@ -38,6 +39,7 @@ const fetch = async () => {
         data.value.month = response.data.month
         data.value.today = response.data.today
         data.value.customer = response.data.customer
+        data.value.custToday = response.data.custToday
         
         Swal.mixin({
             toast: true,
@@ -103,7 +105,7 @@ onMounted(fetch)
             <div class="bg-white rounded-xl px-4 py-8 flex items-center space-x-4 justify-between">
                 <div class="flex flex-col space-y-1">
                     <p class="text-slate-600 text-md capitalize">penjualan per bulan</p>
-                    <p class="text-gray-900 text-2xl capitalize">{{ rupiah(data.month) }}</p>
+                    <p class="text-gray-900 text-xl capitalize">{{ rupiah(data.month) }}</p>
                 </div>
 
                 <i class="bx bx-money-withdraw text-5xl"></i>
@@ -111,8 +113,10 @@ onMounted(fetch)
 
             <div class="bg-white rounded-xl px-4 py-8 flex items-center space-x-4 justify-between">
                 <div class="flex flex-col space-y-1">
-                    <p class="text-slate-600 text-md capitalize">Total customer</p>
-                    <p class="text-gray-900 text-2xl capitalize">{{ data.customer }}</p>
+                    <p class="text-slate-600 text-md capitalize">Total customer per bulan</p>
+                    <p class="text-gray-900 text-2xl capitalize">{{ data.customer }} 
+                        <span class="text-slate-600 text-sm capitalize">( {{ data.custToday > 0 ? data.custToday : 0 }} hari ini )</span>
+                    </p>
                 </div>
 
                 <i class="bx bx-user-circle text-5xl"></i>
@@ -121,7 +125,7 @@ onMounted(fetch)
             <div class="bg-white rounded-xl px-4 py-8 flex items-center space-x-4 justify-between">
                 <div class="flex flex-col space-y-1">
                     <p class="text-slate-600 text-md capitalize">penjualan hari ini</p>
-                    <p class="text-gray-900 text-2xl capitalize">{{ rupiah(data.today) }}</p>
+                    <p class="text-gray-900 text-xl capitalize">{{ rupiah(data.today) }}</p>
                     <p class="text-sm">{{ now() }} <i class="bx bx-calendar text-md"></i></p>
                 </div>
 

@@ -34,6 +34,8 @@ class DashboardController extends Controller
                 $create()->startOfMonth(),
                 $create()->endOfMonth(),
             ])->whereRelation('details', 'type', 'sell')->count(),
+
+            'custToday' => Transaction::whereDate('created_at', date('Y-m-d'))->whereRelation('details', 'type', 'sell')->count(),
         ];
     }
 
