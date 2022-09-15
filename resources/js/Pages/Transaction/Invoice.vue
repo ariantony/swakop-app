@@ -22,7 +22,7 @@ const prodname = (name) => {
 
 const price = value => new Number(value).toLocaleString('in-ID')
 
-window.print()
+// window.print()
 
 </script>
 
