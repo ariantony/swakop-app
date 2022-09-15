@@ -15,18 +15,17 @@ const { transaction, totalItem } = defineProps({
 
 const self = getCurrentInstance()
 
-const prodname = (name) => {
-  const split = name.split(' ')
-  return `${split.at(0)} ${typeof split.at(-3) === 'undefined' ? '' : (split.at(-3) === split.at(0) ? '' : split.at(-3))} ${split.at(-2)} ${split.at(-1)}`
-}
-
 const price = value => new Number(value).toLocaleString('in-ID')
 
-window.print()
+// window.print()
 
 </script>
 
 <style>
+  .s {
+    font-family: 'Merchant Copy' !important;
+  }
+
   @media print {
     @page {
       margin: 0;
@@ -43,7 +42,7 @@ window.print()
 <template>
   <Card>
     <template #print>
-      <div class="pb-12 font-light border-b-2 border-slate-900">
+      <div class="pb-12 font-light border-b-2 border-slate-900 s">
         <div class="flex flex-col items-center justify-center mb-10">
           <h1 class="text-2xl font-semibold">Swakop</h1>
           <br>
@@ -53,34 +52,39 @@ window.print()
         </div>
         <div class="flex items-center justify-between border-y-2 border-black border-solid space-x-1">
           <h1 class="text-xs">Invoice : {{ transaction.id.toString().padStart(6, '0') }}</h1>
-          <h1 class="text-xs">Kasir : {{ transaction.user.name }}</h1>
+          <h1 class="text-xs">Kasir : {{ transaction.user.name.length > 10 ? new String(transaction.user.name).substring(0, 10) : transaction.user.name }}</h1>
         </div>
         <table class="w-full border-collapse text-xs">
-          <tr v-for="(item, i) in transaction.details" :key="i" :item="item">
-            <td class="px-2 py-1 capitalize">{{ prodname(item.product.name) }}</td>
-            <td class="px-2 py-1 text-right whitespace-nowrap">{{ item.qty_unit }}</td>
-            <td class="px-2 py-1 text-right">{{ price(item.cost_unit) }}</td>
-            <td class="px-2 py-1 text-right">{{ price(item.total_cost_all) }}</td>
-          </tr>
+          <template v-for="(item, i) in transaction.details" :key="i" :item="item">
+            <tr>
+              <td colspan="4" class="capitalize">{{ item.product.name }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="text-right whitespace-nowrap">{{ item.qty_unit }}</td>
+              <td class="text-right">{{ price(item.cost_unit) }}</td>
+              <td class="text-right">{{ price(item.total_cost_all) }}</td>
+            </tr>
+          </template>
           <tr class="border-t-2 border-solid">
             <td>Total Item</td>
-            <td class="text-right px-2">{{ totalItem }}</td>
-            <td colspan="2" class="text-right px-2 py-1">{{ price(transaction.total_cost) }}</td>
+            <td class="text-right">{{ totalItem }}</td>
+            <td colspan="2" class="text-right">{{ price(transaction.total_cost) }}</td>
           </tr>
           <tr>
             <td colspan="2">Cash</td>
-            <td colspan="2" class="text-right px-2 py-1">{{ price(transaction.pay) }}</td>
+            <td colspan="2" class="text-right">{{ price(transaction.pay) }}</td>
           </tr>
           <tr>
             <td colspan="2">Change</td>
-            <td colspan="2" class="text-right px-2 py-1">{{ price(transaction.pay - transaction.total_cost) }}</td>
+            <td colspan="2" class="text-right">{{ price(transaction.pay - transaction.total_cost) }}</td>
           </tr>
         </table>
         <div class="flex items-center justify-center space-y-1 mt-2 border-y-2 border-black border-solid text-xs">
           <div>Tgl. {{ new Date().toLocaleString('en-GB').replaceAll(',', '').replaceAll('/', '-') }}</div>
         </div>
         <div class="flex flex-col items-center justify-center space-y-1 mt-2 text-xs font-semibold uppercase">
-          <div style="font-size: 0.7rem">Thanks for shop with us</div>
+          <div style="font-size: 0.8rem">Thanks for shop with us</div>
           <p>...</p>
         </div>
       </div>
