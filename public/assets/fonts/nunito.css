@@ -110,3 +110,9 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Merchant Copy';
+    font-style: normal;
+    font-weight: normal;
+    src: url('Merchant Copy.woff') format('woff');
+}
