@@ -30,12 +30,17 @@ const print = async (item) => {
         Swal.showLoading()
       }
     })
-    setTimeout(Swal.close, 800)
     const iframe = document.createElement('iframe')
     iframe.src = route('api.transaction.print', item.id)
     iframe.style.width = '0'
     iframe.style.height = '0'
+
     document.body.appendChild(iframe)
+
+    iframe.onload = () => {
+      Swal.close()
+    }
+  
   } catch (e) {
     const response = await Swal.fire({
       title: 'Tidak dapat mencetak',

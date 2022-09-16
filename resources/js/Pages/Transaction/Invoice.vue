@@ -17,7 +17,7 @@ const self = getCurrentInstance()
 
 const price = value => new Number(value).toLocaleString('in-ID')
 
-window.print()
+setTimeout(() => window.print(), 1000)
 
 </script>
 
@@ -43,27 +43,26 @@ window.print()
     <table class="w-full border-collapse text-xs">
       <template v-for="(item, i) in transaction.details" :key="i" :item="item">
         <tr>
-          <td colspan="4" class="capitalize">{{ item.product.name }}</td>
+          <td colspan="4" class="capitalize px-1">{{ item.product.name }}</td>
         </tr>
         <tr>
-          <td></td>
-          <td class="text-right whitespace-nowrap">{{ item.qty_unit }}</td>
-          <td class="text-right">{{ price(item.cost_unit) }}</td>
-          <td class="text-right">{{ price(item.total_cost_all) }}</td>
+          <td class="px-1 text-right whitespace-nowrap" colspan="2">{{ item.qty_unit }}</td>
+          <td class="px-1 text-right">{{ price(item.cost_unit) }}</td>
+          <td class="px-1 text-right">{{ price(item.total_cost_all) }}</td>
         </tr>
       </template>
-      <tr class="border-t-2 border-solid">
-        <td>Total Item</td>
+      <tr class="border-t-2 border-black border-dotted">
+        <td class="px-1">Total Item</td>
         <td class="text-right">{{ totalItem }}</td>
-        <td colspan="2" class="text-right">{{ price(transaction.total_cost) }}</td>
+        <td colspan="2" class="px-1 text-right">{{ price(transaction.total_cost) }}</td>
       </tr>
       <tr>
-        <td colspan="2">Cash</td>
-        <td colspan="2" class="text-right">{{ price(transaction.pay) }}</td>
+        <td class="px-1" colspan="2">Cash</td>
+        <td colspan="2" class="px-1 text-right">{{ price(transaction.pay) }}</td>
       </tr>
       <tr>
-        <td colspan="2">Change</td>
-        <td colspan="2" class="text-right">{{ price(transaction.pay - transaction.total_cost) }}</td>
+        <td class="px-1" colspan="2">Change</td>
+        <td colspan="2" class="px-1 text-right">{{ price(transaction.pay - transaction.total_cost) }}</td>
       </tr>
     </table>
     <div class="flex items-center justify-center space-y-1 mt-2 border-y-2 border-black border-solid text-xs">

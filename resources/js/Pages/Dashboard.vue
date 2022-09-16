@@ -114,7 +114,7 @@ onMounted(fetch)
             <div class="bg-white rounded-xl px-4 py-8 flex items-center space-x-4 justify-between">
                 <div class="flex flex-col space-y-1">
                     <p class="text-slate-600 text-md capitalize">Total customer per bulan</p>
-                    <p class="text-gray-900 text-2xl capitalize">{{ data.customer }} 
+                    <p class="text-gray-900 text-xl capitalize">{{ data.customer }} 
                         <span class="text-slate-600 text-sm capitalize">( {{ data.custToday > 0 ? data.custToday : 0 }} hari ini )</span>
                     </p>
                 </div>
