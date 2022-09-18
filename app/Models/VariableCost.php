@@ -15,7 +15,7 @@ class VariableCost extends Model
     protected $fillable = [
         'product_id',
         'qty',
-        'cost',
+        'price',
     ];
 
     /**

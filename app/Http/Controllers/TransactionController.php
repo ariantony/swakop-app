@@ -25,6 +25,47 @@ class TransactionController extends Controller
     }
 
     /**
+     * @param \Illuminate\Support\Collection $products
+     * @param array $transactions
+     * @return float
+     */
+    private function calculateTotalTransactionPrice($products, $transactions)
+    {
+        $total = 0;
+
+        foreach ($transactions as $id => $transaction) {
+            $product = $products->find($id);
+
+            $total += $this->getPriceByTransactionWithVariable($product, $transaction);
+        }
+
+        return $total;
+    }
+
+    /**
+     * @param \App\Models\Product $product
+     * @param array $transaction
+     * @return float
+     */
+    private function getPriceByTransactionWithVariable(Product $product, array $transaction)
+    {
+        $total = 0;
+        $qty = $transaction['qty_unit'];
+
+        while ($qty > 0) {
+            if ($variable = $product->variableCosts->where('qty', '<=', $qty)->first()) {
+                $total += $variable->price * $variable->qty;
+                $qty -= $variable->qty;
+            } else {
+                $total += $product->price->price_per_unit;
+                $qty -= 1;
+            }
+        }
+
+        return $total;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -84,9 +125,9 @@ class TransactionController extends Controller
             }
         }
 
-        $total = array_reduce($transactionByProducts, fn (float $last, array $transaction) => (
-            $last + ($transaction['qty_unit'] * $transaction['cost_unit'] + @$transaction['qty_box'] * @$transaction['cost_box'] + @$transaction['qty_carton'] * @$transaction['cost_carton'])
-        ), 0);
+        $products = Product::find(array_keys($transactionByProducts));
+
+        $total = $this->calculateTotalTransactionPrice($products, $transactionByProducts);
         
         $tx = Transaction::firstOrCreate([
             'user_id' => $request->user()->id,

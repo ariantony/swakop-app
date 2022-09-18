@@ -75,6 +75,35 @@ const add = () => {
   }
 }
 
+const getPriceFromVariables = (product, qty) => {
+  if (product.variableCosts.length) {
+    let total = 0
+    
+    while (qty > 0) {
+      let variable = product.variableCosts.find(v => v.qty <= qty)
+      
+      if (variable) {
+        total += variable.price * variable.qty
+        qty -= variable.qty
+      } else {
+        total += product.price.price_per_unit
+        qty -= 1
+      }
+    }
+
+    return total
+  }
+
+  return product.price.price_per_unit * qty
+}
+
+const getPriceByTransactionWithVariables = transaction => {
+  const product = products.value.find(p => p.id === transaction.product_id)
+  
+  if (!product) return 0
+  if (transaction.type === 'unit') return getPriceFromVariables(product, transaction.qty)
+}
+
 const getPriceByTransaction = transaction => {
   const product = products.value.find(p => p.id === transaction.product_id)
   
@@ -87,7 +116,7 @@ const getPriceByTransaction = transaction => {
 const grandTotal = () => {
   if (!transactions.value.length) return 0
 
-  return transactions.value.reduce((total, transaction) => getPriceByTransaction(transaction) * transaction.qty + total, 0)
+  return transactions.value.reduce((total, transaction) => getPriceByTransactionWithVariables(transaction) + total, 0)
 }
 
 const remove = async transaction => {
@@ -369,7 +398,7 @@ onMounted(() => {
               </td>
               <td class="border py-1 px-3 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td>
               <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction)) }}</td>
-              <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction) * transaction.qty) }}</td>
+              <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransactionWithVariables(transaction)) }}</td>
               <td class="border py-1 px-3 text-center">
                 <button @click.prevent="remove(transaction)" class="bg-red-600 rounded-md px-3 py-2 text-white">
                   <i class="bx bx-trash"></i>

@@ -45,7 +45,7 @@ class Product extends Model
      */
     public function variableCosts()
     {
-        return $this->hasMany(VariableCost::class);
+        return $this->hasMany(VariableCost::class)->orderBy('qty', 'desc');
     }
 
     /**

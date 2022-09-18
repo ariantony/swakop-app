@@ -77,12 +77,16 @@ class PriceController extends Controller
             'price_per_unit' => 'required|numeric',
             // 'price_per_box' => 'required|numeric',
             // 'price_per_carton' => 'required|numeric',
+            'variables.*.qty' => 'required|integer',
+            'variables.*.price' => 'required|numeric',
         ]);
 
         $post['cost_selling_per_box'] = 0;
         $post['cost_selling_per_carton'] = 0;
         $post['price_per_box'] = 0;
         $post['price_per_carton'] = 0;
+        
+        $product = Product::findOrFail($post['product_id']);
 
         $last = Price::where('product_id', $post['product_id'])->latest()->first();
         
@@ -93,6 +97,13 @@ class PriceController extends Controller
         } 
 
         if ($price = Price::create($post)) {
+            $product->variableCosts()->delete();
+            $product->variableCosts()->insert(array_map(
+                fn ($variable) => array_merge($variable, [
+                    'product_id' => $product->id,
+                ]), $post['variables']
+            ));
+
             return redirect()->back()->with([
                 'success' => 'Harga baru berhasil ditambahkan.',
             ]);
