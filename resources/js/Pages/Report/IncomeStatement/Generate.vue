@@ -72,7 +72,6 @@ const print = () => {
             <!-- Pendapatan Bersih -->
             <tr>
               <td class="border p-2 border-x-2 border-slate-300 font-bold text-lg" colspan="2">Pendapatan / Penjualan Bersih</td>
-              <td class="border p-2 border-x-2 border-slate-300"></td>
               <td class="border p-2 border-x-2 border-slate-300 text-right text-lg" colspan="2">{{ rupiah(totalSell) }}</td>
             </tr>
             <!-- HPP -->
@@ -89,13 +88,12 @@ const print = () => {
             <tr>
               <td class="border p-2 border-x-2 border-slate-300 text-center">2</td>
               <td class="border p-2 border-x-2 border-slate-300">Retur Pembelian Barang</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(hpp.totalReturn) }}</td>
               <td class="border p-2 border-x-2 border-slate-300"></td>
+              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(hpp.totalReturn) }}</td>
             </tr>
             <tr>
               <td class="border p-2 border-x-2 border-slate-300"></td>
-              <td class="border p-2 border-x-2 border-slate-300">Total HPP</td>
-              <td class="border p-2 border-x-2 border-slate-300"></td>
+              <td class="border p-2 border-x-2 border-slate-300 font-semibold">Total HPP</td>
               <td class="border p-2 border-x-2 border-slate-300 text-right" colspan="2">{{ rupiah(hpp.total) }}</td>
             </tr>
             <!-- Laba Kotor -->
@@ -116,8 +114,7 @@ const print = () => {
             </tr>
             <tr>
               <td class="border p-2 border-x-2 border-slate-300"></td>
-              <td class="border p-2 border-x-2 border-slate-300">Total Beban</td>
-              <td class="border p-2 border-x-2 border-slate-300"></td>
+              <td class="border p-2 border-x-2 border-slate-300 font-semibold">Total Beban</td>
               <td class="border p-2 border-x-2 border-slate-300 text-right" colspan="2">{{ rupiah(burden.total) }}</td>
             </tr>
             <!-- Laba Bersih -->
@@ -146,7 +143,6 @@ const print = () => {
             <!-- Pendapatan Bersih -->
             <tr>
               <td class="border p-2 border-x-2 border-slate-300 font-bold text-lg" colspan="2">Pendapatan / Penjualan Bersih</td>
-              <td class="border p-2 border-x-2 border-slate-300"></td>
               <td class="border p-2 border-x-2 border-slate-300 text-right text-lg" colspan="2">{{ rupiah(totalSell) }}</td>
             </tr>
             <!-- HPP -->
@@ -163,13 +159,12 @@ const print = () => {
             <tr>
               <td class="border p-2 border-x-2 border-slate-300 text-center">2</td>
               <td class="border p-2 border-x-2 border-slate-300">Retur Pembelian Barang</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(hpp.totalReturn) }}</td>
               <td class="border p-2 border-x-2 border-slate-300"></td>
+              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(hpp.totalReturn) }}</td>
             </tr>
             <tr>
               <td class="border p-2 border-x-2 border-slate-300"></td>
-              <td class="border p-2 border-x-2 border-slate-300">Total HPP</td>
-              <td class="border p-2 border-x-2 border-slate-300"></td>
+              <td class="border p-2 border-x-2 border-slate-300 font-semibold">Total HPP</td>
               <td class="border p-2 border-x-2 border-slate-300 text-right" colspan="2">{{ rupiah(hpp.total) }}</td>
             </tr>
             <!-- Laba Kotor -->
@@ -190,8 +185,7 @@ const print = () => {
             </tr>
             <tr>
               <td class="border p-2 border-x-2 border-slate-300"></td>
-              <td class="border p-2 border-x-2 border-slate-300">Total Beban</td>
-              <td class="border p-2 border-x-2 border-slate-300"></td>
+              <td class="border p-2 border-x-2 border-slate-300 font-semibold">Total Beban</td>
               <td class="border p-2 border-x-2 border-slate-300 text-right" colspan="2">{{ rupiah(burden.total) }}</td>
             </tr>
             <!-- Laba Bersih -->
