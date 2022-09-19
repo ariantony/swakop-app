@@ -26,6 +26,10 @@ const form = useForm({
   small_per_large: 0,
 })
 
+const del = useForm({
+  id: null,
+})
+
 const setFrom = () => products.value.find(p => p.id === form.from_id)
 const setTo = () => products.value.find(p => p.id === form.to_id)
 
@@ -54,6 +58,62 @@ const submit = () => {
       }
     })
   ))
+}
+
+const destroy = async (item) => {
+  del.id = item.id
+  const from = products.value.find(p => p.id === item.from_id)
+  const to = products.value.find(p => p.id === item.to_id)
+  try {
+    if ((from?.stock_unit - item.large) < 0) {
+      return Swal.fire({
+        title: 'Peringatan',
+        icon: 'warning',
+        html: `Stok produk <span class="capitalize font-bold">${from?.name}</span> saat ini hanya tersisa <span class="font-bold text-blue-600">${from?.stock_unit}</span> unit. <br>
+        Anda tidak dapat menghapus data konversi ini karena akan mengakibatkan stok produk menjadi minus.`
+      })
+    }
+
+    if ((to?.stock_unit - (item.large * item.small_per_large)) < 0) {
+      return Swal.fire({
+        title: 'Peringatan',
+        icon: 'warning',
+        html: `Stok produk <span class="capitalize font-bold">${to?.name}</span> saat ini hanya tersisa <span class="font-bold text-blue-600">${to?.stock_unit}</span> unit. <br>
+        Anda tidak dapat menghapus data konversi ini karena akan mengakibatkan stok produk menjadi minus.`
+      })
+    }
+
+    Swal.fire({
+      title: 'Konfirmasi hapus stok',
+      icon: 'question',
+      html:
+        `Stok Produk <span class="capitalize font-bold"> ${from?.name} </span> dari <span class="font-bold text-purple-600">${from?.stock_unit}</span> akan menjadi <span class="font-bold text-blue-600">${from?.stock_unit + item.large}</span> dan <br>
+        Stok Produk <span class="capitalize font-bold"> ${to?.name} </span> dari <span class="font-bold text-yellow-600">${to?.stock_unit}</span> akan menjadi <span class="font-bold text-green-700">${to?.stock_unit - (item.large * item.small_per_large)}</span> <br>
+        Anda yakin akan menghapus data konversi ini ?`,
+      showCancelButton: true,
+      width: 800,
+    }).then(({ isConfirmed }) => {
+      if (isConfirmed) {
+        del.post(route('conversion.delete'), {
+          onSuccess: () => {
+            fetch()
+            a.value = false
+            nextTick(() => a.value = true)
+          },
+        })
+      }
+    })
+  } catch (e) {
+    const response = await Swal.fire({
+      title: 'Proses hapus gagal',
+      text: 'Apakah anda ingin mencoba lagi?',
+      icon: 'question',
+      showCancelButton: true,
+      showCloseButton: true,
+    })
+
+    response.isConfirmed && destroy(item)
+  }
 }
 
 const fetch = async () => {
@@ -202,7 +262,7 @@ onMounted(fetch)
         </div>
       </template>
       <template #body>
-        <DataTable v-if="a" ref="table" />
+        <DataTable v-if="a" ref="table" :destroy="destroy" />
       </template>
     </Card>
   </AppLayout>

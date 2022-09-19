@@ -46,6 +46,7 @@ Route::middleware([
 
     // Conversion
     Route::resource('conversion', App\Http\Controllers\ConversionController::class)->middleware('role:admin');
+    Route::post('/conversion/delete', [App\Http\Controllers\ConversionController::class, 'delete'])->name('conversion.delete')->middleware('role:admin');
 
     // Stock In
     Route::resource('in', App\Http\Controllers\InController::class)->middleware('role:admin');
