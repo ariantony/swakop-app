@@ -75,21 +75,27 @@ const add = () => {
   }
 }
 
-const getPriceFromVariables = (product, qty) => {
+const getPriceFromVariables = (product, transaction) => {
   if (product.variableCosts.length) {
+    let histories = []
     let total = 0
+    let qty = transaction.qty
     
     while (qty > 0) {
       let variable = product.variableCosts.find(v => v.qty <= qty)
       
       if (variable) {
+        histories.push(variable)
         total += variable.price * variable.qty
         qty -= variable.qty
       } else {
         total += product.price.price_per_unit
         qty -= 1
+        histories.push({ qty: 1, price: product.price.price_per_unit })
       }
     }
+
+    transaction.histories = histories
 
     return total
   }
@@ -101,7 +107,9 @@ const getPriceByTransactionWithVariables = transaction => {
   const product = products.value.find(p => p.id === transaction.product_id)
   
   if (!product) return 0
-  if (transaction.type === 'unit') return getPriceFromVariables(product, transaction.qty)
+  if (transaction.type === 'unit') {
+    return getPriceFromVariables(product, transaction)
+  }
 }
 
 const getPriceByTransaction = transaction => {
@@ -148,7 +156,7 @@ const remove = async transaction => {
 
 const reformat = e => {
   const value = e.target.value
-  var val = new String(value),
+  let val = new String(value),
       replaced = val.replace(/[^,\d]/g, '').toString(),
       split = replaced.split(','),
       remaining = split[0].length % 3,

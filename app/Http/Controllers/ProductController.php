@@ -128,6 +128,18 @@ class ProductController extends Controller
     }
 
     /**
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Http\Response
+     */
+    public function price(Product $product)
+    {
+        return [
+            'price' => $product->price,
+            'variables' => $product->variableCosts,
+        ];
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

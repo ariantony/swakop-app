@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, nextTick, onMounted, onUnmounted, ref } from 'vue';
+import { getCurrentInstance, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import DataTable from './DataTablePrice.vue'
 import { useForm } from '@inertiajs/inertia-vue3';
 
@@ -26,38 +26,42 @@ const form = useForm({
   price_per_box: '',
   price_per_carton: '',
   variables: [
-    {
-      qty: 3,
-      price: 0,
-    },
-    {
-      qty: 6,
-      price: 0,
-    },
-    {
-      qty: 12,
-      price: 0,
-    },
-    {
-      qty: 18,
-      price: 0,
-    },
-    {
-      qty: 24,
-      price: 0,
-    },
-    {
-      qty: 40,
-      price: 0,
-    },
-    {
-      qty: 48,
-      price: 0,
-    },
+    // 
   ],
 })
 
+onMounted(async () => {
+  try {
+    const { data: response } = await axios.get(route('api.product.price', product.id))
+    form.cost_selling_per_unit = response.price.cost_selling_per_unit
+    form.price_per_unit = response.price.price_per_unit
+    form.variables = response.variables
+  } catch (e) {
+    form.cost_selling_per_unit = 0
+    form.price_per_unit = 0
+    form.variables = []
+  }
+})
+
+const add = () => {
+  form.variables.push({
+    qty: 1,
+    price: 0,
+  })
+}
+
 const show = ref(true)
+
+watch(show, () => {
+  if (show.value) return
+
+  nextTick(() => {
+    reformat(self.refs.cost_selling_per_unit, 'cost_selling_per_unit', form.cost_selling_per_unit)
+    reformat(self.refs.price_per_unit, 'price_per_unit', form.price_per_unit)
+
+    self.refs.prices?.forEach((el, i) => reformatVariable(el, i, form.variables[i].price))
+  })
+})
 
 const hide = e => {
   if (e.key === 'Escape') {
@@ -91,7 +95,7 @@ const edit = price => {
 
 const reformat = (e, target, initial) => {
   const value = initial || e.value
-  var val = new String(value),
+  let val = new String(value),
       replaced = val.replace(/[^,\d]/g, '').toString(),
       split = replaced.split(','),
       remaining = split[0].length % 3,
@@ -112,7 +116,7 @@ const reformat = (e, target, initial) => {
 
 const reformatVariable = (e, target, initial) => {
   const value = initial || e.value
-  var val = new String(value),
+  let val = new String(value),
       replaced = val.replace(/[^,\d]/g, '').toString(),
       split = replaced.split(','),
       remaining = split[0].length % 3,
@@ -234,15 +238,19 @@ input[type="number"] {
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="price_per_unit" class="lowercase first-letter:capitalize w-1/3">
-                  Harga jual <input type="number" v-model="variable.qty" class="w-14 p-0 focus:ring-0 border-0 bg-transparent" disabled>
+                  Harga jual <input type="number" v-model="variable.qty" class="w-14 p-0 focus:ring-0 rounded bg-transparent text-center" min="1" required>
                 </label>
-                <input 
-                  ref="price_per_unit" 
-                  @input.prevent="reformatVariable($event.target, i)" 
-                  type="text" 
-                  class="bg-transparent border rounded-md w-2/3 text-right" 
-                  :placeholder="`Harga jual ${variable.qty}`"
-                >
+                <div class="flex items-center w-2/3 space-x-2">
+                  <input 
+                    ref="prices" 
+                    @input.prevent="reformatVariable($event.target, i)" 
+                    type="text" 
+                    class="bg-transparent border rounded-md text-right w-full" 
+                    :placeholder="`Harga jual ${variable.qty}`"
+                    required
+                  >
+                  <i @click.prevent="form.variables = form.variables.filter((v, j) => j !== i)" class="bx bx-x bg-red-500 text-white rounded-md p-2 cursor-pointer"></i>
+                </div>
               </div>
 
               <div v-if="form.errors[`variables.${i}.price`]" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors[`variables.${i}.price`] }}</div>
@@ -252,6 +260,10 @@ input[type="number"] {
       </div>
 
       <div class="flex items-center justify-end space-x-2 rounded-b-md p-2 bg-slate-200 text-white">
+        <button @click.prevent="add" type="button" class="flex items-center bg-blue-600 rounded-md px-3 py-1 font-semibold">
+          <i class="bx bx-plus text-xl mr-1"></i> {{ 'Tambah harga' }}
+        </button>
+
         <button class="flex items-center bg-green-600 rounded-md px-3 py-1 font-semibold">
           <i class="bx bx-save text-xl mr-1"></i> {{ form.id ? 'Perbarui' : 'Tambah' }}
         </button>
