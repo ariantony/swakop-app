@@ -47,6 +47,7 @@ const create = useForm({
       carton: 0,
     },
   },
+  variables: [],
 })
 
 const del = useForm({
@@ -81,7 +82,7 @@ const option = e => {
 
 const reformat = (e, target, initial) => {
   const value = initial || e.target.value
-  var val = new String(value),
+  let val = new String(value),
       replaced = val.replace(/[^,\d]/g, '').toString(),
       split = replaced.split(','),
       remaining = split[0].length % 3,
@@ -100,7 +101,7 @@ const reformat = (e, target, initial) => {
   return parseFloat(result.replaceAll('.', '').replaceAll(',', '.'))
 }
 
-const add = () => {
+const add = async () => {
   const selected = products.value.find(p => p.id === form.product || p.barcode === form.product)
 
   if (typeof selected === 'undefined') {
@@ -189,6 +190,11 @@ const destroy = async (item) => {
   }
 }
 
+const addVariable = () => create.variables.push({
+  qty: 1,
+  price: 0,
+})
+
 Inertia.on('finish', () => rr())
 
 const fetch = async () => {
@@ -213,6 +219,14 @@ onMounted(fetch)
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
+<style scoped>
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  </style>
 
 <template>
   <AppLayout title="Stock masuk">
@@ -303,7 +317,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="code" class="lowercase first-letter:capitalize w-1/4">kode produk</label>
-                <input ref="code" type="text" name="code" v-model="create.code" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="kode produk">
+                <input ref="code" type="text" name="code" v-model="create.code" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize" placeholder="kode produk">
               </div>
 
               <div v-if="create.errors.code" class="text-right text-sm text-red-500">{{ create.errors.code }}</div>
@@ -312,7 +326,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="name" class="lowercase first-letter:capitalize w-1/4">nama produk</label>
-                <input ref="name" type="text" name="name" v-model="create.name" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="nama produk" required>
+                <input ref="name" type="text" name="name" v-model="create.name" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize" placeholder="nama produk" required>
               </div>
 
               <div v-if="create.errors.name" class="text-right text-sm text-red-500">{{ create.errors.name }}</div>
@@ -321,7 +335,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="barcode" class="lowercase first-letter:capitalize w-1/4">barcode</label>
-                <input ref="barcode" type="text" name="barcode" v-model="create.barcode" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="barcode" disabled>
+                <input ref="barcode" type="text" name="barcode" v-model="create.barcode" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize" placeholder="barcode" disabled>
               </div>
 
               <div v-if="create.errors.barcode" class="text-right text-sm text-red-500">{{ create.errors.barcode }}</div>
@@ -345,7 +359,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="price_buy_unit" class="lowercase first-letter:capitalize w-1/4">harga beli per unit</label>
-                <input ref="price_buy_unit" type="text" name="price_buy_unit" @input.prevent="create.price.buy.unit = reformat($event)" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" placeholder="harga beli per unit" required>
+                <input ref="price_buy_unit" type="text" name="price_buy_unit" @input.prevent="create.price.buy.unit = reformat($event)" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize text-right" placeholder="harga beli per unit" required>
               </div>
 
               <div v-if="create.errors.price?.buy?.unit" class="text-right text-sm text-red-500">{{ create.errors.price?.buy?.unit }}</div>
@@ -354,16 +368,29 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="price_sell_unit" class="lowercase first-letter:capitalize w-1/4">harga jual per unit</label>
-                <input ref="price_sell_unit" type="text" name="price_sell_unit" @input.prevent="create.price.sell.unit = reformat($event)" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize text-right" placeholder="harga jual per unit" required>
+                <input ref="price_sell_unit" type="text" name="price_sell_unit" @input.prevent="create.price.sell.unit = reformat($event)" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize text-right" placeholder="harga jual per unit" required>
               </div>
 
               <div v-if="create.errors.price?.sell?.unit" class="text-right text-sm text-red-500">{{ create.errors.price?.sell?.unit }}</div>
             </div>
 
+            <template v-for="(variable, i) in create.variables" :key="i">
+              <div class="flex flex-col space-y-2">
+                <div class="flex items-center space-x-2">
+                  <label :for="`variables[${i}]`" class="lowercase first-letter:capitalize w-1/4 flex items-center space-x-2">
+                    harga jual <input type="number" v-model="variable.qty" min="1" class="w-12 p-0 ml-2 rounded text-center" required>
+                  </label>
+                  <input :ref="`variables[${i}]`" type="text" :name="`variables[${i}]`" @input.prevent="variable.price = reformat($event)" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize text-right" :placeholder="`harga jual ${variable.qty}`" required>
+                </div>
+
+                <div v-if="create.errors[`variables.${i}.price`]" class="text-right text-sm text-red-500">{{ create.errors.price?.sell?.unit }}</div>
+              </div>
+            </template>
+
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="qty" class="lowercase first-letter:capitalize w-1/4">qty</label>
-                <input ref="qty" type="number" name="qty" v-model="create.qty" class="w-3/4 bg-transparent border border-slate-200 rounded-md placeholder:capitalize" placeholder="qty" min="1" required>
+                <input ref="qty" type="number" name="qty" v-model="create.qty" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize" placeholder="qty" min="1" required>
               </div>
 
               <div v-if="create.errors.qty" class="text-right text-sm text-red-500">{{ create.errors.qty }}</div>
@@ -371,6 +398,13 @@ onMounted(fetch)
           </div>
 
           <div class="flex items-center justify-end space-x-2 px-2 py-1 bg-slate-100 rounded-b-md">
+            <button @click.prevent="addVariable" type="button" class="bg-blue-600 hover:bg-blue-700 rounded-md px-3 py-1 text-white transition-all">
+              <div class="flex items-center space-x-1">
+                <i class="bx bx-plus"></i>
+                <p class="capitalize font-semibold">tambah harga</p>
+              </div>
+            </button>
+
             <button class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-white transition-all">
               <div class="flex items-center space-x-1">
                 <i class="bx bx-check"></i>
