@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -245,5 +247,54 @@ class ProductController extends Controller
             'products' => $products,
             'ids' => $post['products'],
         ]);
+    }
+
+    /**
+     * Edit stock, make false transaction.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function editStock(Request $request)
+    {
+        $post = $request->validate([
+            'product' => 'required|integer|exists:products,id',
+            'type' => 'required|string',
+            'qty' => 'required|integer',
+        ]);
+
+        $product = Product::findOrFail($request->product);
+        
+        DB::beginTransaction();
+        try {
+            $transaction = Transaction::create([
+                'user_id' => $request->user()->id,
+                'payment_method' => 'cash',
+                'total_cost' => 0,
+                'pay' => 0,
+                'note' => mb_strtoupper("edit $request->type"),
+            ]);
+
+            $detail = $transaction->details()->create([
+                'product_id' => $product->id,
+                'type' => $request->type,
+                'qty_unit' => $request->qty,
+                'cost_unit' => 0,
+                'subtotal' => 0,
+            ]);
+
+            Log::info('EDIT STOCK = ', [
+                'transaction' => $transaction,
+                'detail' => $detail,
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Edit stok produk berhasil.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th);
+            return redirect()->back()->with('error', 'Gagal edit stok produk.');
+        }
+        return redirect()->back()->with('error', 'Internal Server Error.');
     }
 }

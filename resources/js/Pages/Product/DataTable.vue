@@ -3,11 +3,12 @@ import Builder from '@/Components/DataTable/Builder.vue'
 import Th from '@/Components/DataTable/Th.vue'
 import { ref } from 'vue'
 
-const { edit, destroy, detail } = defineProps({
+const { edit, destroy, detail, editStock } = defineProps({
   edit: Function,
   destroy: Function,
   detail: Function,
   price: Function,
+  editStock: Function,
 })
 
 const table = ref(null)
@@ -52,6 +53,12 @@ defineExpose({
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_unit }}</td>
         <td v-if="isAdmin()" class="border p-1">
           <div class="flex items-center justify-center space-x-1 text-white">
+            <button @click.prevent="editStock(item)" class="bg-purple-400 rounded-md px-3 py-1 text-sm font-semibold whitespace-nowrap">
+              <div class="flex items-center">
+                <i class="bx bx-message-square-edit mr-1 text-white text-sm"></i> Edit Stok
+              </div>
+            </button>
+
             <button @click.prevent="detail(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-list-ul mr-1 text-white text-sm"></i> Transaksi

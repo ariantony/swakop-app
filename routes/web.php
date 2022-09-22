@@ -37,6 +37,8 @@ Route::middleware([
     Route::get('product/iframe/print/group', [App\Http\Controllers\ProductController::class, 'generateGroup'])->name('product.iframe.group')->middleware('role:admin');
     Route::get('product/iframe/print/price', [App\Http\Controllers\ProductController::class, 'generatePrice'])->name('product.iframe.price')->middleware('role:admin');
 
+    // Edit Stock (Temp)
+    Route::post('product/edit-stock', [App\Http\Controllers\ProductController::class, 'editStock'])->name('product.edit.stock')->middleware('role:admin');
     // Masterdata
     Route::resource('user', App\Http\Controllers\UserController::class)->middleware('role:admin');
     Route::get('product', [App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
