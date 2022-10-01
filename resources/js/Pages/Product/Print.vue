@@ -140,7 +140,7 @@ onMounted(fetch)
                       label: 'Pilih Semua',
                       value: 0,
                     }].concat(products.map(p => ({
-                      label: `${p.code ? p.code + '-' : ''} ${p.barcode} - ${p.name}`,
+                      label: `${p.name} ${p.barcode != null ? '- ' + p.barcode : ''}`,
                       value: p.id,
                     })))"
                     :searchable="true"
