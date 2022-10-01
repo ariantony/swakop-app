@@ -116,10 +116,8 @@ const submit = () => form.id ? update() : store()
 const editStock = product => {
   formStock.product = product.id
   formStock.name = product.name
-formStock.exist = product.stock_unit
+  formStock.exist = product.stock_unit
   stock.value = true
-
-  console.log(formStock)
 }
 
 const submitStock = () => {
@@ -138,13 +136,34 @@ const submitStock = () => {
     html: '<span class="text-red-600"> Harap berhati-hati, edit stok tidak bisa dikembalikan! </span>',
     icon: 'question',
     showCancelButton: true,
-  }).then(response => response.isConfirmed && (
-    formStock.post(route('product.edit.stock'), {
-      onSuccess: () => {
-        reset()
-      },
-    })
-  ))
+  }).then(async response => {
+    if (response.isConfirmed) {
+      response = await Swal.fire({
+        title: 'Masukan kode',
+        icon: 'question',
+        input: 'password',
+        inputAttributes: {
+          autocomplete: 'new-password',
+          autocorrect: 'off',
+        },
+        inputValidator: async code => {
+          try {
+            const response = await axios.post(route('api.compare'), { code })
+          } catch (e) {
+            return 'Kode tidak sesuai'
+          }
+        }
+      })
+
+      response.isConfirmed && (
+        formStock.post(route('product.edit.stock'), {
+          onSuccess: () => {
+            reset()
+          },
+        })
+      )
+    }
+  });
 }
 
 onMounted(() => {
