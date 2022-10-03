@@ -45,6 +45,7 @@ Route::middleware([
     Route::resource('product', App\Http\Controllers\ProductController::class)->except('index')->middleware('role:admin');
     Route::resource('burden', App\Http\Controllers\BurdenController::class)->middleware('role:admin');
     Route::resource('price', App\Http\Controllers\PriceController::class)->middleware('role:admin');
+    Route::resource('group', App\Http\Controllers\GroupController::class)->middleware('role:admin');
 
     // Conversion
     Route::resource('conversion', App\Http\Controllers\ConversionController::class)->middleware('role:admin');

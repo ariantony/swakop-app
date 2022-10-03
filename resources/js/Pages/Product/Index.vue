@@ -248,7 +248,7 @@ onMounted(() => {
                   <Select
                     v-model="form.group_id"
                     :options="groups.map(g => ({
-                      label: `${g.code} - ${String(g.name).toUpperCase()}`,
+                      label: `${String(g.code).toUpperCase()} - ${String(g.name).toUpperCase()}`,
                       value: g.id,
                     }))"
                     :searchable="true" />

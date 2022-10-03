@@ -81,7 +81,7 @@ onMounted(fetch)
                   <Select
                     v-model="fgroup.group_id"
                     :options="groups.map(g => ({
-                      label: `${g.code} - ${new String(g.name).toUpperCase()}`,
+                      label: `${String(g.code).toUpperCase()} - ${new String(g.name).toUpperCase()}`,
                       value: g.id,
                     }))"
                     :searchable="true"
