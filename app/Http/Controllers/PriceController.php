@@ -97,10 +97,10 @@ class PriceController extends Controller
         } 
 
         if ($price = Price::create($post)) {
-            $product->variableCosts()->delete();
-            $product->variableCosts()->insert(array_map(
+            $price->variableCosts()->delete();
+            $price->variableCosts()->insert(array_map(
                 fn ($variable) => array_merge($variable, [
-                    'product_id' => $product->id,
+                    'price_id' => $price->id,
                 ]), $post['variables']
             ));
 

@@ -35,7 +35,7 @@ onMounted(async () => {
     const { data: response } = await axios.get(route('api.product.price', product.id))
     form.cost_selling_per_unit = response.price.cost_selling_per_unit
     form.price_per_unit = response.price.price_per_unit
-    form.variables = response.variables
+    form.variables = response.price.variable_costs
   } catch (e) {
     form.cost_selling_per_unit = 0
     form.price_per_unit = 0
@@ -81,6 +81,7 @@ const edit = price => {
   form.price_per_unit = price.price_per_unit
   form.price_per_box = price.price_per_box
   form.price_per_carton = price.price_per_carton
+  form.variables = price.variables || []
 
   show.value = false
 

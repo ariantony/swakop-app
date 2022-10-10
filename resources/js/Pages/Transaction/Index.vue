@@ -76,22 +76,23 @@ const add = () => {
 }
 
 const getPriceFromVariables = (product, transaction) => {
-  if (product.variableCosts.length) {
+  let qty = transaction.qty || 0
+
+  if (product.price?.variable_costs?.length) {
     let histories = []
     let total = 0
-    let qty = transaction.qty
     
     while (qty > 0) {
-      let variable = product.variableCosts.find(v => v.qty <= qty)
+      let variable = product.price?.variable_costs?.find(v => v.qty <= qty)
       
       if (variable) {
         histories.push(variable)
         total += variable.price * variable.qty
         qty -= variable.qty
       } else {
-        total += product.price.price_per_unit
+        total += product.price?.price_per_unit
         qty -= 1
-        histories.push({ qty: 1, price: product.price.price_per_unit })
+        histories.push({ qty: 1, price: product.price?.price_per_unit })
       }
     }
 
@@ -100,7 +101,7 @@ const getPriceFromVariables = (product, transaction) => {
     return total
   }
 
-  return product.price.price_per_unit * qty
+  return product.price?.price_per_unit * qty
 }
 
 const getPriceByTransactionWithVariables = transaction => {
@@ -116,9 +117,9 @@ const getPriceByTransaction = transaction => {
   const product = products.value.find(p => p.id === transaction.product_id)
   
   if (!product) return 0
-  if (transaction.type === 'unit') return product.price.price_per_unit
-  if (transaction.type === 'box') return product.price.price_per_box
-  if (transaction.type === 'carton') return product.price.price_per_carton
+  if (transaction.type === 'unit') return product.price?.price_per_unit
+  if (transaction.type === 'box') return product.price?.price_per_box
+  if (transaction.type === 'carton') return product.price?.price_per_carton
 }
 
 const grandTotal = () => {

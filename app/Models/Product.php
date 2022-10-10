@@ -28,7 +28,6 @@ class Product extends Model
         'sell',
         'returnBuy',
         'retur',
-        'variableCosts',
     ];
 
     /**
@@ -39,14 +38,6 @@ class Product extends Model
         'stock_box',
         'stock_carton',
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function variableCosts()
-    {
-        return $this->hasMany(VariableCost::class)->orderBy('qty', 'desc');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

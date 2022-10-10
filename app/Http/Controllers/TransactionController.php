@@ -51,9 +51,10 @@ class TransactionController extends Controller
     {
         $total = 0;
         $qty = $transaction['qty_unit'];
+        $variableCosts = $product->price->variableCosts;
 
         while ($qty > 0) {
-            if ($variable = $product->variableCosts->where('qty', '<=', $qty)->first()) {
+            if ($variable = $variableCosts->where('qty', '<=', $qty)->first()) {
                 $total += $variable->price * $variable->qty;
                 $qty -= $variable->qty;
             } else {

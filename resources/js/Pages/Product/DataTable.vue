@@ -51,15 +51,15 @@ defineExpose({
     </template>
     <template v-slot:tbody="{ index, item }">
       <tr>
-        <td class="border p-2 border-x-2 border-slate-300 text-center" :rowspan="item.variable_costs.length + 1">{{ index + 1 }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase" :rowspan="item.variable_costs.length + 1">{{ item.code }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase whitespace-nowrap" :rowspan="item.variable_costs.length + 1">{{ item.name }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase" :rowspan="item.variable_costs.length + 1">{{ item.barcode }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase text-center" :rowspan="item.variable_costs.length + 1">{{ item.group?.code }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center" :rowspan="item.price?.variable_costs.length + 1">{{ index + 1 }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase" :rowspan="item.price?.variable_costs.length + 1">{{ item.code }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase whitespace-nowrap" :rowspan="item.price?.variable_costs.length + 1">{{ item.name }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase" :rowspan="item.price?.variable_costs.length + 1">{{ item.barcode }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase text-center" :rowspan="item.price?.variable_costs.length + 1">{{ item.group?.code }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">1</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.price?.price_per_unit ? rupiah(item.price?.price_per_unit) : '-' }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-center" :rowspan="item.variable_costs.length + 1">{{ item.stock_unit }}</td>
-        <td v-if="isAdmin()" class="border p-1" :rowspan="item.variable_costs.length + 1">
+        <td class="border p-2 border-x-2 border-slate-300 text-center" :rowspan="item.price?.variable_costs.length + 1">{{ item.stock_unit }}</td>
+        <td v-if="isAdmin()" class="border p-1" :rowspan="item.price?.variable_costs.length + 1">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="detail(item)" class="bg-cyan-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
@@ -88,7 +88,7 @@ defineExpose({
         </td>
       </tr>
 
-      <template v-for="(variable, i) in item.variable_costs" :key="i">
+      <template v-for="(variable, i) in item.price?.variable_costs" :key="i">
         <tr>
           <td class="border p-2 border-x-2 border-slate-300 text-right">
             {{ variable.qty }}

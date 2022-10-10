@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('variable_costs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')
+            $table->foreignId('price_id')
                     ->constrained()
                     ->cascadeOnDelete();
             $table->unsignedInteger('qty');
