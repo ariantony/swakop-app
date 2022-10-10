@@ -45,7 +45,7 @@ class IncomeStatementController extends Controller
             'totalReturn' => $totalReturn,
             'discount' => 0,
             'shippingCost' => 0,
-            'total' => $totalBuy + $totalReturn,
+            'total' => $totalBuy - $totalReturn,
         ];
 
         $grossProfit = $totalSell - $hpp['total'];

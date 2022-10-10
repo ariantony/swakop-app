@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -20,7 +22,7 @@ class ProductController extends Controller
     public function index()
     {
         return Inertia::render('Product/Index')->with([
-            'groups' => Group::get(),
+            'groups' => Group::orderBy('name')->get(),
         ]);
     }
 
@@ -53,6 +55,7 @@ class ProductController extends Controller
     {
         return Product::select(['id', 'name', 'code', 'barcode'])->with(['buy', 'sell', 'returnBuy', 'retur', 'group', 'price', 'from', 'to'])
                 ->whereRelation('price', 'price_per_unit', '>', 0)
+                ->orderBy('name')
                 ->get()
                 ->map(function (Product $product) {
                     return $product->only([
@@ -191,7 +194,7 @@ class ProductController extends Controller
     public function print()
     {
         return Inertia::render('Product/Print')->with([
-            'groups' => Group::get(),
+            'groups' => Group::orderBy('name')->get(),
         ]);
     }
 
@@ -207,7 +210,7 @@ class ProductController extends Controller
             'group_id' => 'required|integer|exists:groups,id',
         ]);
 
-        $products = Product::with('group')->where('group_id', $post['group_id'])->get();
+        $products = Product::with('group')->where('group_id', $post['group_id'])->orderBy('name')->get();
 
         if ($products->count() === 0) {
             return redirect()->back()->with('error', 'Tidak ada produk dalam kelompok barang ini.');
@@ -239,9 +242,9 @@ class ProductController extends Controller
         ]);
         
         if (in_array(0, $post['products'])) {
-            $products = Product::with(['group', 'price', 'buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->get();
+            $products = Product::with(['group', 'price', 'buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->orderBy('name')->get();
         } else {
-            $products = Product::with(['group', 'price', 'buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->find($post['products']);
+            $products = Product::with(['group', 'price', 'buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->orderBy('name')->find($post['products']);
         }
 
         if ($request->method() === 'GET') {
@@ -255,5 +258,53 @@ class ProductController extends Controller
             'products' => $products,
             'ids' => $post['products'],
         ]);
+    }
+
+    /**
+     * Edit stock, make false transaction.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function editStock(Request $request)
+    {
+        $post = $request->validate([
+            'product' => 'required|integer|exists:products,id',
+            'type' => 'required|string',
+            'qty' => 'required|integer',
+        ]);
+
+        $product = Product::findOrFail($request->product);
+        
+        DB::beginTransaction();
+        try {
+            $transaction = Transaction::create([
+                'user_id' => $request->user()->id,
+                'payment_method' => 'cash',
+                'total_cost' => 0,
+                'pay' => 0,
+                'note' => mb_strtoupper("edit $request->type"),
+            ]);
+
+            $detail = $transaction->details()->create([
+                'product_id' => $product->id,
+                'type' => $request->type,
+                'qty_unit' => $request->qty,
+                'cost_unit' => 0,
+                'subtotal' => 0,
+            ]);
+
+            Log::info('EDIT STOCK = ', [
+                'transaction' => $transaction,
+                'detail' => $detail,
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Edit stok produk berhasil.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal edit stok produk.');
+        }
+        return redirect()->back()->with('error', 'Internal Server Error.');
     }
 }
