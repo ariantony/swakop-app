@@ -24,11 +24,18 @@ class ReturnStockController extends Controller
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function products()
+    public function products(Request $request)
     {
         return Product::with(['buy', 'sell', 'returnBuy'])
+                        ->where(function (Builder $query) use ($request) {
+                            $search = '%' . $request->q . '%';
+
+                            $query->where('barcode', 'like', $search)
+                                    ->orWhere('name', 'like', $search);
+                        })
                         ->without(['group'])
                         ->whereHas('details')
                         ->get()

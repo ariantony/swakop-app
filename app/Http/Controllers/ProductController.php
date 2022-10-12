@@ -65,15 +65,25 @@ class ProductController extends Controller
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function withoutGroupAndPrice()
+    public function withoutGroupAndPrice(Request $request)
     {
-        return Product::without(['group', 'price'])->with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->orderBy('name')->get(['id', 'code', 'name', 'barcode'])->map(function (Product $product) {
-            return $product->only([
-                'id', 'code', 'barcode', 'name', 'stock_unit',
-            ]);
-        });
+        return Product::without(['group', 'price'])
+                        ->where(function (Builder $query) use ($request) {
+                            $search = '%' . $request->q . '%';
+
+                            $query->where('barcode', 'like', $search)
+                                    ->orWhere('name', 'like', $search);
+                        })
+                        ->with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])
+                        ->get(['id', 'code', 'name', 'barcode'])
+                        ->map(function (Product $product) {
+                            return $product->only([
+                                'id', 'code', 'barcode', 'name', 'stock_unit',
+                            ]);
+                        });
     }
 
     /**
