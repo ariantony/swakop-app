@@ -34,7 +34,7 @@ const click = () => {
 </script>
 
 <template>
-  <th :class="`${$props.class} ${sortable ? 'cursor-pointer' : 'cursor-default'}`" @click.prevent="click">
+  <th :class="`${sortable ? 'cursor-pointer' : 'cursor-default'}`" @click.prevent="click">
     <div class="flex items-center justify-center space-x-2">
       <div class="w-auto">
         <slot />
