@@ -37,15 +37,19 @@ Route::middleware([
     Route::get('product/iframe/print/group', [App\Http\Controllers\ProductController::class, 'generateGroup'])->name('product.iframe.group')->middleware('role:admin');
     Route::get('product/iframe/print/price', [App\Http\Controllers\ProductController::class, 'generatePrice'])->name('product.iframe.price')->middleware('role:admin');
 
+    // Edit Stock (Temp)
+    Route::post('product/edit-stock', [App\Http\Controllers\ProductController::class, 'editStock'])->name('product.edit.stock')->middleware('role:admin');
     // Masterdata
     Route::resource('user', App\Http\Controllers\UserController::class)->middleware('role:admin');
     Route::get('product', [App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
     Route::resource('product', App\Http\Controllers\ProductController::class)->except('index')->middleware('role:admin');
     Route::resource('burden', App\Http\Controllers\BurdenController::class)->middleware('role:admin');
     Route::resource('price', App\Http\Controllers\PriceController::class)->middleware('role:admin');
+    Route::resource('group', App\Http\Controllers\GroupController::class)->middleware('role:admin');
 
     // Conversion
     Route::resource('conversion', App\Http\Controllers\ConversionController::class)->middleware('role:admin');
+    Route::post('/conversion/delete', [App\Http\Controllers\ConversionController::class, 'delete'])->name('conversion.delete')->middleware('role:admin');
 
     // Stock In
     Route::resource('in', App\Http\Controllers\InController::class)->middleware('role:admin');

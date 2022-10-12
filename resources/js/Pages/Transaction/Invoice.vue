@@ -25,6 +25,10 @@ setTimeout(() => window.print(), 1000)
   .s {
     font-family: 'Merchant Copy' !important;
   }
+  .text-md {
+    font-size: 0.925rem; 
+    line-height: 1.15rem;
+  }
 </style>
 
 <template>
@@ -37,13 +41,13 @@ setTimeout(() => window.print(), 1000)
       <h1 class="text-sm">Hp : 081221673528</h1>
     </div>
     <div class="flex items-center justify-between border-y-2 border-black border-solid space-x-1">
-      <h1 class="text-xs">Invoice : {{ transaction.id.toString().padStart(6, '0') }}</h1>
-      <h1 class="text-xs">Kasir : {{ transaction.user.name.length > 12 ? new String(transaction.user.name).substring(0, 12) : transaction.user.name }}</h1>
+      <h1 class="text-sm">Invoice : {{ transaction.id.toString().padStart(6, '0') }}</h1>
+      <h1 class="text-sm capitalize">Kasir : {{ transaction.user.name.length > 12 ? new String(transaction.user.name).substring(0, 12) : transaction.user.name }}</h1>
     </div>
-    <table class="w-full border-collapse text-xs">
+    <table class="w-full border-collapse text-md">
       <template v-for="(item, i) in transaction.details" :key="i" :item="item">
         <tr>
-          <td colspan="4" class="capitalize px-1">{{ item.product.name }}</td>
+          <td colspan="4" class="capitalize px-1">{{ new String(item.product.name).toUpperCase() }}</td>
         </tr>
         <tr>
           <td class="px-1 text-right whitespace-nowrap" colspan="2">{{ item.qty_unit }}</td>
@@ -65,11 +69,11 @@ setTimeout(() => window.print(), 1000)
         <td colspan="2" class="px-1 text-right">{{ price(transaction.pay - transaction.total_cost) }}</td>
       </tr>
     </table>
-    <div class="flex items-center justify-center space-y-1 mt-2 border-y-2 border-black border-solid text-xs">
+    <div class="flex items-center justify-center space-y-1 mt-2 border-y-2 border-black border-solid text-sm">
       <div>Tgl. {{ new Date().toLocaleString('en-GB').replaceAll(',', '').replaceAll('/', '-') }}</div>
     </div>
-    <div class="flex flex-col items-center justify-center space-y-1 mt-2 text-xs font-semibold uppercase">
-      <div style="font-size: 0.8rem">Thanks for shop with us</div>
+    <div class="flex flex-col items-center justify-center space-y-1 mt-2 text-sm font-semibold uppercase">
+      <div style="font-size: 0.9rem">Thanks for shop with us</div>
       <p>...</p>
     </div>
   </div>

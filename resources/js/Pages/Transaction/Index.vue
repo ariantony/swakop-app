@@ -6,6 +6,13 @@ import { useForm } from '@inertiajs/inertia-vue3'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 
+const { transaction } = defineProps({
+  transaction: {
+    type: Object,
+    default: null,
+  },
+})
+
 const self = getCurrentInstance()
 const products = ref([])
 
@@ -293,6 +300,17 @@ const decrement = transaction => {
 
 const fetch = async () => {
   try {
+    Swal.fire({
+      title: 'Mengambil data produk',
+      text: 'Mohon tunggu ...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading()
+      },
+    })
     const response = await axios.get(route('api.product.where.has.stock'))
     products.value = response.data
     self.refs.product.focus()
@@ -329,6 +347,14 @@ onMounted(() => {
       self?.refs?.product?.focus()
     }
   })
+
+  if (transaction) {
+    transactions.value = transaction.details.map(detail => ({
+      product_id: detail.product_id,
+      qty: detail.qty_unit,
+      type: 'unit',
+    }))
+  }
 });
 </script>
 

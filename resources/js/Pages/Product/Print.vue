@@ -81,7 +81,7 @@ onMounted(fetch)
                   <Select
                     v-model="fgroup.group_id"
                     :options="groups.map(g => ({
-                      label: `${g.code} - ${new String(g.name).toUpperCase()}`,
+                      label: `${String(g.code).toUpperCase()} - ${new String(g.name).toUpperCase()}`,
                       value: g.id,
                     }))"
                     :searchable="true"
@@ -140,7 +140,7 @@ onMounted(fetch)
                       label: 'Pilih Semua',
                       value: 0,
                     }].concat(products.map(p => ({
-                      label: `${p.code ? p.code + '-' : ''} ${p.barcode} - ${p.name}`,
+                      label: `${p.name} ${p.barcode != null ? '- ' + p.barcode : ''}`,
                       value: p.id,
                     })))"
                     :searchable="true"

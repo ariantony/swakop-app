@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, nextTick, onMounted, onUnmounted, ref } from 'vue';
+import { getCurrentInstance, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -10,6 +10,16 @@ import DataTable from './DataTable.vue'
 import DataTableDetail from './DataTableDetail.vue';
 
 const self = getCurrentInstance()
+const search = ref('')
+const timeout = ref(null)
+watch(search, () => {
+  products.value = []
+  clearTimeout(timeout.value)
+  timeout.value = setTimeout(() => {
+    fetch()
+  }, 200)
+})
+
 const product = ref({
   name: '',
 })
@@ -40,7 +50,9 @@ const close = () => {
 
 const fetch = async () => {
   try {
-    const response = await axios.get(route('api.return-stock.products'))
+    const response = await axios.get(route('api.return-stock.products', {
+      q: search.value,
+    }))
     products.value = response.data
   } catch (e) {
     const response = await Swal.fire({
@@ -115,6 +127,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             }))"
             :searchable="true"
             noOptionsText="Mohon tunggu..."
+            @searchChange="search = $event"
             @change="nextTick(show)" />
         </div>
       </template>

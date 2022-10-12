@@ -25,6 +25,7 @@ Route::name('api.')->group(function () {
     Route::post('/users', [App\Http\Controllers\UserController::class, 'paginate'])->name('user.paginate');
     Route::post('/burdens', [App\Http\Controllers\BurdenController::class, 'paginate'])->name('burden.paginate');
     Route::post('/conversions', [App\Http\Controllers\ConversionController::class, 'paginate'])->name('conversion.paginate');
+    Route::post('/groups', [App\Http\Controllers\GroupController::class, 'paginate'])->name('group.paginate');
 
     // Stock In
     Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');

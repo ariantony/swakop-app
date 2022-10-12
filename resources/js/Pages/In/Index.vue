@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, ref, nextTick, onMounted } from 'vue'
+import { getCurrentInstance, ref, nextTick, onMounted, watch } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Select from '@vueform/multiselect'
 import { useForm } from '@inertiajs/inertia-vue3'
@@ -13,6 +13,17 @@ import axios from 'axios'
 const self = getCurrentInstance()
 const { groups } = defineProps({
   groups: Array,
+})
+
+const timeout = ref(null)
+const search = ref('')
+
+watch(search, () => {
+  products.value = []
+  clearTimeout(timeout.value)
+  setTimeout(() => {
+    fetch()
+  }, 200)
 })
 
 const products = ref([])
@@ -198,7 +209,9 @@ Inertia.on('finish', () => rr())
 
 const fetch = async () => {
   try {
-    const response = await axios.get(route('api.product.without.group.and.price'))
+    const response = await axios.get(route('api.product.without.group.and.price', {
+      q: search.value,
+    }))
     products.value = response.data
   } catch (e) {
     const response = await Swal.fire({
@@ -251,6 +264,7 @@ onMounted(fetch)
                     }))"
                     :searchable="true"
                     :createOption="true"
+                    @searchChange="search = $event"
                     @option="option"
                     noOptionsText="Mohon tunggu..." />
                 </div>

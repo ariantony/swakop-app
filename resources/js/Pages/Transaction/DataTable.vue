@@ -36,7 +36,7 @@ const a = ref(true)
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
-      <tr>
+      <tr :class="item.total_cost === 0 ? 'bg-sky-200' : ''">
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.id.toString().padStart(10, '0') }}</td>
         <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.user.name }}</td>

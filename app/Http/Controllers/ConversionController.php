@@ -6,6 +6,9 @@ use App\Models\Conversion;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ConversionController extends Controller
 {
@@ -107,11 +110,38 @@ class ConversionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Conversion  $conversion
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Conversion $conversion)
+    public function delete(Request $request)
     {
-        //
+        $request->validate([
+            'id' => 'required|integer|exists:conversions,id',
+        ]);
+
+        $conversion = Conversion::find($request->id);
+
+        if (empty($conversion)) {
+            return redirect()->back()->with('error', 'Data konversi produk tidak ditemukan.');
+        }
+
+        if (($conversion->from->stock_unit - $conversion->large) < 0) {
+            return redirect()->back()->with('error', 'Stock product besar akan minus jika data konversi ini dihapus.');
+        }
+
+        DB::beginTransaction();
+        try {
+            $conversion->delete();
+
+            Log::info('delete conversion with details ', [
+                'conversion' => $conversion,
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Konversi berhasil dihapus.');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

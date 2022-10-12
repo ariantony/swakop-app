@@ -94,7 +94,7 @@ const getPriceFromVariables = transaction => {
       <Th class="px-3 py-2 uppercase border-2 border-slate-300" :sortable="false">kasir</Th>
     </template>
     <template v-slot:tbody="{ index, item }">
-      <tr>
+      <tr :class="item.transaction.note ? (item.transaction.note === 'EDIT BUY' ? 'bg-green-300' : 'bg-red-300') : ''">
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center uppercase">{{ redaction(item.type) }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.qty_unit }}</td>

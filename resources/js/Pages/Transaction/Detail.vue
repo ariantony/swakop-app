@@ -9,6 +9,8 @@ const { transaction, close } = defineProps({
   close: Function,
 })
 
+const isReturned = ref(transaction.details[0].type === 'return sell')
+
 const hide = e => {
   if (e.key === 'Escape') {
     close()
@@ -35,10 +37,14 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
       <div class="p-4 max-h-[28rem] overflow-auto">
         <div class="flex items-center justify-between py-2 mb-4 border-b-2 border-slate-300">
           <h2 class="text-xl">Tanggal Transaksi : {{ dateindo(transaction.created_at, true) }}</h2>
-          <div v-if="transaction.details[0].type === 'return sell'" class="bg-red-500 rounded-md p-2 px-6 text-white font-bold">
+          <div v-if="isReturned" class="bg-red-500 rounded-md p-2 px-6 text-white font-bold">
             <p class="uppercase">RETUR</p>
           </div>
           <h2 class="text-xl">Kasir : {{ transaction.user.name }}</h2>
+        </div>
+        <div v-if="isReturned" class="flex items-center justify-between py-2 mb-4 border-b-2 border-slate-300">
+          <h2 class="text-lg">Di retur pada : {{ dateindo(transaction.updated_at, true) }}</h2>
+          <h2 class="text-lg">Alasan : {{ transaction.note }}</h2>
         </div>
         <DataTable :transaction="transaction" />
         <div class="flex items-center justify-end py-2 mt-4">
