@@ -257,11 +257,11 @@ onMounted(() => {
                             <Button iconClass="bx-cart-add" text="Penjualan" :href="route('transaction.index')" :active="route().current('transaction.index')"/>
                             <Button v-if="isAdmin()" iconClass="bxs-inbox" text="Stok Masuk" :href="route('in.index')" :active="route().current('in.*')"/>
                             <Button v-if="isAdmin()" iconClass="bx-undo" text="Retur Pembelian" :href="route('return-stock.index')" :active="route().current('return-stock.*')"/>
-                            <Button v-if="false" iconClass="bx-undo" text="Retur Penjualan" :href="route('transaction.return.index')" :active="route().current('transaction.return.index')"/>
-                            <Button iconClass="bx-money-withdraw" text="Riwayat Penjualan" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
-                            <!-- <SidebarLinks :active="route().current('transaction.history') || route().current('transaction.return.history')" text="Riwayat" icon="bx-history">
-                                <Button v-if="false" iconClass="bx-undo" text="Pengembalian" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
-                            </SidebarLinks> -->
+                            <Button v-if="isAdmin()" iconClass="bx-layer-minus" text="Void Penjualan" :href="route('transaction.return.index')" :active="route().current('transaction.return.index')"/>
+                            <SidebarLinks :active="route().current('transaction.history') || route().current('transaction.return.history')" text="Riwayat" icon="bx-history">
+                                <Button v-if="isAdmin()" iconClass="bx-money-withdraw" text="Penjualan" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
+                                <Button v-if="isAdmin()" iconClass="bx-bookmark-alt-minus" text="Void Penjualan" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
+                            </SidebarLinks>
                         </SidebarLinks>
                         <SidebarLinks :active="route().current('presence.*') || route().current('income.statement.*') || route().current('daily.report.*') || route().current('return.report.*') || route().current('income-statement.*') || route().current('daily-report.*') || route().current('goods-return.*')" text="Laporan" icon="bxs-report">
                             <Button v-if="isAdmin()" iconClass="bxs-file" text="Laba Rugi" :href="route('income.statement.index')" :active="route().current('income.statement.*') || route().current('income-statement.*')"/>

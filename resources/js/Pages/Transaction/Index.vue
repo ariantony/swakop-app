@@ -6,6 +6,13 @@ import { useForm } from '@inertiajs/inertia-vue3'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 
+const { transaction } = defineProps({
+  transaction: {
+    type: Object,
+    default: null,
+  },
+})
+
 const self = getCurrentInstance()
 const products = ref([])
 
@@ -91,27 +98,6 @@ const grandTotal = () => {
 }
 
 const remove = async transaction => {
-  // const response = await Swal.fire({
-  //   title: 'Masukan kode',
-  //   icon: 'question',
-  //   showCloseButton: true,
-  //   showCancelButton: true,
-  //   input: 'password',
-  //   inputPlaceholder: 'Masukan kode',
-  //   inputValidator: async code => {
-  //     try {
-  //       const response = await axios.post(route('api.compare'), {
-  //         code,
-  //       })
-  //     } catch (e) {
-  //       return 'Kode salah'
-  //     }
-  //   },
-  // })
-
-  // if (!response.isConfirmed)
-  //   return
-
   const product = find(transaction)
   product['stock_' + transaction.type] += transaction.qty
   transactions.value = transactions.value.filter(t => t.product_id === transaction.product_id ? t.type !== transaction.type : true)
@@ -240,6 +226,17 @@ const decrement = transaction => {
 
 const fetch = async () => {
   try {
+    Swal.fire({
+      title: 'Mengambil data produk',
+      text: 'Mohon tunggu ...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading()
+      },
+    })
     const response = await axios.get(route('api.product.where.has.stock'))
     products.value = response.data
     self.refs.product.focus()
@@ -276,6 +273,14 @@ onMounted(() => {
       self?.refs?.product?.focus()
     }
   })
+
+  if (transaction) {
+    transactions.value = transaction.details.map(detail => ({
+      product_id: detail.product_id,
+      qty: detail.qty_unit,
+      type: 'unit',
+    }))
+  }
 });
 </script>
 

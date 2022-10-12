@@ -44,6 +44,10 @@ createInertiaApp({
     },
 });
 
+Object.keys(common).forEach(c => window[c] = common[c])
+window.url = url
+window.isAdmin = isAdmin
+
 Inertia.on('start', () => {
     Swal.showLoading();
 })
