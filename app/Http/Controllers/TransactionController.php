@@ -17,11 +17,14 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Transaction/Index');
+        return Inertia::render('Transaction/Index', [
+            'transaction' => Transaction::with('details')->find($request->id),
+        ]);
     }
 
     /**
@@ -247,7 +250,14 @@ class TransactionController extends Controller
      */
     public function find(Transaction $transaction)
     {
-        return Transaction::whereRelation('details', 'type', 'sell')->with(['details'])->find($transaction->id);
+        $find = Transaction::whereRelation('details', 'type', 'sell')->with(['details'])->find($transaction->id);
+
+        if ($find) {
+            return $find;
+        }
+        return response()->json([
+            'message' => 'Transaksi tidak ditemukan.'
+        ], 404);
     }
 
     /**
@@ -262,13 +272,13 @@ class TransactionController extends Controller
         ]);
 
         if ($transaction->details()->update(['type' => 'return sell']) && $transaction->update(['note' => $request->note])) {
-            return redirect()->back()->with('success', __(
-                'Transaksi berhasil di kembalikan',
+            return redirect()->to("/transaction?id=$transaction->id")->with('success', __(
+                'Transaksi berhasil di kembalikan, silahkan lakukan checkout kembali.',
             ));
         }
 
         return redirect()->back()->with('error', __(
-            'Proses pengembalian gagal, coba lagi beberapa saat',
+            'Proses void penjualan gagal, coba lagi beberapa saat',
         ));
     }
 
