@@ -9,7 +9,6 @@ import DataTable from './DataTable.vue'
 import Detail from './Detail.vue'
 import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
-import { cloneDeep } from 'lodash'
 
 const self = getCurrentInstance()
 const { groups } = defineProps({
@@ -242,7 +241,7 @@ onMounted(fetch)
             <div class="flex items-center space-x-4 w-full">
               <div class="flex flex-col space-y-2 w-full">
                 <div class="flex items-center space-x-4 w-full">
-                  <label for="product" class="lowercase first-letter:capitalize flex-none">kode produk / nama produk / barcode</label>
+                  <label for="product" class="capitalize flex-none">nama produk / barcode</label>
                   <Select 
                     ref="product"
                     v-model="form.product"

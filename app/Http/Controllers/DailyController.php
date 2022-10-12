@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Detail;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class DailyController extends Controller
@@ -41,11 +42,41 @@ class DailyController extends Controller
         $sell = Transaction::with('details.product')->whereRelation('details', 'type', 'sell')->where('user_id', $request->user_id)->whereDate('created_at', $date)->get();
         
         $detail = $sell->map(fn ($item) => $item->details)->flatten()->groupBy('product_id')->map(function ($detail) {
+            $variables = [];
+            
+            foreach ($detail as $d) {
+                // dd($d->getVariableCost());
+                // $qty = $d->qty_unit;
+                // $subtotal = 0;
+                // while ($qty > 0) {
+                //     $cost = $d->product?->price?->variableCosts?->firstWhere('qty', '<=', $qty);
+                //     if (!is_null($cost)) {
+                //         $q = floor($qty / $cost->qty);
+                //         $variables[] = [
+                //             'qty' => $cost->qty,
+                //             'price' => $cost->price,
+                //         ];
+                //         $qty -= ($q * $cost->qty);
+                //         $subtotal += ($q * $cost->price);
+                //     } else {
+                //         $left = $qty;
+                //         $variables[] = [
+                //             'qty' => $qty,
+                //             'price' => $d->product?->price?->price_per_unit,
+                //         ];
+                //         $qty -= $left;
+                //         $subtotal += ($left * $d->product?->price?->price_per_unit);
+                //     }
+                // }
+                $variables[] = $d->getVariableData();
+                $subtotal[] = $d->getVariablePrice();
+            }
+            dd($variables, $subtotal);
             return [
                 'name' => $detail->first()->product->name,
                 'qty_unit' => $detail->sum('qty_unit'),
                 'cost_unit' => $detail->first()->cost_unit,
-                'total_cost_all' => $detail->sum('total_cost_all'),
+                'total_cost_all' => array_sum($subtotal),
             ];
         });
         

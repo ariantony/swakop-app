@@ -121,16 +121,6 @@ class InController extends Controller
                 'group_id' => $request->group_id,
             ]);
 
-            if ($request->input('variables')) {
-                $product->variableCosts()->insert(array_map(
-                    fn ($variable) => array_merge([
-                        'product_id' => $product->id,
-                        'qty' => $variable['qty'],
-                        'price' => $variable['price'],
-                    ]), $request->input('variables', [])
-                ));
-            }
-
             $price = $product->prices()->create([
                 'cost_selling_per_unit' => $request->input('price.buy.unit', 0),
                 'cost_selling_per_box' => $request->input('price.buy.box', 0),
@@ -139,6 +129,16 @@ class InController extends Controller
                 'price_per_box' => $request->input('price.sell.box', 0),
                 'price_per_carton' => $request->input('price.sell.carton', 0),
             ]);
+
+            if ($request->input('variables')) {
+                $price->variableCosts()->insert(array_map(
+                    fn ($variable) => array_merge([
+                        'price_id' => $price->id,
+                        'qty' => $variable['qty'],
+                        'price' => $variable['price'],
+                    ]), $request->input('variables', [])
+                ));
+            }
 
             $transaction = Transaction::create([
                 'user_id' => $request->user()->id,

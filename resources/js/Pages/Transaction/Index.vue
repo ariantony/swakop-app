@@ -26,6 +26,42 @@ const current = useForm({
 
 const transactions = ref([])
 
+const formatVariableCosts = transaction => {
+  const product = products.value.find(p => p.id === transaction.product_id)
+  let qty = transaction.qty || 0
+  let s = '<table class="w-full">'
+  
+  if (product.price?.variable_costs?.length) {
+    while (qty > 0) {
+      let variable = product.price?.variable_costs?.find(v => v.qty <= qty)
+      let q = 1, p = 0
+
+      if (variable) {
+        q = Math.floor(qty / variable.qty)
+        p = new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0,
+        }).format(variable.price)
+        s += `<tr><td class="text-left">(${variable.qty})</td><td class="text-right">${q} x </td><td class="text-right">${p}</td></tr>`
+        qty -= q * variable.qty
+      } else {
+        q = qty
+        p = new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0,
+        }).format(product.price?.price_per_unit)
+        s += `<tr><td class="text-left">(${qty})</td><td class="text-right">${q} x </td><td class="text-right">${p}</td></tr>`
+        qty -= q
+      }
+    }
+    s += '</table>'
+    return s
+  }
+  return product.price?.price_per_unit
+}
+
 const outOfStock = (product, type) => {
   const stock = product['stock_' + type]
 
@@ -118,8 +154,8 @@ const getPriceByTransaction = transaction => {
   
   if (!product) return 0
   if (transaction.type === 'unit') return product.price?.price_per_unit
-  if (transaction.type === 'box') return product.price?.price_per_box
-  if (transaction.type === 'carton') return product.price?.price_per_carton
+  // if (transaction.type === 'box') return product.price?.price_per_box
+  // if (transaction.type === 'carton') return product.price?.price_per_carton
 }
 
 const grandTotal = () => {
@@ -129,27 +165,6 @@ const grandTotal = () => {
 }
 
 const remove = async transaction => {
-  // const response = await Swal.fire({
-  //   title: 'Masukan kode',
-  //   icon: 'question',
-  //   showCloseButton: true,
-  //   showCancelButton: true,
-  //   input: 'password',
-  //   inputPlaceholder: 'Masukan kode',
-  //   inputValidator: async code => {
-  //     try {
-  //       const response = await axios.post(route('api.compare'), {
-  //         code,
-  //       })
-  //     } catch (e) {
-  //       return 'Kode salah'
-  //     }
-  //   },
-  // })
-
-  // if (!response.isConfirmed)
-  //   return
-
   const product = find(transaction)
   product['stock_' + transaction.type] += transaction.qty
   transactions.value = transactions.value.filter(t => t.product_id === transaction.product_id ? t.type !== transaction.type : true)
@@ -202,7 +217,7 @@ const submit = () => {
   }
 
   return Swal.fire({
-    title: 'Akhiri proses transaksi?',
+    title: 'Akhiri proses transaksi ?',
     icon: 'question',
     showCancelButton: true,
   }).then(({isConfirmed}) => {
@@ -340,10 +355,10 @@ onMounted(() => {
         </div>
 
         <div class="flex items-center space-x-2">
-          <label for="name" class="w-1/4 basis-52">Qty</label>
+          <label for="name" class="w-1/4 basis-36">Qty</label>
           <input v-model="current.qty" ref="qty" type="number" name="qty" class="w-full bg-transparent border border-slate-300 rounded-md" min="1">
           
-          <Select
+          <!-- <Select
             v-model="current.type"
             :options="[
               { label: 'satuan', value: 'unit' },
@@ -352,7 +367,7 @@ onMounted(() => {
             ]"
             :searchable="true"
             class="max-w-[8rem]"
-            required />
+            required /> -->
           <!-- <i @click.prevent="current.qty > 1 && (current.qty -= 1)" class="bg-slate-50 hover:bg-white transition-all ease-in-out duration-100 border rounded-md p-3 bx bx-minus cursor-pointer"></i>
           <i @click.prevent="current.qty += 1" class="bg-slate-50 hover:bg-white transition-all ease-in-out duration-100 border rounded-md p-3 bx bx-plus cursor-pointer"></i> -->
         </div>
@@ -376,21 +391,21 @@ onMounted(() => {
     </div>
 
     <div class="flex flex-col space-y-2 p-2 bg-white rounded-md">
-      <div class="max-h-96 overflow-auto border rounded-md">
+      <div class="max-h-96 overflow-x-hidden border rounded-md">
         <table class="border-collapse border w-full">
-          <thead class="bg-slate-50 uppercase sticky top-0 left-0">
+          <thead class="bg-slate-50 uppercase">
             <tr>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">no</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">nama</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">qty</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">satuan</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" colspan="2">harga</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">aksi</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">no</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">nama</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">qty</th>
+              <!-- <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">satuan</th> -->
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" colspan="2">harga</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">aksi</th>
             </tr>
 
             <tr>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">satuan</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">subtotal</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap">satuan</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap">subtotal</th>
             </tr>
           </thead>
 
@@ -405,8 +420,9 @@ onMounted(() => {
                   <i @click.prevent="increment(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-plus cursor-pointer"></i>
                 </div>
               </td>
-              <td class="border py-1 px-3 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td>
-              <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction)) }}</td>
+              <!-- <td class="border py-1 px-3 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td> -->
+              <!-- <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction)) }}</td> -->
+              <td class="border py-1 px-3" v-html="formatVariableCosts(transaction)"></td>
               <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransactionWithVariables(transaction)) }}</td>
               <td class="border py-1 px-3 text-center">
                 <button @click.prevent="remove(transaction)" class="bg-red-600 rounded-md px-3 py-2 text-white">

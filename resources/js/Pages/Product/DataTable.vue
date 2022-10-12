@@ -88,7 +88,7 @@ defineExpose({
         </td>
       </tr>
 
-      <template v-for="(variable, i) in item.price?.variable_costs" :key="i">
+      <template v-for="(variable, i) in item.price?.variable_costs.slice().reverse()" :key="i">
         <tr>
           <td class="border p-2 border-x-2 border-slate-300 text-right">
             {{ variable.qty }}

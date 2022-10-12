@@ -54,6 +54,76 @@ class Detail extends Model
     }
 
     /**
+     * @return int
+     */
+    public function getVariablePrice()
+    {
+        if (in_array($this->type, ['buy', 'return buy'])) {
+            return $this->product->price?->price_per_unit * $this->qty_unit;
+        }
+
+        $product = $this->product;
+        $qty = $this->qty_unit;
+        $subtotal = 0;
+        $price = $product->prices()->orderByDesc('created_at')->where('created_at', '<=', $this->created_at)->first();
+
+        if ($price->variableCosts()->count() > 0){
+            while ($qty > 0) {
+                $cost = $price?->variableCosts?->firstWhere('qty', '<=', $qty);
+                if (!is_null($cost)) {
+                    $q = floor($qty / $cost->qty);
+                    $qty -= ($q * $cost->qty);
+                    $subtotal += ($q * $cost->qty * $cost->price);
+                } else {
+                    $left = $qty;
+                    $qty -= $left;
+                    $subtotal += ($left * $price?->price_per_unit);
+                }
+            }
+            
+            return $subtotal;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVariableData()
+    {
+        $product = $this->product;
+        $qty = $this->qty_unit;
+        $price = $product->prices()->orderByDesc('created_at')->where('created_at', '<=', $this->created_at)->first();
+
+        if ($price->variableCosts()->count() > 0){
+            $format = [];
+            while ($qty > 0) {
+                $cost = $price?->variableCosts?->firstWhere('qty', '<=', $qty);
+                if (!is_null($cost)) {
+                    $format[] = [
+                        'perqty' => $cost->qty,
+                        'perprice' => $cost->price,
+                        'qty' => $q = floor($qty / $cost->qty),
+                        'subtotal' => $q * $cost->qty * $cost->price
+                    ];
+                    $qty -= ($q * $cost->qty);
+                } else {
+                    $format[] = [
+                        'perqty' => 1,
+                        'perprice' => $price?->price_per_unit,
+                        'qty' => $qty,
+                        'subtotal' => $qty * $price?->price_per_unit
+                    ];
+                    $qty -= $qty;
+                }
+            }
+            return $format;
+        }
+        return [];
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function totalCostUnit() : Attribute
