@@ -1,19 +1,11 @@
-
 <script setup>
-import { getCurrentInstance, nextTick, onMounted, onUpdated, ref } from 'vue'
-import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia'
-import AppLayout from '@/Layouts/AppLayout.vue'
-import Card from '@/Components/Card.vue'
-import Swal from 'sweetalert2'
-import { id } from 'date-fns/locale';
+import SinglePrice from './SinglePrice.vue'
+import VariablePrice from './VariablePrice.vue'
 
 const { transaction, totalItem } = defineProps({
   transaction: Object,
   totalItem: Number,
 })
-
-const self = getCurrentInstance()
 
 const price = value => new Number(value).toLocaleString('in-ID')
 
@@ -49,11 +41,8 @@ setTimeout(() => window.print(), 1000)
         <tr>
           <td colspan="4" class="capitalize px-1">{{ new String(item.product.name).toUpperCase() }}</td>
         </tr>
-        <tr>
-          <td class="px-1 text-right whitespace-nowrap" colspan="2">{{ item.qty_unit }}</td>
-          <td class="px-1 text-right">{{ price(item.cost_unit) }}</td>
-          <td class="px-1 text-right">{{ price(item.total_cost_all) }}</td>
-        </tr>
+        <VariablePrice v-if="item.price !== null && item.price?.variable_costs?.length > 0" :detail="item" :price="price" />
+        <SinglePrice v-else :detail="item" :price="price" />
       </template>
       <tr class="border-t-2 border-black border-dotted">
         <td class="px-1">Total Item</td>
