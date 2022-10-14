@@ -42,7 +42,7 @@ const a = ref(true)
         <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.user.name }}</td>
         <!-- <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.payment_method }}</td> -->
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost) }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ new Date(item.created_at).toLocaleString('en-GB') }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-right">{{ dateindo(item.created_at, true) }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="print(item)" class="bg-orange-600 rounded-md px-3 py-1 text-sm font-semibold">

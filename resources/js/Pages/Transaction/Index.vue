@@ -45,28 +45,20 @@ const formatVariableCosts = transaction => {
 
       if (variable) {
         q = Math.floor(qty / variable.qty)
-        p = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 0,
-        }).format(variable.price)
-        s += `<tr><td class="text-left">(${variable.qty})</td><td class="text-right">${q} x </td><td class="text-right">${p}</td></tr>`
+        p = variable.price
+        s += `<tr><td class="text-left">(${variable.qty})</td><td class="text-right">${q} x </td><td class="text-right">${rupiah(p)}</td><td class="text-right">${rupiah(p * q * variable.qty)}</td></tr>`
         qty -= q * variable.qty
       } else {
         q = qty
-        p = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 0,
-        }).format(product.price?.price_per_unit)
-        s += `<tr><td class="text-left">(${qty})</td><td class="text-right">${q} x </td><td class="text-right">${p}</td></tr>`
+        p = product.price?.price_per_unit
+        s += `<tr><td class="text-left">(${qty})</td><td class="text-right">${q} x </td><td class="text-right">${rupiah(p)}</td><td class="text-right">${rupiah(p * qty)}</td></tr>`
         qty -= q
       }
     }
     s += '</table>'
     return s
   }
-  return product.price?.price_per_unit
+  return rupiah(product.price?.price_per_unit)
 }
 
 const outOfStock = (product, type) => {
@@ -161,8 +153,6 @@ const getPriceByTransaction = transaction => {
   
   if (!product) return 0
   if (transaction.type === 'unit') return product.price?.price_per_unit
-  // if (transaction.type === 'box') return product.price?.price_per_box
-  // if (transaction.type === 'carton') return product.price?.price_per_carton
 }
 
 const grandTotal = () => {
@@ -448,7 +438,7 @@ onMounted(() => {
               </td>
               <!-- <td class="border py-1 px-3 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td> -->
               <!-- <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction)) }}</td> -->
-              <td class="border py-1 px-3" v-html="formatVariableCosts(transaction)"></td>
+              <td class="border py-1 px-3 text-right" v-html="formatVariableCosts(transaction)"></td>
               <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransactionWithVariables(transaction)) }}</td>
               <td class="border py-1 px-3 text-center">
                 <button @click.prevent="remove(transaction)" class="bg-red-600 rounded-md px-3 py-2 text-white">
