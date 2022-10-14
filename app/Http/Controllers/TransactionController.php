@@ -95,11 +95,10 @@ class TransactionController extends Controller
             $transactionByProducts[$product->id] = array_merge(array_key_exists($product->id, $transactionByProducts) ? $transactionByProducts[$product->id] : [], [
                 'product_id' => $product->id,
                 'type' => 'sell',
+                'price_id' => $product->price->id,
                 'qty_' . $transaction['type'] => $transaction['qty'],
                 'cost_' . $transaction['type'] => match ($transaction['type']) {
                     'unit' => $product->price->price_per_unit,
-                    'box' => $product->price->price_per_box,
-                    'carton' => $product->price->price_per_carton,
                 },
             ]);
         }
@@ -113,18 +112,6 @@ class TransactionController extends Controller
             if ($product->stock_unit < $transaction['qty_unit']) {
                 return redirect()->back()->with('error', sprintf(
                     $format, $product->name, 'unit',
-                ));
-            }
-
-            if (array_key_exists('qty_box', $transaction) && $product->stock_box < $transaction['qty_box']) {
-                return redirect()->back()->with('error', sprintf(
-                    $format, $product->name, 'box',
-                ));
-            }
-
-            if (array_key_exists('qty_box', $transaction) && $product->stock_carton < $transaction['qty_carton']) {
-                return redirect()->back()->with('error', sprintf(
-                    $format, $product->name, 'carton',
                 ));
             }
         }
