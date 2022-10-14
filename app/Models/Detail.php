@@ -18,6 +18,7 @@ class Detail extends Model
     protected $fillable = [
         'transaction_id',
         'product_id',
+        'price_id',
         'type',
         'qty_unit',
         'qty_box',
@@ -31,10 +32,16 @@ class Detail extends Model
      * @var string[]
      */
     protected $appends = [
+        'variable_cost',
         'total_cost_unit',
-        'total_cost_box',
-        'total_cost_carton',
         'total_cost_all',
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $with = [
+        'price',
     ];
 
     /**
@@ -43,6 +50,14 @@ class Detail extends Model
     public function product()
     {
         return $this->hasOne(Product::class, 'id', 'product_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function price()
+    {
+        return $this->hasOne(Price::class, 'id', 'price_id');
     }
 
     /**
@@ -59,15 +74,14 @@ class Detail extends Model
     public function getVariablePrice()
     {
         if (in_array($this->type, ['buy', 'return buy'])) {
-            return $this->product->price?->price_per_unit * $this->qty_unit;
+            return $this->price?->price_per_unit * $this->qty_unit;
         }
 
-        $product = $this->product;
         $qty = $this->qty_unit;
         $subtotal = 0;
-        $price = $product->prices()->orderByDesc('created_at')->where('created_at', '<=', $this->created_at)->first();
+        $price = $this?->price;
 
-        if ($price->variableCosts()->count() > 0){
+        if ((int) $price?->variableCosts()->count() > 0){
             while ($qty > 0) {
                 $cost = $price?->variableCosts?->firstWhere('qty', '<=', $qty);
                 if (!is_null($cost)) {
@@ -92,11 +106,10 @@ class Detail extends Model
      */
     public function getVariableData()
     {
-        $product = $this->product;
         $qty = $this->qty_unit;
-        $price = $product->prices()->orderByDesc('created_at')->where('created_at', '<=', $this->created_at)->first();
+        $price = $this?->price;
 
-        if ($price->variableCosts()->count() > 0){
+        if ((int) $price?->variableCosts()->count() > 0){
             $format = [];
             while ($qty > 0) {
                 $cost = $price?->variableCosts?->firstWhere('qty', '<=', $qty);
@@ -120,7 +133,22 @@ class Detail extends Model
             }
             return $format;
         }
-        return [];
+        return [[
+            'perqty' => 1,
+            'perprice' => $this->cost_unit,
+            'qty' => $this->qty_unit,
+            'subtotal' => $this->qty_unit * $this->cost_unit
+        ]];
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function variableCost() : Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getVariablePrice(),
+        );
     }
 
     /**
