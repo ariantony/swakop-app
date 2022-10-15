@@ -55,11 +55,11 @@ const print = (item) => form.post(route('transaction.return.print', item.id))
         <td class="border p-2 border-x-2 border-slate-300">{{ item.note }}</td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
-            <button @click.prevent="print(item)" class="bg-pink-600 rounded-md px-3 py-1 text-sm font-semibold">
+            <!-- <button @click.prevent="print(item)" class="bg-pink-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-printer mr-1 text-white text-sm"></i> Print
               </div>
-            </button>
+            </button> -->
             <button @click.prevent="detail(item)" class="bg-blue-600 rounded-md px-3 py-1 text-sm font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-list-ul mr-1 text-white text-sm"></i> Detail

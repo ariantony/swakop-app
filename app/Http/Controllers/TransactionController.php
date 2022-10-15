@@ -232,7 +232,7 @@ class TransactionController extends Controller
 
             $query->orWhere('id', 'like', $search);
         })
-        ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
+        ->orderBy($request->input('order.key', 'updated_at') ?: 'updated_at', $request->input('order.dir', 'desc') ?: 'desc')
         ->paginate($request->input('per_page', 10));
     }
 
