@@ -79,9 +79,9 @@ const print = () => {
               <tr v-for="(item, i) in sell" :key="i" :index="i" :item="item" :class="item.total_cost_all === 0 ? 'bg-sky-200' : ''">
                 <td class="border p-2 border-x-2 border-slate-300 text-center">{{ i + 1 }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
-                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_total }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost_unit) }}</td>
-                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_all) }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.variable_cost || item.total_cost_all) }}</td>
               </tr>
               <tr class="text-xl font-bold bg-yellow-300">
                 <td class="border p-2 border-x-2 border-slate-300 text-center" colspan="4">Total Penjualan</td>
