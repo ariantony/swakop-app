@@ -259,7 +259,7 @@ onMounted(() => {
                             <Button v-if="isAdmin()" iconClass="bx-undo" text="Retur Pembelian" :href="route('return-stock.index')" :active="route().current('return-stock.*')"/>
                             <Button v-if="isAdmin()" iconClass="bx-layer-minus" text="Void Penjualan" :href="route('transaction.return.index')" :active="route().current('transaction.return.index')"/>
                             <SidebarLinks :active="route().current('transaction.history') || route().current('transaction.return.history')" text="Riwayat" icon="bx-history">
-                                <Button v-if="isAdmin()" iconClass="bx-money-withdraw" text="Penjualan" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
+                                <Button iconClass="bx-money-withdraw" text="Penjualan" :href="route('transaction.history')" :active="route().current('transaction.history')"/>
                                 <Button v-if="isAdmin()" iconClass="bx-bookmark-alt-minus" text="Void Penjualan" :href="route('transaction.return.history')" :active="route().current('transaction.return.history')"/>
                             </SidebarLinks>
                         </SidebarLinks>
