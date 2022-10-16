@@ -235,7 +235,7 @@ input[type="number"] {
             <div v-if="form.errors.price_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.price_per_unit }}</div>
           </div>
 
-          <template v-for="(variable, i) in form.variables.reverse()" :key="i">
+          <template v-for="(variable, i) in form.variables" :key="i">
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="price_per_unit" class="lowercase first-letter:capitalize w-1/3">
