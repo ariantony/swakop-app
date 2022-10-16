@@ -224,7 +224,7 @@ const fetch = async () => {
 
     response.isConfirmed && fetch()
   }
-  self?.refs?.product.focus()
+  self?.refs?.product?.focus()
 }
 
 onMounted(fetch)
@@ -317,7 +317,7 @@ onMounted(fetch)
 
   <transition name="slide-fade">
     <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
-      <form @submit.prevent="store" class="w-full max-w-6xl bg-slate-50 rounded-md">
+      <form @submit.prevent="store" class="w-full max-w-6xl bg-slate-50 rounded-md max-h-[32rem] overflow-y-auto">
         <div class="flex flex-col rounded-md">
           <div class="flex items-center justify-between space-x-2 bg-slate-100 rounded-t-md p-2">
             <h1 class="text-bold text-2xl font-semibold">Tambah Produk Baru + Pembelian</h1>
@@ -390,10 +390,10 @@ onMounted(fetch)
             <template v-for="(variable, i) in create.variables" :key="i">
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label :for="`variables[${i}]`" class="lowercase first-letter:capitalize w-1/4 flex items-center space-x-2">
-                    harga jual <input type="number" v-model="variable.qty" min="1" class="w-12 p-0 ml-2 rounded text-center" required>
+                  <label :for="`variables[${i}]`" class="w-1/4 flex items-center space-x-2">
+                    Harga jual <input type="number" v-model="variable.qty" min="1" class="w-12 p-0 ml-2 rounded text-center" required> &nbsp; unit
                   </label>
-                  <input :ref="`variables[${i}]`" type="text" :name="`variables[${i}]`" @input.prevent="variable.price = reformat($event)" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize text-right" :placeholder="`harga jual ${variable.qty}`" required>
+                  <input :ref="`variables[${i}]`" type="text" :name="`variables[${i}]`" @input.prevent="variable.price = reformat($event)" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize text-right" :placeholder="`harga jual ${variable.qty} unit`" required>
                 </div>
 
                 <div v-if="create.errors[`variables.${i}.price`]" class="text-right text-sm text-red-500">{{ create.errors.price?.sell?.unit }}</div>

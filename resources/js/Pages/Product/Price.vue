@@ -219,8 +219,8 @@ input[type="number"] {
           </div>
           <div class="flex flex-col space-y-2">
             <div class="flex items-center space-x-2">
-              <label for="cost_selling_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga pokok satuan</label>
-              <input ref="cost_selling_per_unit" @input.prevent="reformat($event.target, 'cost_selling_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3 text-right" placeholder="Harga pokok satuan">
+              <label for="cost_selling_per_unit" class="lowercase first-letter:capitalize w-1/3">Harga beli satuan</label>
+              <input ref="cost_selling_per_unit" @input.prevent="reformat($event.target, 'cost_selling_per_unit')" type="text" class="bg-transparent border rounded-md w-2/3 text-right" placeholder="Harga beli satuan">
             </div>
 
             <div v-if="form.errors.cost_selling_per_unit" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors.cost_selling_per_unit }}</div>
