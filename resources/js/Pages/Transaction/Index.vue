@@ -33,6 +33,34 @@ const current = useForm({
 
 const transactions = ref([])
 
+const formatVariableCosts = transaction => {
+  const product = products.value.find(p => p.id === transaction.product_id)
+  let qty = transaction.qty || 0
+  let s = '<table class="w-full">'
+  
+  if (product.price?.variable_costs?.length) {
+    while (qty > 0) {
+      let variable = product.price?.variable_costs?.find(v => v.qty <= qty)
+      let q = 1, p = 0
+
+      if (variable) {
+        q = Math.floor(qty / variable.qty)
+        p = variable.price
+        s += `<tr><td class="text-left">(${variable.qty})</td><td class="text-right">${q} x </td><td class="text-right">${rupiah(p)}</td><td class="text-right">${rupiah(p * q * variable.qty)}</td></tr>`
+        qty -= q * variable.qty
+      } else {
+        q = qty
+        p = product.price?.price_per_unit
+        s += `<tr><td class="text-left">(${qty})</td><td class="text-right">${q} x </td><td class="text-right">${rupiah(p)}</td><td class="text-right">${rupiah(p * qty)}</td></tr>`
+        qty -= q
+      }
+    }
+    s += '</table>'
+    return s
+  }
+  return rupiah(product.price?.price_per_unit)
+}
+
 const outOfStock = (product, type) => {
   const stock = product['stock_' + type]
 
@@ -82,19 +110,55 @@ const add = () => {
   }
 }
 
+const getPriceFromVariables = (product, transaction) => {
+  let qty = transaction.qty || 0
+
+  if (product.price?.variable_costs?.length) {
+    let histories = []
+    let total = 0
+    
+    while (qty > 0) {
+      let variable = product.price?.variable_costs?.find(v => v.qty <= qty)
+      
+      if (variable) {
+        histories.push(variable)
+        total += variable.price * variable.qty
+        qty -= variable.qty
+      } else {
+        total += product.price?.price_per_unit
+        qty -= 1
+        histories.push({ qty: 1, price: product.price?.price_per_unit })
+      }
+    }
+
+    transaction.histories = histories
+
+    return total
+  }
+
+  return product.price?.price_per_unit * qty
+}
+
+const getPriceByTransactionWithVariables = transaction => {
+  const product = products.value.find(p => p.id === transaction.product_id)
+  
+  if (!product) return 0
+  if (transaction.type === 'unit') {
+    return getPriceFromVariables(product, transaction)
+  }
+}
+
 const getPriceByTransaction = transaction => {
   const product = products.value.find(p => p.id === transaction.product_id)
   
   if (!product) return 0
-  if (transaction.type === 'unit') return product.price.price_per_unit
-  if (transaction.type === 'box') return product.price.price_per_box
-  if (transaction.type === 'carton') return product.price.price_per_carton
+  if (transaction.type === 'unit') return product.price?.price_per_unit
 }
 
 const grandTotal = () => {
   if (!transactions.value.length) return 0
 
-  return transactions.value.reduce((total, transaction) => getPriceByTransaction(transaction) * transaction.qty + total, 0)
+  return transactions.value.reduce((total, transaction) => getPriceByTransactionWithVariables(transaction) + total, 0)
 }
 
 const remove = async transaction => {
@@ -105,7 +169,7 @@ const remove = async transaction => {
 
 const reformat = e => {
   const value = e.target.value
-  var val = new String(value),
+  let val = new String(value),
       replaced = val.replace(/[^,\d]/g, '').toString(),
       split = replaced.split(','),
       remaining = split[0].length % 3,
@@ -150,7 +214,7 @@ const submit = () => {
   }
 
   return Swal.fire({
-    title: 'Akhiri proses transaksi?',
+    title: 'Akhiri proses transaksi ?',
     icon: 'question',
     showCancelButton: true,
   }).then(({isConfirmed}) => {
@@ -307,10 +371,10 @@ onMounted(() => {
         </div>
 
         <div class="flex items-center space-x-2">
-          <label for="name" class="w-1/4 basis-52">Qty</label>
+          <label for="name" class="w-1/4 basis-36">Qty</label>
           <input v-model="current.qty" ref="qty" type="number" name="qty" class="w-full bg-transparent border border-slate-300 rounded-md" min="1">
           
-          <Select
+          <!-- <Select
             v-model="current.type"
             :options="[
               { label: 'satuan', value: 'unit' },
@@ -319,7 +383,7 @@ onMounted(() => {
             ]"
             :searchable="true"
             class="max-w-[8rem]"
-            required />
+            required /> -->
           <!-- <i @click.prevent="current.qty > 1 && (current.qty -= 1)" class="bg-slate-50 hover:bg-white transition-all ease-in-out duration-100 border rounded-md p-3 bx bx-minus cursor-pointer"></i>
           <i @click.prevent="current.qty += 1" class="bg-slate-50 hover:bg-white transition-all ease-in-out duration-100 border rounded-md p-3 bx bx-plus cursor-pointer"></i> -->
         </div>
@@ -343,21 +407,21 @@ onMounted(() => {
     </div>
 
     <div class="flex flex-col space-y-2 p-2 bg-white rounded-md">
-      <div class="max-h-96 overflow-auto border rounded-md">
+      <div class="max-h-96 overflow-x-hidden border rounded-md">
         <table class="border-collapse border w-full">
-          <thead class="bg-slate-50 uppercase sticky top-0 left-0">
+          <thead class="bg-slate-50 uppercase">
             <tr>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">no</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">nama</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">qty</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">satuan</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" colspan="2">harga</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">aksi</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">no</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">nama</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">qty</th>
+              <!-- <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">satuan</th> -->
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" colspan="2">harga</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap" rowspan="2">aksi</th>
             </tr>
 
             <tr>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">satuan</th>
-              <th class="border px-3 py-2 text-center font-semibold whitespace-nowrap">subtotal</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap">satuan</th>
+              <th class="border-2 px-3 py-2 text-center font-semibold whitespace-nowrap">subtotal</th>
             </tr>
           </thead>
 
@@ -372,9 +436,10 @@ onMounted(() => {
                   <i @click.prevent="increment(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-plus cursor-pointer"></i>
                 </div>
               </td>
-              <td class="border py-1 px-3 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td>
-              <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction)) }}</td>
-              <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction) * transaction.qty) }}</td>
+              <!-- <td class="border py-1 px-3 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td> -->
+              <!-- <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction)) }}</td> -->
+              <td class="border py-1 px-3 text-right" v-html="formatVariableCosts(transaction)"></td>
+              <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransactionWithVariables(transaction)) }}</td>
               <td class="border py-1 px-3 text-center">
                 <button @click.prevent="remove(transaction)" class="bg-red-600 rounded-md px-3 py-2 text-white">
                   <i class="bx bx-trash"></i>

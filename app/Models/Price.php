@@ -22,6 +22,21 @@ class Price extends Model
     ];
 
     /**
+     * @var string[]
+     */
+    protected $with = [
+        'variableCosts',
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function variableCosts()
+    {
+        return $this->hasMany(VariableCost::class)->orderBy('qty', 'desc');
+    }
+
+    /**
      * @inheritdoc
      */
     public static function boot()

@@ -10,6 +10,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import { id } from 'date-fns/locale';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Select from '@vueform/multiselect'
+import FormatVariableCostsDailyReport from '../../../Components/FormatVariableCostsDailyReport.vue'
 
 const { sell, total, cashier, day } = defineProps({
   sell: Array,  
@@ -70,8 +71,8 @@ const print = () => {
               <tr>
                 <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">No</th>
                 <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Produk</th>
-                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Qty </th>
-                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Subtotal </th>
+                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Qty</th>
+                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Subtotal</th>
                 <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Total</th>
               </tr>
             </thead>
@@ -79,9 +80,9 @@ const print = () => {
               <tr v-for="(item, i) in sell" :key="i" :index="i" :item="item" :class="item.total_cost_all === 0 ? 'bg-sky-200' : ''">
                 <td class="border p-2 border-x-2 border-slate-300 text-center">{{ i + 1 }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
-                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
-                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost_unit) }}</td>
-                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_all) }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_total }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right"><FormatVariableCostsDailyReport :detail="item" /></td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total) }}</td>
               </tr>
               <tr class="text-xl font-bold bg-yellow-300">
                 <td class="border p-2 border-x-2 border-slate-300 text-center" colspan="4">Total Penjualan</td>
@@ -104,8 +105,8 @@ const print = () => {
             <tr>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">No</th>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Produk</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Qty </th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Subtotal </th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Qty</th>
+              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Subtotal</th>
               <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Total</th>
             </tr>
           </thead>
@@ -114,8 +115,8 @@ const print = () => {
               <td class="border p-2 border-x-2 border-slate-300 text-center">{{ i + 1 }}</td>
               <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
               <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost_unit) }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost_all) }}</td>
+              <td class="border p-2 border-x-2 border-slate-300 text-right"><FormatVariableCostsDailyReport :detail="item" /></td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total) }}</td>
             </tr>
             <tr class="text-xl font-bold bg-yellow-300">
               <td class="border p-2 border-x-2 border-slate-300 text-center" colspan="4">Total Penjualan</td>

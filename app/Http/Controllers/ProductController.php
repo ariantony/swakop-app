@@ -31,9 +31,9 @@ class ProductController extends Controller
      */
     public function whereHasStock()
     {
-        return Product::without(['group'])->with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->get()->map(function (Product $product) {
+        return Product::without(['group'])->with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to', 'price'])->orderBy('name')->get()->map(function (Product $product) {
             return $product->only([
-                'id', 'code', 'barcode', 'name', 'stock_unit', 'stock_box', 'stock_carton', 'price'
+                'id', 'code', 'barcode', 'name', 'stock_unit', 'stock_box', 'stock_carton', 'price',
             ]);
         })->map(function ($product) {
             return array_merge($product, [
@@ -41,6 +41,7 @@ class ProductController extends Controller
                     'price_per_unit',
                     'price_per_box',
                     'price_per_carton',
+                    'variable_costs',
                 ])
             ]);
         })->filter(function ($product) {
@@ -102,7 +103,7 @@ class ProductController extends Controller
             'order.dir' => 'nullable|string|in:asc,desc',
         ]);
 
-        return Product::with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])
+        return Product::with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to', 'price'])
                         ->where(function (Builder $query) use (&$request, &$columns) {
                             $search = '%' . $request->input('search') . '%';
 
@@ -138,6 +139,17 @@ class ProductController extends Controller
         }
 
         return redirect()->back()->with('error', 'Gagal membuat produk.');
+    }
+
+    /**
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Http\Response
+     */
+    public function price(Product $product)
+    {
+        return [
+            'price' => $product->price,
+        ];
     }
 
     /**

@@ -107,6 +107,8 @@ class InController extends Controller
             'price.buy.unit' => 'required|integer',
             'price.sell.unit' => 'required|integer',
             'qty' => 'required|integer',
+            'variables.*.qty' => 'required|integer|min:1',
+            'variables.*.price' => 'required|numeric',
         ]);
 
         DB::beginTransaction();
@@ -127,6 +129,16 @@ class InController extends Controller
                 'price_per_box' => $request->input('price.sell.box', 0),
                 'price_per_carton' => $request->input('price.sell.carton', 0),
             ]);
+
+            if ($request->input('variables')) {
+                $price->variableCosts()->insert(array_map(
+                    fn ($variable) => array_merge([
+                        'price_id' => $price->id,
+                        'qty' => $variable['qty'],
+                        'price' => $variable['price'],
+                    ]), $request->input('variables', [])
+                ));
+            }
 
             $transaction = Transaction::create([
                 'user_id' => $request->user()->id,

@@ -13,16 +13,16 @@ class VariableCost extends Model
      * @var string[]
      */
     protected $fillable = [
-        'product_id',
+        'price_id',
         'qty',
-        'cost',
+        'price',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function price()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Price::class);
     }
 }

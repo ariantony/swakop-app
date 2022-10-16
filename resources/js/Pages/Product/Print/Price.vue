@@ -123,21 +123,23 @@ const isOverflow = (el) => {
       </template>
       <template #body>
         <div class="flex flex-wrap items-center space-x-2">
-          <div v-for="(item, i) in products" :key="i" class="flex flex-col justify-start w-5cm h-3cm my-1 border border-black bg-white space-y-2 ml-2">
+          <div v-for="(item, i) in products" :key="i" class="flex flex-col justify-start w-5cm my-1 border border-black bg-white space-y-2 ml-2">
             <table class="border-0"><tr class="border-0"><td class="border-0 p-0">
               <div class="max-w-[188px] relative mb-[36px]">
                 <h3 ref="title" class="absolute min-w-full h-[36px] flex items-center justify-center bg-red-500 text-center text-white p-2 border-b-black border-b product" :class="item.name.length > 20 ? shrink(i) : 'text-sm'">{{ item.name }}</h3>
               </div>
-              <div class="flex items-center justify-between mb-1">
-                <h3 class="text-xs rounded-sm px-2 font-bold">{{ item.group?.code }}</h3>
-                <h3 class="text-xs rounded-sm px-2 barcode">{{ item.barcode }}</h3>
+              <div class="flex items-center justify-between mb-1 border-b border-b-black">
+                <h3 class="text-xs rounded-sm px-1 font-bold">{{ item.group?.code }}</h3>
+                <img :src="url('assets/images/logo-swakop.png')" class="w-10 h-4 flex justify-center" alt="Logo Swakop" />
+                <h3 class="text-xs rounded-sm px-1 barcode">{{ item.barcode }}</h3>
               </div>
-              <div class="flex items-center justify-between px-3 pb-1 price">
-                <p class="text-2xl font-semibold">Rp</p>
+              <div class="flex items-center justify-center px-3 pb-1 price">
+                <p class="text-2xl font-semibold">Rp &nbsp;</p>
                 <h1 class="text-2xl font-bold">{{ item.price?.price_per_unit ? item.price.price_per_unit.toLocaleString('id') : new Number(0).toLocaleString('id') }}</h1>
               </div>
-              <div class="flex items-center justify-center border-t-red-600 border-t">
-                <img :src="url('assets/images/logo-swakop.png')" class="w-16 h-5" alt="Logo Swakop">
+              <div v-for="(row, j) in item.price.variable_costs.slice().reverse()" :key="j" class="flex items-center justify-center text-red-600 border-t border-t-black">
+                <p class="text-md price font-semibold">{{ row.qty }} pcs &nbsp; - &nbsp; </p>
+                <h1 class="text-md price font-bold">{{ row?.price ? row.price.toLocaleString('id') : new Number(0).toLocaleString('id') }}</h1>
               </div>
             </td></tr></table>
           </div>

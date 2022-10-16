@@ -22,36 +22,45 @@ defineExpose({
   <Builder ref="table" :href="route('api.product.paginate')" :colspan="8">
     <template v-slot:thead="{table}">
       <tr>
-        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="code">kode</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="name">nama</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="barcode">barcode</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="group_id">kelompok barang</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">harga</Th>
-        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">stok</Th>
-        <Th v-if="isAdmin()" class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
+        <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" rowspan="2" :sortable="false">no</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2" :table="table" name="code">kode</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2" :table="table" name="name">nama</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2" :table="table" name="barcode">barcode</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2" :table="table" name="group_id">kelompok barang</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" colspan="2" :sortable="false">harga</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" rowspan="2" :sortable="false">stok</Th>
+        <Th v-if="isAdmin()" class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" rowspan="2" :sortable="false">aksi</Th>
+      </tr>
+
+      <tr>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">qty</Th>
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :sortable="false">nominal</Th>
       </tr>
     </template>
     <template #tfoot>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">no</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kode</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">barcode</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kelompok barang</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">harga</Th>
-      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok</Th>
-      <Th v-if="isAdmin()" class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
+      <tr>
+        <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">no</Th>
+        <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kode</Th>
+        <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">nama</Th>
+        <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">barcode</Th>
+        <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kelompok barang</Th>
+        <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">satuan</Th>
+        <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">harga</Th>
+        <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">stok</Th>
+        <Th v-if="isAdmin()" class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
+      </tr>
     </template>
     <template v-slot:tbody="{ index, item }">
       <tr>
-        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase">{{ item.code }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase whitespace-nowrap">{{ item.name }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase">{{ item.barcode }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase text-center">{{ item.group?.code }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-center" :rowspan="item.price?.variable_costs.length + 1">{{ index + 1 }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase" :rowspan="item.price?.variable_costs.length + 1">{{ item.code }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase whitespace-nowrap" :rowspan="item.price?.variable_costs.length + 1">{{ item.name }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase" :rowspan="item.price?.variable_costs.length + 1">{{ item.barcode }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 uppercase text-center" :rowspan="item.price?.variable_costs.length + 1">{{ item.group?.code }}</td>
+        <td class="border p-2 border-x-2 border-slate-300 text-right">1</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.price?.price_per_unit ? rupiah(item.price?.price_per_unit) : '-' }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_unit }}</td>
-        <td v-if="isAdmin()" class="border p-1">
+        <td class="border p-2 border-x-2 border-slate-300 text-center" :rowspan="item.price?.variable_costs.length + 1">{{ item.stock_unit }}</td>
+        <td v-if="isAdmin()" class="border p-1" :rowspan="item.price?.variable_costs.length + 1">
           <div class="flex items-center justify-center space-x-1 text-white">
             <button @click.prevent="editStock(item)" class="bg-purple-400 rounded-md px-3 py-1 text-sm font-semibold whitespace-nowrap">
               <div class="flex items-center">
@@ -85,6 +94,18 @@ defineExpose({
           </div>
         </td>
       </tr>
+
+      <template v-for="(variable, i) in item.price?.variable_costs.slice().reverse()" :key="i">
+        <tr>
+          <td class="border p-2 border-x-2 border-slate-300 text-right">
+            {{ variable.qty }}
+          </td>
+
+          <td class="border p-2 border-x-2 border-slate-300 text-right">
+            {{ rupiah(variable.price) }}
+          </td>
+        </tr>
+      </template>
     </template>
   </Builder>
 </template>
