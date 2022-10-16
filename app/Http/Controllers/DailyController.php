@@ -36,8 +36,8 @@ class DailyController extends Controller
             'date' => 'required',
         ]);
         
-        $date = explode('T', $request->date)[0];
         $date = new Carbon($request->date);
+        $date = $date->addHour(7)->format('Y-m-d');
 
         $sell = Transaction::with('details.product')->whereRelation('details', 'type', 'sell')->where('user_id', $request->user_id)->whereDate('created_at', $date)->get();
         
@@ -50,19 +50,47 @@ class DailyController extends Controller
                 $subtotal[] = $d->getVariablePrice();
             }
             $variables = collect($variables)->reduce(fn ($a, $b) => [...$a, ...$b], []);
-            return array_merge(collect($variables)->groupBy('perqty')->map(function ($arr) {
-                return [
-                    'perqty' => $arr->first()['perqty'],
-                    'perprice' => $arr->first()['perprice'],
-                    'qty' => $arr->sum('qty'),
-                    'subtotal' => $arr->sum('subtotal'),
-                ];
+            // by price id
+            $variables = collect($variables)->groupBy('id')->map(function ($item) {
+                return $item;
+            });
+            // by perqty
+            $variables = $variables->map(function ($item) {
+                return $item->groupBy('perqty')->map(function ($item) {
+                    return [
+                        'perqty' => $item->first()['perqty'],
+                        'perprice' => $item->first()['perprice'],
+                        'qty' => $item->sum('qty'),
+                        'subtotal' => $item->sum('subtotal'),
+                    ];
+                })->sortBy('perqty')->values()->toArray();
+            });
+            // merge properties
+            $variables = array_merge($variables->toArray(), [
+                'name' => $product->name,
+                'qty_total' => $detail->sum('qty_unit'),
+                'total' => array_sum($subtotal),
+            ]);
+            return $variables;
+            /*
+            return array_merge(collect($variables)->groupBy('id')->map(function ($arr) {
+                $arr->groupBy('perqty')->map(function ($item) {
+                    return [
+                        'perqty' => $item->first()['perqty'],
+                        'perprice' => $item->first()['perprice'],
+                        'qty' => $item->sum('qty'),
+                        'subtotal' => $item->sum('subtotal'),
+                    ];
+                });
+                return $arr->toArray();
             })->sortBy('perqty')->values()->toArray(), [
                 'name' => $product->name,
                 'qty_total' => $detail->sum('qty_unit'),
+                'total' => array_sum($subtotal),
             ]);
+            */
         });
-        dd($detail->sortBy('name')->values());
+
         return Inertia::render('Report/Daily/Generate', [
             'sell' => $detail->sortBy('name')->values(),
             'total' => $sell->sum('total_cost'),

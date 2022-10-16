@@ -98,7 +98,7 @@ class Detail extends Model
             return $subtotal;
         }
 
-        return 0;
+        return $qty * $this->cost_unit;
     }
 
     /**
@@ -115,6 +115,7 @@ class Detail extends Model
                 $cost = $price?->variableCosts?->firstWhere('qty', '<=', $qty);
                 if (!is_null($cost)) {
                     $format[] = [
+                        'id' => $price?->id,
                         'perqty' => $cost->qty,
                         'perprice' => $cost->price,
                         'qty' => $q = floor($qty / $cost->qty),
@@ -123,6 +124,7 @@ class Detail extends Model
                     $qty -= ($q * $cost->qty);
                 } else {
                     $format[] = [
+                        'id' => $price?->id,
                         'perqty' => 1,
                         'perprice' => $price?->price_per_unit,
                         'qty' => $qty,
@@ -134,6 +136,7 @@ class Detail extends Model
             return $format;
         }
         return [[
+            'id' => $price?->id,
             'perqty' => 1,
             'perprice' => $this->cost_unit,
             'qty' => $this->qty_unit,
