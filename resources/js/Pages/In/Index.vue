@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, ref, nextTick, onMounted, watch } from 'vue'
+import { getCurrentInstance, ref, nextTick, onMounted } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Select from '@vueform/multiselect'
 import { useForm } from '@inertiajs/inertia-vue3'
@@ -17,14 +17,6 @@ const { groups } = defineProps({
 
 const timeout = ref(null)
 const search = ref('')
-
-watch(search, () => {
-  products.value = []
-  clearTimeout(timeout.value)
-  setTimeout(() => {
-    fetch()
-  }, 200)
-})
 
 const products = ref([])
 const product = ref(null)
@@ -122,6 +114,14 @@ const add = async () => {
     })
   }
 
+  if (form.qty === '') {
+    return Swal.fire({
+      icon: 'warning',
+      title: 'Peringatan!',
+      text: 'Mohon isi quantity!',
+    })
+  }
+
   return Swal.fire({
     title: 'Konfirmasi input stok',
     icon: 'question',
@@ -209,10 +209,20 @@ Inertia.on('finish', () => rr())
 
 const fetch = async () => {
   try {
-    const response = await axios.get(route('api.product.without.group.and.price', {
-      q: search.value,
-    }))
+    Swal.fire({
+      title: 'Mengambil data produk',
+      text: 'Mohon tunggu ...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading()
+      },
+    })
+    const response = await axios.get(route('api.product.without.group.and.price'))
     products.value = response.data
+    Swal.close()
   } catch (e) {
     const response = await Swal.fire({
       title: 'Pengambilan data produk gagal',
@@ -264,7 +274,6 @@ onMounted(fetch)
                     }))"
                     :searchable="true"
                     :createOption="true"
-                    @searchChange="search = $event"
                     @option="option"
                     noOptionsText="Mohon tunggu..." />
                 </div>
@@ -276,7 +285,7 @@ onMounted(fetch)
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-4">
                 <label for="qty" class="uppercase flex-none">qty</label>
-                <input type="number" name="qty" v-model="form.qty" min="1" placeholder="QTY" class="rounded border border-slate-300" required>
+                <input ref="qty" type="number" name="qty" v-model="form.qty" min="1" placeholder="QTY" class="rounded border border-slate-300" required>
               </div>
 
               <div class="text-red-500 text-right text-sm" v-html="form.errors.qty || '&nbsp;'"></div>
