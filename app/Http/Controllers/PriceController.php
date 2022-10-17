@@ -97,12 +97,14 @@ class PriceController extends Controller
         } 
 
         if ($price = Price::create($post)) {
-            $price->variableCosts()->delete();
-            $price->variableCosts()->insert(array_map(
-                fn ($variable) => array_merge($variable, [
-                    'price_id' => $price->id,
-                ]), $post['variables']
-            ));
+            if (array_key_exists('variables', $post)) {
+                $price->variableCosts()->delete();
+                $price->variableCosts()->insert(array_map(
+                    fn ($variable) => array_merge($variable, [
+                        'price_id' => $price->id,
+                    ]), $post['variables']
+                ));
+            }
 
             return redirect()->back()->with([
                 'success' => 'Harga baru berhasil ditambahkan.',
