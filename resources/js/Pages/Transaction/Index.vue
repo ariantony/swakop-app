@@ -51,7 +51,7 @@ const formatVariableCosts = transaction => {
       } else {
         q = qty
         p = product.price?.price_per_unit
-        s += `<tr><td class="text-left">(${qty})</td><td class="text-right">${q} x </td><td class="text-right">${rupiah(p)}</td><td class="text-right">${rupiah(p * qty)}</td></tr>`
+        s += `<tr><td class="text-left">(1)</td><td class="text-right">${q} x </td><td class="text-right">${rupiah(p)}</td><td class="text-right">${rupiah(p * qty)}</td></tr>`
         qty -= q
       }
     }
