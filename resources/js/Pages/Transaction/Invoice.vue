@@ -41,8 +41,7 @@ setTimeout(() => window.print(), 1000)
         <tr>
           <td colspan="4" class="capitalize px-1">{{ new String(item.product.name).toUpperCase() }}</td>
         </tr>
-        <VariablePrice v-if="item.price !== null && item.price?.variable_costs?.length > 0" :detail="item" :price="price" />
-        <SinglePrice v-else :detail="item" :price="price" />
+        <SinglePrice :detail="item" :price="price" />
       </template>
       <tr class="border-t-2 border-black border-dotted">
         <td class="px-1">Total Item</td>
