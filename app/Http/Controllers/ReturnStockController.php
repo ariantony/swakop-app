@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detail;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,14 +30,15 @@ class ReturnStockController extends Controller
      */
     public function products(Request $request)
     {
-        return Product::with(['buy', 'sell', 'returnBuy'])
+        Detail::$withoutAppends = true;
+        return Product::with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])
                         ->where(function (Builder $query) use ($request) {
                             $search = '%' . $request->q . '%';
 
                             $query->where('barcode', 'like', $search)
                                     ->orWhere('name', 'like', $search);
                         })
-                        ->without(['group'])
+                        ->without(['group', 'price'])
                         ->whereHas('details')
                         ->get()
                         ->filter(fn (Product $product) => $product->stock_unit > 0)

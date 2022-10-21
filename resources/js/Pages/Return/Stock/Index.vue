@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { getCurrentInstance, nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -10,15 +10,6 @@ import DataTable from './DataTable.vue'
 import DataTableDetail from './DataTableDetail.vue';
 
 const self = getCurrentInstance()
-const search = ref('')
-const timeout = ref(null)
-watch(search, () => {
-  products.value = []
-  clearTimeout(timeout.value)
-  timeout.value = setTimeout(() => {
-    fetch()
-  }, 200)
-})
 
 const product = ref({
   name: '',
@@ -50,10 +41,20 @@ const close = () => {
 
 const fetch = async () => {
   try {
-    const response = await axios.get(route('api.return-stock.products', {
-      q: search.value,
-    }))
+    Swal.fire({
+      title: 'Mengambil data produk',
+      text: 'Mohon tunggu ...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading()
+      },
+    })
+    const response = await axios.get(route('api.product.where.has.stock'))
     products.value = response.data
+    Swal.close()
   } catch (e) {
     const response = await Swal.fire({
       title: 'Tidak dapat mendapatkan produk',
@@ -127,7 +128,6 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             }))"
             :searchable="true"
             noOptionsText="Mohon tunggu..."
-            @searchChange="search = $event"
             @change="nextTick(show)" />
         </div>
       </template>
@@ -196,7 +196,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-1">
                 <div class="flex items-center space-x-2">
                   <label class="flex-none w-1/4">Keterangan</label>
-                  <textarea v-model="form.note" name="note" class="w-full rounded-md" placeholder="Keterangan" required></textarea>
+                  <input v-model="form.note" type="text" name="note" class="w-full rounded-md" placeholder="Keterangan" required />
                 </div>
 
                 <p v-if="form.errors.note" class="text-sm text-right text-red-500">{{ form.errors.note }}</p>
