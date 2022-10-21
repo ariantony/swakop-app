@@ -47,7 +47,7 @@ const retur = async () => {
   let response = await Swal.fire({
     title: 'Keterangan',
     icon: 'question',
-    input: 'textarea',
+    input: 'text',
     inputValidator: value => {
       if (!value) {
         return 'Keterangan wajib diisi'
