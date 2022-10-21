@@ -22,7 +22,7 @@ onMounted(() => {
         q = Math.floor(qty / variable.qty)
         p = variable.price
         qty -= q * variable.qty
-        histories.unshift({perqty: variable.qty, qty: q * variable.qty, price: p, subtotal: p * q * variable.qty})
+        histories.unshift({perqty: variable.qty, qty: q, price: p, subtotal: p * q * variable.qty})
       } else {
         q = qty
         p = price?.price_per_unit
@@ -42,7 +42,7 @@ onMounted(() => {
   <table class="w-full text-sm">
     <tr v-for="(item, i) of arr.histories" :key="i" :item="item">
       <td class="text-left">({{ item.perqty }})</td>
-      <td class="text-right">{{ item.qty }}</td>
+      <td class="text-right">{{ item.qty }}x</td>
       <td class="text-right">{{ rupiah(item.price) }}</td>
       <td class="text-right">{{ rupiah(item.subtotal) }}</td>
     </tr>
