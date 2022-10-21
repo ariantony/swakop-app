@@ -44,6 +44,15 @@ class Detail extends Model
         'price',
     ];
 
+    public static $withoutAppends = false;
+
+    protected function getArrayableAppends()
+    {
+        if(self::$withoutAppends){
+            return [];
+        }
+        return parent::getArrayableAppends();
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
