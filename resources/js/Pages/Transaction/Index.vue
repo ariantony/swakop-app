@@ -253,7 +253,7 @@ const increment = transaction => {
 const decrement = transaction => {
   const product = find(transaction)
 
-  if (transaction.qty > 0) {
+  if (transaction.qty > 1) {
     transaction.qty -= 1
     product['stock_' + transaction.type] += 1
   }
