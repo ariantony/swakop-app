@@ -206,7 +206,7 @@ const addVariable = () => create.variables.push({
   price: 0,
 })
 
-Inertia.on('finish', () => rr())
+// Inertia.on('finish', () => rr())
 
 const fetch = async () => {
   try {
