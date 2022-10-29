@@ -108,6 +108,7 @@ class InController extends Controller
             'price.sell.unit' => 'required|integer',
             'qty' => 'required|integer',
             'variables.*.qty' => 'required|integer|min:1',
+            'variables.*.min_qty' => 'required|integer',
             'variables.*.price' => 'required|numeric',
         ]);
 
@@ -136,6 +137,9 @@ class InController extends Controller
                         'price_id' => $price->id,
                         'qty' => $variable['qty'],
                         'price' => $variable['price'],
+                        'min_qty' => $variable['min_qty'] ?: $variable['qty'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]), $request->input('variables', [])
                 ));
             }
@@ -147,9 +151,11 @@ class InController extends Controller
 
             $detail = $transaction->details()->create([
                 'product_id' => $product->id,
+                'price_id' => $price->id,
                 'type' => 'buy',
                 'qty_unit' => $request->qty,
                 'cost_unit' => $price->cost_selling_per_unit,
+                'subtotal' => $price->cost_selling_per_unit * $request->qty,
             ]);
 
             DB::commit();
@@ -190,9 +196,11 @@ class InController extends Controller
 
             $detail = $transaction->details()->create([
                 'product_id' => $product->id,
+                'price_id' => $price->id,
                 'type' => 'buy',
                 'qty_unit' => $request->qty,
                 'cost_unit' => $price->cost_selling_per_unit,
+                'subtotal' => $request->qty * $price->cost_selling_per_unit,
             ]);
 
             DB::commit();

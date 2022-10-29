@@ -5,34 +5,19 @@ const { detail } = defineProps({
   detail: Object,
 })
 
-const arr = ref({})
+const min_qty = ref(1)
+const varcost = ref(null)
 
 onMounted(() => {
   const price = detail.price
-  let qty = detail.qty_unit || 0, histories = []
+  let qty = detail.qty_unit || 0
 
   if (price?.variable_costs?.length) {
-    arr.value.qty = qty
-
-    while (qty > 0) {
-      let variable = price?.variable_costs?.find(v => v.qty <= qty)
-      let q = 1, p = 0
-
-      if (variable) {
-        q = Math.floor(qty / variable.qty)
-        p = variable.price
-        qty -= q * variable.qty
-        histories.unshift({perqty: variable.qty, qty: q, price: p, subtotal: p * q * variable.qty})
-      } else {
-        q = qty
-        p = price?.price_per_unit
-        qty -= q
-        histories.unshift({perqty: 1, qty: q, price: p, subtotal: p * q})
-      }
-    }
-    arr.value.histories = histories
-    arr.value.total = histories.reduce((a, b) => a + b.subtotal, 0)
-    arr.value.count = histories.length
+    let variable = price?.variable_costs?.find(v => v.min_qty <= qty)
+    varcost.value = variable ? variable.price : price?.price_per_unit || detail.cost_unit
+    min_qty.value = variable ? variable.qty : 1
+  } else {
+    varcost.value = price?.price_per_unit || detail.cost_unit
   }
 })
 
@@ -40,11 +25,9 @@ onMounted(() => {
 
 <template>
   <table class="w-full text-sm">
-    <tr v-for="(item, i) of arr.histories" :key="i" :item="item">
-      <td class="text-left">({{ item.perqty }})</td>
-      <td class="text-right">{{ item.qty }}x</td>
-      <td class="text-right">{{ rupiah(item.price) }}</td>
-      <td class="text-right">{{ rupiah(item.subtotal) }}</td>
+    <tr>
+      <td class="text-left">({{ min_qty }})</td>
+      <td class="text-right">{{ rupiah(varcost) }}</td>
     </tr>
   </table>
 </template>

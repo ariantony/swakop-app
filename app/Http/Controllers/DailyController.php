@@ -49,6 +49,7 @@ class DailyController extends Controller
                 $variables[] = $d->getVariableData();
                 $subtotal[] = $d->getVariablePrice();
             }
+
             $variables = collect($variables)->reduce(fn ($a, $b) => [...$a, ...$b], []);
             // by price id
             $variables = collect($variables)->groupBy('id')->map(function ($item) {
@@ -56,14 +57,15 @@ class DailyController extends Controller
             });
             // by perqty
             $variables = $variables->map(function ($item) {
-                return $item->groupBy('perqty')->map(function ($item) {
+                return $item->groupBy('min_qty')->map(function ($item) {
                     return [
                         'perqty' => $item->first()['perqty'],
                         'perprice' => $item->first()['perprice'],
+                        'min_qty' => $item->first()['min_qty'],
                         'qty' => $item->sum('qty'),
                         'subtotal' => $item->sum('subtotal'),
                     ];
-                })->sortBy('perqty')->values()->toArray();
+                })->sortBy('min_qty')->values()->toArray();
             });
             // merge properties
             $variables = array_merge($variables->toArray(), [
@@ -91,12 +93,17 @@ class DailyController extends Controller
             */
         });
 
-        return Inertia::render('Report/Daily/Generate', [
+        $send = [
             'sell' => $detail->sortBy('name')->values(),
             'total' => $sell->sum('total_cost'),
             'cashier' => User::find($request->user_id),
             'day' => $date,
-        ]);
+        ];
+
+        if ($request->method() === 'GET') {
+            return Inertia::render('Report/Daily/IframeGenerate', $send);
+        }
+        return Inertia::render('Report/Daily/Generate', $send);
     }
 
     /**

@@ -78,6 +78,7 @@ class PriceController extends Controller
             // 'price_per_box' => 'required|numeric',
             // 'price_per_carton' => 'required|numeric',
             'variables.*.qty' => 'required|integer',
+            'variables.*.min_qty' => 'required|integer',
             'variables.*.price' => 'required|numeric',
         ]);
 
@@ -86,8 +87,6 @@ class PriceController extends Controller
         $post['price_per_box'] = 0;
         $post['price_per_carton'] = 0;
         
-        $product = Product::findOrFail($post['product_id']);
-
         $last = Price::where('product_id', $post['product_id'])->latest()->first();
         
         if ($last) {
@@ -102,6 +101,9 @@ class PriceController extends Controller
                 $price->variableCosts()->insert(array_map(
                     fn ($variable) => array_merge($variable, [
                         'price_id' => $price->id,
+                        'min_qty' => $variable['min_qty'] ?: $variable['qty'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]), $post['variables']
                 ));
             }

@@ -1,25 +1,13 @@
 <script setup>
 import Builder from '@/Components/DataTable/Builder.vue'
 import Th from '@/Components/DataTable/Th.vue'
+import FormatVariableCostsProductPrice from '../../Components/FormatVariableCostsProductPrice.vue';
 
 const { product } = defineProps({
   product: Object,
   edit: Function,
 })
 
-const formatVariableCosts = price => {
-  if (price?.variable_costs?.length) {
-    let s = '<table class="w-full text-sm">'
-
-    s += `<tr><td class="text-left">(1)</td><td class="text-right">${rupiah(price.price_per_unit)}</td></tr>`
-    price.variable_costs.slice().reverse().forEach((variable) => {
-      s += `<tr><td class="text-left">(${variable.qty})</td><td class="text-right">${rupiah(variable.price)}</td></tr>`
-    })
-    s += '</table>'
-    return s
-  }
-  return rupiah(price.price_per_unit)
-}
 </script>
 
 <template>
@@ -44,7 +32,10 @@ const formatVariableCosts = price => {
       <tr>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.cost_selling_per_unit) }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 text-right" v-html="formatVariableCosts(item)"></td>
+        <td class="border p-2 border-x-2 border-slate-300 text-right">
+          <FormatVariableCostsProductPrice :price="item" v-if="item?.variable_costs?.length > 0" />
+          <div v-else> {{ rupiah(item.price_per_unit) }} </div>
+        </td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ dateindo(item.created_at, true) }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.created_at === item.updated_at ? 'Masih Berlaku' : dateindo(item.updated_at, true) }}</td>
       </tr>

@@ -36,25 +36,12 @@ const transactions = ref([])
 const formatVariableCosts = transaction => {
   const product = products.value.find(p => p.id === transaction.product_id)
   let qty = transaction.qty || 0
-  let s = '<table class="w-full">'
   
   if (product.price?.variable_costs?.length) {
-    while (qty > 0) {
-      let variable = product.price?.variable_costs?.find(v => v.qty <= qty)
-      let q = 1, p = 0
-
-      if (variable) {
-        q = Math.floor(qty / variable.qty)
-        p = variable.price
-        s += `<tr><td class="text-left">(${variable.qty})</td><td class="text-right">${q} x </td><td class="text-right">${rupiah(p)}</td><td class="text-right">${rupiah(p * q * variable.qty)}</td></tr>`
-        qty -= q * variable.qty
-      } else {
-        q = qty
-        p = product.price?.price_per_unit
-        s += `<tr><td class="text-left">(1)</td><td class="text-right">${q} x </td><td class="text-right">${rupiah(p)}</td><td class="text-right">${rupiah(p * qty)}</td></tr>`
-        qty -= q
-      }
-    }
+    let variable = product.price?.variable_costs?.find(v => v.min_qty <= qty)
+    let price = variable ? variable.price : product.price?.price_per_unit
+    let s = '<table class="w-full">'
+    s += `<tr><td class="text-left">(${ variable ? variable.qty : 1})</td><td class="text-right">${rupiah(price)}</td></tr>`
     s += '</table>'
     return s
   }
@@ -114,26 +101,10 @@ const getPriceFromVariables = (product, transaction) => {
   let qty = transaction.qty || 0
 
   if (product.price?.variable_costs?.length) {
-    let histories = []
-    let total = 0
+    let variable = product.price?.variable_costs?.find(v => v.min_qty <= qty)
+    let price = variable ? variable.price : product.price?.price_per_unit
     
-    while (qty > 0) {
-      let variable = product.price?.variable_costs?.find(v => v.qty <= qty)
-      
-      if (variable) {
-        histories.push(variable)
-        total += variable.price * variable.qty
-        qty -= variable.qty
-      } else {
-        total += product.price?.price_per_unit
-        qty -= 1
-        histories.push({ qty: 1, price: product.price?.price_per_unit })
-      }
-    }
-
-    transaction.histories = histories
-
-    return total
+    return price * qty
   }
 
   return product.price?.price_per_unit * qty
@@ -431,14 +402,14 @@ onMounted(() => {
               <td class="border py-1 text-center">{{ find(transaction)?.name }}</td>
               <td class="border py-1 text-center">
                 <div class="flex items-center justify-center space-x-1">
-                  <i @click.prevent="decrement(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-minus cursor-pointer"></i>
+                  <i @click.prevent="decrement(transaction)" class="p-3 bg-slate-50 rounded-md border border-slate-300 bx bx-minus cursor-pointer"></i>
                   <p class="bg-slate-50 rounded-md p-2 border-0 appearance-none outline-none cursor-default">{{ transaction.qty }}</p>
-                  <i @click.prevent="increment(transaction)" class="p-3 bg-slate-50 rounded-md bx bx-plus cursor-pointer"></i>
+                  <i @click.prevent="increment(transaction)" class="p-3 bg-slate-50 rounded-md border border-slate-300 bx bx-plus cursor-pointer"></i>
                 </div>
               </td>
               <!-- <td class="border py-1 px-3 text-center">{{ transaction.type === 'unit' ? 'satuan' : transaction.type }}</td> -->
               <!-- <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransaction(transaction)) }}</td> -->
-              <td class="border py-1 px-3 text-right" v-html="formatVariableCosts(transaction)"></td>
+              <td class="border py-1 px-3 text-right text-sm" v-html="formatVariableCosts(transaction)"></td>
               <td class="border py-1 px-3 text-right">{{ rupiah(getPriceByTransactionWithVariables(transaction)) }}</td>
               <td class="border py-1 px-3 text-center">
                 <button @click.prevent="remove(transaction)" class="bg-red-600 rounded-md px-3 py-2 text-white">

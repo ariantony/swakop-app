@@ -26,6 +26,7 @@ class Detail extends Model
         'cost_unit',
         'cost_box',
         'cost_carton',
+        'subtotal',
     ];
 
     /**
@@ -87,24 +88,13 @@ class Detail extends Model
         }
 
         $qty = $this->qty_unit;
-        $subtotal = 0;
         $price = $this?->price;
 
-        if ((int) $price?->variableCosts()->count() > 0){
-            while ($qty > 0) {
-                $cost = $price?->variableCosts?->firstWhere('qty', '<=', $qty);
-                if (!is_null($cost)) {
-                    $q = floor($qty / $cost->qty);
-                    $qty -= ($q * $cost->qty);
-                    $subtotal += ($q * $cost->qty * $cost->price);
-                } else {
-                    $left = $qty;
-                    $qty -= $left;
-                    $subtotal += ($left * $price?->price_per_unit);
-                }
+        if ((int) $price?->variableCosts()->count() > 0) {
+            $cost = $price?->variableCosts?->firstWhere('min_qty', '<=', $qty);
+            if ($cost) {
+                return $qty * $cost->price;
             }
-            
-            return $subtotal;
         }
 
         return $qty * $this->cost_unit;
@@ -119,37 +109,25 @@ class Detail extends Model
         $price = $this?->price;
 
         if ((int) $price?->variableCosts()->count() > 0){
-            $format = [];
-            while ($qty > 0) {
-                $cost = $price?->variableCosts?->firstWhere('qty', '<=', $qty);
-                if (!is_null($cost)) {
-                    $format[] = [
-                        'id' => $price?->id,
-                        'perqty' => $cost->qty,
-                        'perprice' => $cost->price,
-                        'qty' => $q = floor($qty / $cost->qty),
-                        'subtotal' => $q * $cost->qty * $cost->price
-                    ];
-                    $qty -= ($q * $cost->qty);
-                } else {
-                    $format[] = [
-                        'id' => $price?->id,
-                        'perqty' => 1,
-                        'perprice' => $price?->price_per_unit,
-                        'qty' => $qty,
-                        'subtotal' => $qty * $price?->price_per_unit
-                    ];
-                    $qty -= $qty;
-                }
+            $cost = $price?->variableCosts?->firstWhere('min_qty', '<=', $qty);
+            if ($cost) {
+                return [[
+                    'id' => $price?->id,
+                    'perqty' => $cost->qty,
+                    'perprice' => $cost->price,
+                    'min_qty' => $cost->min_qty,
+                    'qty' => $qty,
+                    'subtotal' => $qty * $cost->price,
+                ]];
             }
-            return $format;
         }
         return [[
             'id' => $price?->id,
             'perqty' => 1,
             'perprice' => $this->cost_unit,
-            'qty' => $this->qty_unit,
-            'subtotal' => $this->qty_unit * $this->cost_unit
+            'min_qty' => 1,
+            'qty' => $qty,
+            'subtotal' => $qty * $this->cost_unit,
         ]];
     }
 

@@ -15,6 +15,7 @@ class VariableCost extends Model
     protected $fillable = [
         'price_id',
         'qty',
+        'min_qty',
         'price',
     ];
 

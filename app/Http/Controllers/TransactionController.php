@@ -52,21 +52,36 @@ class TransactionController extends Controller
      */
     private function getPriceByTransactionWithVariable(Product $product, array $transaction)
     {
-        $total = 0;
-        $qty = $transaction['qty_unit'];
+        $qty = array_key_exists('qty_unit', $transaction) ? $transaction['qty_unit'] : $transaction['qty'];
         $variableCosts = $product->price->variableCosts;
 
-        while ($qty > 0) {
-            if ($variable = $variableCosts->where('qty', '<=', $qty)->first()) {
-                $total += $variable->price * $variable->qty;
-                $qty -= $variable->qty;
-            } else {
-                $total += $product->price->price_per_unit;
-                $qty -= 1;
+        if ($variableCosts->count() > 0) {
+            $variable = $variableCosts->where('min_qty', '<=', $qty)->first();
+            if ($variable) {
+                return $variable->price * $qty;
             }
         }
 
-        return $total;
+        return $product->price->price_per_unit * $qty;
+    }
+
+    /**
+     * @param \App\Models\Product $product
+     * @param int $qty
+     * @return float
+     */
+    private function getProductPricePerUnit(Product $product, int $qty)
+    {
+        $variableCosts = $product->price->variableCosts;
+        
+        if ($variableCosts->count() > 0) {
+            $variable = $variableCosts->where('min_qty', '<=', $qty)->first();
+            if ($variable) {
+                return $variable->price;
+            }
+        }
+
+        return $product->price->price_per_unit;
     }
 
     /**
@@ -96,10 +111,9 @@ class TransactionController extends Controller
                 'product_id' => $product->id,
                 'type' => 'sell',
                 'price_id' => $product->price->id,
-                'qty_' . $transaction['type'] => $transaction['qty'],
-                'cost_' . $transaction['type'] => match ($transaction['type']) {
-                    'unit' => $product->price->price_per_unit,
-                },
+                'qty_unit' => $transaction['qty'],
+                'cost_unit' => $this->getProductPricePerUnit($product, $transaction['qty']),
+                'subtotal' => $this->getPriceByTransactionWithVariable($product, $transaction),
             ]);
         }
 
@@ -142,19 +156,13 @@ class TransactionController extends Controller
                 Log::error('transaction ', [
                     'data' => json_encode($transactionByProducts),
                 ]);
-
                 return redirect()->back()->with('error', $error->getMessage());
             }
-
             Log::info('transaction ', [
                 'data' => json_encode($transactionByProducts),
             ]);
-
             return redirect()->back()->with('success', 'Transaksi berhasil');
         }
-
-
-
         return redirect()->back()->with('error', 'Transaksi gagal. Silahkan coba lagi.');
     }
 

@@ -1,15 +1,10 @@
 
 <script setup>
-import { getCurrentInstance, nextTick, onMounted, onUpdated, ref } from 'vue'
-import { Link, useForm } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia'
+import { getCurrentInstance } from 'vue'
+import { Link } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Card from '@/Components/Card.vue'
 import Swal from 'sweetalert2'
-import Datepicker from '@vuepic/vue-datepicker';
-import { id } from 'date-fns/locale';
-import '@vuepic/vue-datepicker/dist/main.css'
-import Select from '@vueform/multiselect'
 import FormatVariableCostsDailyReport from '../../../Components/FormatVariableCostsDailyReport.vue'
 
 const { sell, total, cashier, day } = defineProps({
@@ -33,8 +28,20 @@ const print = () => {
       Swal.showLoading()
     }
   })
-  setTimeout(Swal.close, 800)
-  setTimeout(window.print, 1000)
+
+  const iframe = document.createElement('iframe')
+  iframe.style.display = 'none'
+  iframe.src = route('daily.report.iframe', {
+    user_id: cashier.id,
+    date: day,
+  })
+  document.body.appendChild(iframe)
+
+  iframe.onload = () => {
+    Swal.close()
+  }
+  
+  setTimeout(() => { iframe.remove() }, 10000);
 }
 
 </script>
@@ -90,42 +97,6 @@ const print = () => {
               </tr>
             </tbody>
           </table>
-        </div>
-      </template>
-
-      <template #print>
-        <div class="flex items-center justify-center font-semibold mb-10">
-          <h1 class="text-black text-2xl">Laporan Penjualan Harian "{{ cashier.name }}"</h1>
-        </div>
-        <div class="flex items-center justify-end text-lg font-semibold mb-4">
-          <p>Tanggal : {{ dateindo(day) }} </p>
-        </div>
-        <table class="w-full border-collapse border-2 border-slate-300">
-          <thead class="bg-slate-100">
-            <tr>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">No</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Produk</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Qty</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Subtotal</th>
-              <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, i) in sell" :key="i" :index="i" :item="item" :class="item.total_cost_all === 0 ? 'bg-sky-200' : ''">
-              <td class="border p-2 border-x-2 border-slate-300 text-center">{{ i + 1 }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.qty_unit }}</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right"><FormatVariableCostsDailyReport :detail="item" /></td>
-                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total) }}</td>
-            </tr>
-            <tr class="text-xl font-bold bg-yellow-300">
-              <td class="border p-2 border-x-2 border-slate-300 text-center" colspan="4">Total Penjualan</td>
-              <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(total) }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="flex items-center justify-start text-black space-y-2 mt-2">
-          <div>Laporan harian dicetak pada {{ dateindo(new Date(), true) }}</div>
         </div>
       </template>
     </Card>

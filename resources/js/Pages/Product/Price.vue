@@ -46,6 +46,7 @@ onMounted(async () => {
 const add = () => {
   form.variables.push({
     qty: 1,
+    min_qty: 1,
     price: 0,
   })
 }
@@ -171,9 +172,11 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
 <style scoped>
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
+  appearance: none !important;
 }
 input[type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 </style>
 
@@ -242,11 +245,19 @@ input[type="number"] {
                   Harga jual <input type="number" v-model="variable.qty" class="w-14 p-0 focus:ring-0 rounded bg-transparent text-center" min="1" required>
                 </label>
                 <div class="flex items-center w-2/3 space-x-2">
+                  <input
+                    type="number"
+                    v-model="variable.min_qty"
+                    min="1"
+                    class="bg-transparent border rounded-md w-1/6 text-center"
+                    placeholder="Min. qty"
+                    required
+                  >
                   <input 
                     ref="prices" 
                     @input.prevent="reformatVariable($event.target, i)" 
                     type="text" 
-                    class="bg-transparent border rounded-md text-right w-full" 
+                    class="bg-transparent border rounded-md text-right w-5/6" 
                     :placeholder="`Harga jual ${variable.qty}`"
                     required
                   >
@@ -254,6 +265,7 @@ input[type="number"] {
                 </div>
               </div>
 
+              <div v-if="form.errors[`variables.${i}.min_qty`]" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors[`variables.${i}.min_qty`] }}</div>
               <div v-if="form.errors[`variables.${i}.price`]" class="text-red-400 text-sm text-right lowercase first-letter:capitalize">{{ form.errors[`variables.${i}.price`] }}</div>
             </div>
           </template>

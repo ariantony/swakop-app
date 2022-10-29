@@ -202,6 +202,7 @@ const destroy = async (item) => {
 
 const addVariable = () => create.variables.push({
   qty: 1,
+  min_qty: 1,
   price: 0,
 })
 
@@ -244,9 +245,11 @@ onMounted(fetch)
 <style scoped>
   input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
+    appearance: none !important;
   }
   input[type="number"] {
     -moz-appearance: textfield;
+    appearance: textfield;
   }
   </style>
 
@@ -369,7 +372,7 @@ onMounted(fetch)
                 <Select
                   v-model="create.group_id"
                   :options="groups.map(g => ({
-                  label: `${g.code} - ${g.name}`,
+                  label: new String(`${g.code} - ${g.name}`).toUpperCase(),
                   value: g.id,
                   }))"
                   :searchable="true" />
@@ -402,9 +405,28 @@ onMounted(fetch)
                   <label :for="`variables[${i}]`" class="w-1/4 flex items-center space-x-2">
                     Harga jual <input type="number" v-model="variable.qty" min="1" class="w-12 p-0 ml-2 rounded text-center" required> &nbsp; unit
                   </label>
-                  <input :ref="`variables[${i}]`" type="text" :name="`variables[${i}]`" @input.prevent="variable.price = reformat($event)" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize text-right" :placeholder="`harga jual ${variable.qty} unit`" required>
+                  <div class="flex items-center w-3/4 space-x-2">
+                    <input
+                      type="number"
+                      v-model="variable.min_qty"
+                      min="1"
+                      class="bg-white border border-slate-200 rounded-md w-1/6 text-center"
+                      placeholder="Min. qty"
+                      required
+                    >
+                    <input 
+                      :ref="`variables[${i}]`" 
+                      type="text" 
+                      :name="`variables[${i}]`" 
+                      @input.prevent="variable.price = reformat($event)" 
+                      class="w-5/6 bg-white border border-slate-200 rounded-md placeholder:capitalize text-right" 
+                      :placeholder="`harga jual ${variable.qty} unit`" 
+                      required
+                    >
+                  </div>
                 </div>
 
+                <div v-if="create.errors[`variables.${i}.min_qty`]" class="text-right text-sm text-red-500">{{ create.errors.min_qty?.sell?.unit }}</div>
                 <div v-if="create.errors[`variables.${i}.price`]" class="text-right text-sm text-red-500">{{ create.errors.price?.sell?.unit }}</div>
               </div>
             </template>

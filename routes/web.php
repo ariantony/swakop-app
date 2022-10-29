@@ -81,6 +81,7 @@ Route::middleware([
     Route::get('daily-report/generate', fn () => redirect()->route('daily.report.index'));
     Route::resource('daily-report', App\Http\Controllers\DailyController::class)->name('index', 'daily.report.index');
     Route::post('daily-report/generate', [App\Http\Controllers\DailyController::class, 'generate'])->name('daily.report.generate');
+    Route::get('daily-report/iframe/print', [App\Http\Controllers\DailyController::class, 'generate'])->name('daily.report.iframe');
 
     // Goods Return Report
     Route::get('goods-return/generate', fn () => redirect()->route('return.report.index'))->middleware('role:admin');
