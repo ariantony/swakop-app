@@ -66,9 +66,10 @@ onUnmounted(() => interval.value && clearInterval(interval.value))
         </template>
       </div>
 
-      <div class="w-2/3 flex items-center justify-end space-x-1">
+      <div class="w-2/3 flex items-center justify-end space-x-1 relative">
         <label for="search" class="lowecase first-letter:capitalize">Cari</label>
-        <input type="search" v-model="form.search" @input.prevent="refresh()" class="bg-transparent w-full max-w-xs border-2 border-slate-300 rounded-md placeholder:capitalize text-sm" placeholder="Cari sesuatu ...">
+        <input type="search" v-model="form.search" @change.prevent="refresh()" class="bg-transparent w-full max-w-xs border-2 border-slate-300 rounded-md placeholder:capitalize text-sm" placeholder="Cari sesuatu ...">
+        <i class="bx bx-send absolute top-3 right-4 text-slate-400" title="Tekan enter untuk mencari..."></i>
       </div>
     </div>
 
