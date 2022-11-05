@@ -29,6 +29,20 @@ class ProductController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
+    public function onlyName()
+    {
+        return Product::select(['id', 'name', 'code', 'barcode'])->without(['buy', 'sell', 'returnBuy', 'retur', 'group', 'price', 'from', 'to'])
+                ->orderBy('name')
+                ->get()
+                ->map(function (Product $product) {
+                    return $product->only([
+                        'id', 'code', 'barcode', 'name'
+                    ]);
+                });
+    }
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function whereHasStock()
     {
         return Product::without(['group'])->with(['buy', 'sell', 'returnBuy', 'retur', 'from', 'to', 'price'])->orderBy('name')->get()->map(function (Product $product) {

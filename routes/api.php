@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('api.')->group(function () {
     // Masterdata
+    Route::get('/product/only-name', [App\Http\Controllers\ProductController::class, 'onlyName'])->name('product.only.name');
     Route::get('/product/where-has-stock', [App\Http\Controllers\ProductController::class, 'whereHasStock'])->name('product.where.has.stock');
     Route::get('/product/where-has-price', [App\Http\Controllers\ProductController::class, 'whereHasPrice'])->name('product.where.has.price');
     Route::get('/product/without-group-and-price', [App\Http\Controllers\ProductController::class, 'withoutGroupAndPrice'])->name('product.without.group.and.price');
@@ -26,6 +27,7 @@ Route::name('api.')->group(function () {
     Route::post('/burdens', [App\Http\Controllers\BurdenController::class, 'paginate'])->name('burden.paginate');
     Route::post('/conversions', [App\Http\Controllers\ConversionController::class, 'paginate'])->name('conversion.paginate');
     Route::post('/groups', [App\Http\Controllers\GroupController::class, 'paginate'])->name('group.paginate');
+    Route::post('/pricetag-groups', [App\Http\Controllers\PricetagGroupController::class, 'paginate'])->name('pricetag-group.paginate');
 
     // Stock In
     Route::post('/in', [App\Http\Controllers\InController::class, 'paginate'])->name('in.paginate');
