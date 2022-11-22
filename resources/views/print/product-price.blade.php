@@ -20,8 +20,7 @@
   }
 </style>
 <body>
-  <div style="page-break-after: always"></div>
-  <div class="p-8">
+  <div class="p-0">
     <table class="w-full">
       <tbody>
         <tr class="flex">
@@ -61,10 +60,10 @@
                 @endif
               </div>
             </td>
-            @if($loop->index % 5 === 4 && $loop->index > 0)
+            @if($loop->index % 5 === 4)
             </tr>
-              @if(($loop->index % 20 === 19 && $loop->index > 0) || $loop->index === 19)
-              <tr class="flex" style="page-break-after: always">
+              @if(($loop->index % 25 === 24) || $loop->index === 24)
+              <tr class="flex" style="page-break-before: always">
               @else 
               <tr class="flex">
               @endif
