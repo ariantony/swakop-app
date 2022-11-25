@@ -112,6 +112,15 @@ class Product extends Model
     {
         return $this->hasMany(Conversion::class, 'to_id', 'id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function pricetagGroups()
+    {
+        return $this->belongsToMany(PricetagGroup::class, 'pricetag_group_products', 'product_id', 'pricetag_group_id')->withTimestamps();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */

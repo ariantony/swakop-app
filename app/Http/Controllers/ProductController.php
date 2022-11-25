@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\PricetagGroup;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,6 +27,20 @@ class ProductController extends Controller
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function onlyName()
+    {
+        return Product::select(['id', 'name', 'code', 'barcode'])->without(['buy', 'sell', 'returnBuy', 'retur', 'group', 'price', 'from', 'to'])
+                ->orderBy('name')
+                ->get()
+                ->map(function (Product $product) {
+                    return $product->only([
+                        'id', 'code', 'barcode', 'name'
+                    ]);
+                });
+    }
     /**
      * @return \Illuminate\Http\Response
      */
@@ -207,6 +222,7 @@ class ProductController extends Controller
     {
         return Inertia::render('Product/Print')->with([
             'groups' => Group::orderBy('name')->get(),
+            'pricetagGroups' => PricetagGroup::orderBy('name')->get(),
         ]);
     }
 
@@ -252,23 +268,34 @@ class ProductController extends Controller
         $post = $request->validate([
             'products' => 'required',
         ]);
-        
+
         if (in_array(0, $post['products'])) {
             $products = Product::with(['group', 'price', 'buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->orderBy('name')->get();
         } else {
             $products = Product::with(['group', 'price', 'buy', 'sell', 'returnBuy', 'retur', 'from', 'to'])->orderBy('name')->find($post['products']);
         }
 
+        $filter = collect($post['products'])->filter(fn ($item) => str_starts_with($item, 'g-'))->map(fn ($item) => substr($item, 2));
+        
+        $pricetagGroups = PricetagGroup::with('products')->find($filter);
+        $pricetagGroups->each(function ($item) {
+            $item->sample = $item->products()->first();
+            $item->variable_costs = $item->products()->get()->filter(fn ($product) => $product->price->variableCosts->count() > 0)->map(fn ($product) => $product->price->variableCosts)->flatten();
+            $item->barcode = $item->products()->get()->map(fn ($product) => substr($product->barcode, -3))->implode(', ');
+        });
+        
         if ($request->method() === 'GET') {
             return view('print/product-price', [
                 'products' => $products,
                 'ids' => $post['products'],
+                'pricetagGroups' => $pricetagGroups,
             ]);
         }
 
         return Inertia::render('Product/Print/Price', [
             'products' => $products,
             'ids' => $post['products'],
+            'pricetagGroups' => $pricetagGroups,
         ]);
     }
 

@@ -1523,6 +1523,10 @@ select {
   width: 189.0px;
 }
 
+.w-10cm {
+  width: 378.0px;
+}
+
 .min-w-0 {
   min-width: 0px;
 }

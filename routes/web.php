@@ -46,6 +46,8 @@ Route::middleware([
     Route::resource('burden', App\Http\Controllers\BurdenController::class)->middleware('role:admin');
     Route::resource('price', App\Http\Controllers\PriceController::class)->middleware('role:admin');
     Route::resource('group', App\Http\Controllers\GroupController::class)->middleware('role:admin');
+    Route::resource('pricetag-group', App\Http\Controllers\PricetagGroupController::class)->middleware('role:admin');
+    Route::delete('pricetag-group-remove-item/{pricetagGroup}/{product}', [App\Http\Controllers\PricetagGroupController::class, 'remove'])->name('pricetag-group.remove')->middleware('role:admin');
 
     // Conversion
     Route::resource('conversion', App\Http\Controllers\ConversionController::class)->middleware('role:admin');
