@@ -11,8 +11,9 @@ import { id } from 'date-fns/locale';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Select from '@vueform/multiselect'
 
-const { groups } = defineProps({
+const { groups, pricetagGroups } = defineProps({
   groups: Array,
+  pricetagGroups: Array,
 })
 
 const self = getCurrentInstance()
@@ -27,8 +28,21 @@ const fprice = useForm({
 const generateGroup = () => fgroup.post(route('product.print.group'))
 const generatePrice = () => fprice.post(route('product.print.price'))
 
-const change = () => {
+const change = (product_id) => {
   nextTick(() => {
+    
+    pricetagGroups.forEach((pricetagGroup) => {
+      const hasPricetagGroup = pricetagGroup.products.find((product) => product.id == product_id)
+      if (hasPricetagGroup) {
+        fprice.products.splice(fprice.products.indexOf(product_id), 1)
+        if (fprice.products.includes(`g-${pricetagGroup.id}`)) {
+          fprice.products.splice(fprice.products.indexOf(`g-${pricetagGroup.id}`), 1)
+        } else {
+          fprice.products.push(`g-${pricetagGroup.id}`)
+        }
+      }
+    })
+
     if (fprice.products.includes(0)) {
       fprice.products = [0, ...products.value.map(p => p.id)]
     }
@@ -139,17 +153,22 @@ onMounted(fetch)
                     :options="[{
                       label: 'Pilih Semua',
                       value: 0,
-                    }].concat(products.map(p => ({
-                      label: `${p.name} ${p.barcode != null ? '- ' + p.barcode : ''}`,
+                    }].concat(pricetagGroups.map(p => ({
+                      label: `${String(p.name).toUpperCase()} (Group)`,
+                      value: `g-${p.id}`,
+                    })))
+                    .concat(products.map(p => ({
+                      label: `${p.name} ${p.barcode != null ? `- ${p.barcode}` : ''}`,
                       value: p.id,
-                    })))"
+                    })))
+                    "
                     :searchable="true"
                     :hideSelected="false"
                     :closeOnSelect="false"
                     noOptionsText="Mohon tunggu..."
                     class="w-3/4"
                     ref="multiselect"
-                    @change="change"
+                    @select="change($event)"
                   />
                 </div>
                 <div class="text-red-500 text-right text-sm first-letter:capitalize" v-html="fprice.errors.products || '&nbsp;'"></div>

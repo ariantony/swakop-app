@@ -7,9 +7,10 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import Card from '@/Components/Card.vue'
 import Swal from 'sweetalert2'
 
-const { products, ids } = defineProps({
+const { products, ids, pricetagGroups } = defineProps({
   products: Object,
   ids: Object,
+  pricetagGroups: Object,
 })
 
 const self = getCurrentInstance()
@@ -88,6 +89,14 @@ const isOverflow = (el) => {
     font-display: swap;
   }
 
+  @font-face {
+    font-family: 'Kingthings-Exeter';
+    src: url('../../../../../public/assets/fonts/Kingthings-Exeter.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
   .product {
     font-family: 'ArmWrestler';
   }
@@ -98,6 +107,10 @@ const isOverflow = (el) => {
 
   .price {
     font-family: 'Amaranth';
+  }
+
+  .kingthings {
+    font-family: 'Kingthings-Exeter';
   }
 </style>
 
@@ -122,24 +135,69 @@ const isOverflow = (el) => {
         </div>
       </template>
       <template #body>
-        <div class="flex flex-wrap items-center space-x-2">
-          <div v-for="(item, i) in products" :key="i" class="flex flex-col justify-start w-5cm my-1 border border-black bg-white space-y-2 ml-2">
+        <div class="flex flex-wrap items-center">
+          <div v-for="(item, i) in products" :key="i" class="flex flex-col justify-start w-5cm my-1 border border-black bg-white kingthings">
             <table class="border-0"><tr class="border-0"><td class="border-0 p-0">
-              <div class="max-w-[188px] relative mb-[36px]">
-                <h3 ref="title" class="absolute min-w-full h-[36px] flex items-center justify-center bg-red-500 text-center text-white p-2 border-b-black border-b product" :class="item.name.length > 20 ? shrink(i) : 'text-sm'">{{ item.name }}</h3>
+              <div class="max-w-5cm relative mb-[36px]">
+                <h3 ref="title" class="absolute min-w-full h-[36px] flex items-center justify-center bg-red-500 text-center text-white p-2 border-b-black border-b font-bold text-sm">{{ item.name }}</h3>
               </div>
-              <div class="flex items-center justify-between mb-1 border-b border-b-black">
-                <h3 class="text-xs rounded-sm px-1 font-bold">{{ item.group?.code }}</h3>
-                <img :src="url('assets/images/logo-swakop.png')" class="w-10 h-4 flex justify-center" alt="Logo Swakop" />
-                <h3 class="text-xs rounded-sm px-1 barcode">{{ item.barcode }}</h3>
+              <div class="px-1">
+                <div class="flex items-center justify-center px-3 pb-1 border-b border-b-red-500">
+                  <p class="text-2xl font-semibold">Rp &nbsp;</p>
+                  <h1 class="text-2xl font-bold">{{ item.price?.price_per_unit ? item.price.price_per_unit.toLocaleString('id') : new Number(0).toLocaleString('id') }}</h1>
+                </div>
+                <table class="w-full">
+                  <template v-if="item.price.variable_costs.length > 0">
+                    <tr v-for="(row, j) in item.price.variable_costs.slice().reverse()" :key="j" class="text-black border-t border-t-red-500">
+                      <td class="text-sm px-2 text-left">{{ row.qty }} pcs</td>
+                      <td class="text-sm px-2 text-center"> - </td>
+                      <td class="text-sm px-2 text-right">Rp. {{ row?.price ? row.price.toLocaleString('id') : new Number(0).toLocaleString('id') }}</td>
+                    </tr>
+                  </template>
+                  <template v-else>
+                    <tr v-for="(row, j) in [0, 1, 2]" :key="j" class="text-black border-t border-t-red-500">
+                      <td class="text-sm text-white"> - </td>
+                    </tr>
+                  </template>
+                </table>
               </div>
-              <div class="flex items-center justify-center px-3 pb-1 price">
-                <p class="text-2xl font-semibold">Rp &nbsp;</p>
-                <h1 class="text-2xl font-bold">{{ item.price?.price_per_unit ? item.price.price_per_unit.toLocaleString('id') : new Number(0).toLocaleString('id') }}</h1>
+              <div class="flex items-center justify-between text-xs text-center border-t border-t-black">
+                <h3 class="w-1/3 px-1 text-white bg-red-500 border-r border-r-black">{{ item?.group.code }}</h3>
+                <h3 class="w-2/3 px-1 text-white bg-red-500">{{ item.barcode ? item.barcode : '&nbsp;' }}</h3>
               </div>
-              <div v-for="(row, j) in item.price.variable_costs.slice().reverse()" :key="j" class="flex items-center justify-center text-red-600 border-t border-t-black">
-                <p class="text-md price font-semibold">{{ row.qty }} pcs &nbsp; - &nbsp; </p>
-                <h1 class="text-md price font-bold">{{ row?.price ? row.price.toLocaleString('id') : new Number(0).toLocaleString('id') }}</h1>
+            </td></tr></table>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center">
+          <div v-for="(item, i) in pricetagGroups" :key="i" class="flex flex-col justify-start w-10cm my-1 border border-black bg-white kingthings">
+            <table class="border-0"><tr class="border-0"><td class="border-0 p-0">
+              <div class="max-w-10cm relative mb-[36px]">
+                <h3 ref="title" class="absolute min-w-full h-[36px] flex items-center justify-center bg-red-500 text-center text-white p-2 border-b-black border-b font-bold text-lg">{{ String(item.name).toUpperCase() }}</h3>
+              </div>
+              <div class="px-2">
+                <div class="flex items-center justify-center px-3 pb-1 border-b-2 border-b-red-500">
+                  <p class="text-2xl font-semibold">Rp &nbsp;</p>
+                  <h1 class="text-2xl font-bold">{{ item.sample.price?.price_per_unit ? item.sample.price.price_per_unit.toLocaleString('id') : new Number(0).toLocaleString('id') }}</h1>
+                </div>
+                <table class="w-full">
+                  <template v-if="item.variable_costs.length > 0">
+                    <tr v-for="(row, j) in item.variable_costs.slice().reverse()" :key="j" class="text-black border-t border-t-red-500">
+                      <td class="text-sm text-left">Beli {{ row.qty }} pcs </td>
+                      <td class="text-sm text-center">Rp. {{ row?.price ? row.price.toLocaleString('id') : new Number(0).toLocaleString('id') }}</td>
+                      <td class="text-sm text-right">Rp. {{ (new Number(row?.price) * new Number(row?.qty)) ? (new Number(row?.price) * new Number(row?.qty)).toLocaleString('id') : new Number(0).toLocaleString('id') }}</td>
+                    </tr>
+                  </template>
+                  <template v-else>
+                    <tr v-for="(row, j) in [0, 1, 2]" :key="j" class="text-red-600 border-t border-t-red-600">
+                      <td class="text-sm text-white"> - </td>
+                    </tr>
+                  </template>
+                </table>
+              </div>
+              <div class="flex items-center justify-between text-xs text-center border-t border-t-black">
+                <h3 class="w-1/3 px-1 text-white bg-red-500">{{ item.sample?.group.code }}</h3>
+                <h3 class="w-1/3 px-1 bg-[#FFF14F]  capitalize border-x border-x-black">varian tidak bisa campur</h3>
+                <h3 class="w-1/3 px-1 text-white bg-red-500">{{ item.barcode }}</h3>
               </div>
             </td></tr></table>
           </div>
