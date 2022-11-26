@@ -61,6 +61,13 @@
                           <td class="variable-price px-2 text-right">Rp. {{ $item?->price ? number_format($item->price, 0, '', '.') : 0 }}</td>
                         </tr>
                       @endforeach
+                      @if ($product->price?->variableCosts->count() < 3)
+                        @for ($i = 0; $i < 3 - $product->price?->variableCosts->count(); $i++)
+                          <tr class="text-black border-t border-t-red-500 bc-red">
+                            <td class="variable-price text-white"> - </td>
+                          </tr>
+                        @endfor
+                      @endif
                     @else
                       @foreach ([0, 1, 2] as $j => $item)
                         <tr class="text-black border-t border-t-red-500 bc-red">
@@ -71,8 +78,8 @@
                   </table>
                 </div>
                 <div class="flex items-center justify-between text-xs text-center border-t border-t-black bc-black">
-                  <h3 class="w-1/3 px-1 text-white bg-red-500 border-r border-r-black bc-black">{{ $product?->group->code }}</h3>
-                  <h3 class="w-2/3 px-1 text-white bg-red-500">{{ $product->barcode ?? '&nbsp;' }}</h3>
+                  <h3 class="w-1/3 px-1 bg-red-500 text-white border-r border-r-black bc-black">{{ $product?->group->code }}</h3>
+                  <h3 class="w-2/3 px-1 bg-red-500 @if(! $product->barcode) text-red-500 @else text-white @endif">{{ $product->barcode ?: '-' }}</h3>
                 </div>
               </div>
             </td>
@@ -114,6 +121,13 @@
                           <td class="variable-price text-right">Rp. {{ ((int) $item?->price * (int) $item?->qty) ? number_format(((int) $item?->price * (int) $item?->qty), 0, '', '.') : 0 }} </td>
                         </tr>
                       @endforeach
+                      @if ($group?->variable_costs->count() < 3)
+                        @for ($i = 0; $i < 3 - $group?->variable_costs->count(); $i++)
+                          <tr class="text-black border-t border-t-red-500 bc-red">
+                            <td class="variable-price text-white"> - </td>
+                          </tr>
+                        @endfor
+                      @endif
                     @else
                       @foreach ([0, 1, 2] as $j => $item)
                         <tr class="text-red-600 border-t border-t-red-600 bc-red">
@@ -124,9 +138,9 @@
                   </table>
                 </div>
                 <div class="flex items-center justify-between text-xs text-center border-t border-t-black bc-black">
-                  <h3 class="w-1/3 px-1 text-white bg-red-500">{{ $group->sample?->group->code }}</h3>
+                  <h3 class="w-1/3 px-1 bg-red-500 text-white">{{ $group->sample?->group->code }}</h3>
                   <h3 class="w-1/3 px-1 not-variable  capitalize border-x border-x-black">varian tidak bisa campur</h3>
-                  <h3 class="w-1/3 px-1 text-white bg-red-500">{{ $group->barcode }}</h3>
+                  <h3 class="w-1/3 px-1 bg-red-500 @if(! $group->barcode) text-red-500 @else text-white @endif">{{ $group->barcode ?: '-' }}</h3>
                 </div>
               </div>
             </td>

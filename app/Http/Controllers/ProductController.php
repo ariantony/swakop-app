@@ -280,7 +280,7 @@ class ProductController extends Controller
         $pricetagGroups = PricetagGroup::with('products')->find($filter);
         $pricetagGroups->each(function ($item) {
             $item->sample = $item->products()->first();
-            $item->variable_costs = $item->products()->get()->filter(fn ($product) => $product->price->variableCosts->count() > 0)->map(fn ($product) => $product->price->variableCosts)->flatten();
+            $item->variable_costs = $item->products()->get()->first(fn ($product) => $product->price->variableCosts->count() > 0)?->price->variableCosts;
             $item->barcode = $item->products()->get()->map(fn ($product) => substr($product->barcode, -3))->implode(', ');
         });
         

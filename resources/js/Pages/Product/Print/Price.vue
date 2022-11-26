@@ -148,10 +148,13 @@ const isOverflow = (el) => {
                 </div>
                 <table class="w-full">
                   <template v-if="item.price.variable_costs.length > 0">
-                    <tr v-for="(row, j) in item.price.variable_costs.slice().reverse()" :key="j" class="text-black border-t border-t-red-500">
+                    <tr v-for="(row, j) in item.price.variable_costs.slice().reverse().slice(0, 3)" :key="j" class="text-black border-t border-t-red-500">
                       <td class="text-sm px-2 text-left">{{ row.qty }} pcs</td>
                       <td class="text-sm px-2 text-center"> - </td>
                       <td class="text-sm px-2 text-right">Rp. {{ row?.price ? row.price.toLocaleString('id') : new Number(0).toLocaleString('id') }}</td>
+                    </tr>
+                    <tr v-for="(row, j) in [...Array(3 - item.price.variable_costs.length).keys()]" :key="j" class="text-black border-t border-t-red-500">
+                      <td class="text-sm text-white"> - </td>
                     </tr>
                   </template>
                   <template v-else>
@@ -181,10 +184,13 @@ const isOverflow = (el) => {
                 </div>
                 <table class="w-full">
                   <template v-if="item.variable_costs.length > 0">
-                    <tr v-for="(row, j) in item.variable_costs.slice().reverse()" :key="j" class="text-black border-t border-t-red-500">
+                    <tr v-for="(row, j) in item.variable_costs.slice().reverse().slice(0, 3)" :key="j" class="text-black border-t border-t-red-500">
                       <td class="text-sm text-left">Beli {{ row.qty }} pcs </td>
                       <td class="text-sm text-center">Rp. {{ row?.price ? row.price.toLocaleString('id') : new Number(0).toLocaleString('id') }}</td>
                       <td class="text-sm text-right">Rp. {{ (new Number(row?.price) * new Number(row?.qty)) ? (new Number(row?.price) * new Number(row?.qty)).toLocaleString('id') : new Number(0).toLocaleString('id') }}</td>
+                    </tr>
+                    <tr v-for="(row, j) in [...Array(3 - item.variable_costs.length).keys()]" :key="j" class="text-black border-t border-t-red-500">
+                      <td class="text-sm text-white"> - </td>
                     </tr>
                   </template>
                   <template v-else>
@@ -195,9 +201,9 @@ const isOverflow = (el) => {
                 </table>
               </div>
               <div class="flex items-center justify-between text-xs text-center border-t border-t-black">
-                <h3 class="w-1/3 px-1 text-white bg-red-500">{{ item.sample?.group.code }}</h3>
-                <h3 class="w-1/3 px-1 bg-[#FFF14F]  capitalize border-x border-x-black">varian tidak bisa campur</h3>
-                <h3 class="w-1/3 px-1 text-white bg-red-500">{{ item.barcode }}</h3>
+                <h3 class="w-full px-1 text-white bg-red-500">{{ item.sample?.group.code }}</h3>
+                <h3 class="w-full px-1 bg-[#FFF14F]  capitalize border-x border-x-black">varian tidak bisa campur</h3>
+                <h3 class="w-full px-1 text-white bg-red-500">{{ item.barcode ? item.barcode : '&nbsp;' }}</h3>
               </div>
             </td></tr></table>
           </div>
