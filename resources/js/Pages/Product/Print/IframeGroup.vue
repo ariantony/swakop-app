@@ -1,5 +1,7 @@
 
 <script setup>
+import { onMounted } from 'vue';
+
   const { products, group } = defineProps({
     products: Object,
     group: Object
@@ -10,7 +12,11 @@
     nprogress.style.display = 'none'
   }
 
-  window.print()
+  onMounted(() => {
+    setTimeout(() => {
+      window.print()
+    }, 2000);
+  })
 </script>
 
 <template>
