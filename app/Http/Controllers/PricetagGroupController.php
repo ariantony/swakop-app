@@ -44,7 +44,7 @@ class PricetagGroupController extends Controller
                     $query->orWhere($column, 'like', $search);
                 }
             })
-            ->orderBy($request->input('order.key', 'name') ?: 'name', $request->input('order.dir', 'desc') ?: 'desc')
+            ->orderBy($request->input('order.key', 'name') ?: 'name', $request->input('order.dir', 'asc') ?: 'asc')
             ->paginate($request->input('per_page', 10));
     }
 
