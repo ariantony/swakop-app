@@ -28,10 +28,13 @@ const { edit, destroy, remove } = defineProps({
     </template>
     <template v-slot:tbody="{ index, item }">
       <tr>
-        <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 uppercase whitespace-nowrap">{{ item.name }}</td>
-        <td class="border p-2 border-x-2 border-slate-300 space-x-1 flex flex-wrap">
-          <ProductBadge v-for="product in item.products" :key="product.id" :group="item" :product="product" :remove="remove" />
+        <td class="border p-2 border-slate-300 text-center">{{ index + 1 }}</td>
+        <td class="border p-2 border-slate-300 uppercase whitespace-nowrap">{{ item.name }}</td>
+        <td class="border p-2 border-slate-300 space-x-1 flex flex-wrap">
+          <template v-if="item.products.length > 0">
+            <ProductBadge v-for="product in item.products" :key="product.id" :group="item" :product="product" :remove="remove" />
+          </template>
+          <span v-else class="text-slate-50"> - </span>
         </td>
         <td class="border p-1 ">
           <div class="flex items-center justify-center space-x-1 text-white">
