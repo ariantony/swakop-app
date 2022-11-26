@@ -144,6 +144,10 @@ const add = async () => {
 }
 
 const store = () => {
+  if (form.processing || create.processing) {
+    return
+  }
+
   return create.post(route('in.store'), {
     onSuccess: () => {
       form.reset()
@@ -206,7 +210,7 @@ const addVariable = () => create.variables.push({
   price: 0,
 })
 
-// Inertia.on('finish', () => rr())
+Inertia.on('finish', () => rr())
 
 const fetch = async () => {
   try {
@@ -296,7 +300,7 @@ onMounted(fetch)
           </div>
 
           <div class="flex items-center space-x-2 justify-end">
-            <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-white text-sm transition-all">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-white text-sm transition-all" :class="form.processing && 'cursor-not-allowed bg-red-500'" :disabled="form.processing">
               <div class="flex items-center space-x-1">
                 <i class="bx bx-plus"></i>
                 <p class="capitalize font-semibold">tambah</p>
@@ -460,4 +464,8 @@ onMounted(fetch)
       </form>
     </div>
   </transition>
+
+  <Teleport v-if="form.processing || create.processing" to="body">
+    <div class="fixed top-0 left-0 w-full h-full bg-gray-800 opacity-50 z-20"></div>
+  </Teleport>
 </template>
