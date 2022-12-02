@@ -12,6 +12,10 @@ import { onMounted } from 'vue';
     nprogress.style.display = 'none'
   }
 
+  const print = () => {
+    window.print()
+  }
+
   onMounted(() => {
     setTimeout(() => {
       window.print()
@@ -23,6 +27,11 @@ import { onMounted } from 'vue';
   <div class="px-8">
     <div class="flex items-center justify-center font-semibold mb-10">
       <h1 class="text-black text-2xl">Produk dengan Kelompok Barang "{{ group.code }}"</h1>
+      <button @click="print" type="button" class="print:hidden bg-pink-600 rounded-md rounded-r-none px-5 py-4 font-semibold text-white fixed top-0 right-0">
+        <div class="flex items-center">
+          <i class="bx bx-download mr-1 text-xl"></i> Print
+        </div>
+      </button>
     </div>
     <table class="w-full border-2 border-slate-300">
       <tr class="bg-slate-100">

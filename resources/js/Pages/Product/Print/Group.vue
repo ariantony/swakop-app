@@ -14,33 +14,6 @@ const { products, group } = defineProps({
 
 const self = getCurrentInstance()
 
-const print = () => {
-  Swal.fire({
-    title: 'Menyiapkan file...',
-    text: 'Mohon tunggu hingga preview file muncul',
-    showConfirmButton: false,
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    allowEnterKey: false,
-    didOpen : () => {
-      Swal.showLoading()
-    }
-  })
-  
-  const iframe = document.createElement('iframe')
-  iframe.style.display = 'none'
-  iframe.src = route('product.iframe.group', {
-    group_id: group.id,
-  })
-  document.body.appendChild(iframe)
-
-  iframe.onload = () => {
-    Swal.close()
-  }
-  
-  setTimeout(() => { iframe.remove() }, 10000);
-}
-
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
@@ -52,11 +25,11 @@ const print = () => {
         <div class="flex items-center justify-between space-x-2 text-white p-2">
           <h1 class="ml-4 text-black text-2xl font-semibold capitalize">Produk dengan Kelompok Barang "{{ group.code }} - {{ new String(group.name).toUpperCase() }}"</h1>
           <div class="flex flex-none space-x-2">
-            <button @click.prevent="print" type="button" class="bg-pink-600 rounded-md px-3 py-1 font-semibold">
+            <a :href="route('product.iframe.group', { group_id: group.id })" target="_blank" type="button" class="bg-pink-600 rounded-md px-3 py-1 font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-download mr-1 text-xl"></i> Download
               </div>
-            </button>
+            </a>
             <Link :href="route('product.print')" class="bg-slate-600 rounded-md px-3 py-1 font-semibold">
               <div class="flex items-center">
                 <i class="bx bx-arrow-back mr-1 text-xl"></i> Kembali
