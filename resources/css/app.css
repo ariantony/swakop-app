@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.is-pointed {
+    background-color: #ef4444 !important;
+    color: white !important;
+    font-weight: 700;
+}
