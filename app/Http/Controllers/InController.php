@@ -104,6 +104,7 @@ class InController extends Controller
             'name' => 'required|string',
             // 'barcode' => 'required|string|unique:products,barcode',
             'group_id' => 'required|integer|exists:groups,id',
+            'restock_limit' => 'nullable|integer',
             'price.buy.unit' => 'required|integer',
             'price.sell.unit' => 'required|integer',
             'qty' => 'required|integer',
@@ -120,6 +121,7 @@ class InController extends Controller
                 'name' => $request->name,
                 'barcode' => $request->barcode,
                 'group_id' => $request->group_id,
+                'restock_limit' => $request->restock_limit,
             ]);
 
             $price = $product->prices()->create([

@@ -18,6 +18,7 @@ class Product extends Model
         'code',
         'name',
         'barcode',
+        'restock_limit',
         'group_id',
     ];
 

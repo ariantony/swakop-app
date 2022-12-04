@@ -36,6 +36,7 @@ const create = useForm({
   name: '',
   barcode: '',
   group_id: null,
+  restock_limit: null,
   qty: 1,
   price: {
     buy: {
@@ -383,6 +384,15 @@ onMounted(fetch)
               </div>
 
               <div v-if="create.errors.group_id" class="text-right text-sm text-red-500">{{ create.errors.group_id }}</div>
+            </div>
+
+            <div class="flex flex-col space-y-2">
+              <div class="flex items-center space-x-2">
+                <label for="restock_limit" class="lowercase first-letter:capitalize w-1/4">Restock Limit</label>
+                <input ref="restock_limit" type="number" name="restock_limit" v-model="create.restock_limit" class="w-3/4 bg-white border border-slate-200 rounded-md placeholder:capitalize" placeholder="Restock Limit">
+              </div>
+
+              <div v-if="create.errors.restock_limit" class="text-right text-sm text-red-500">{{ create.errors.restock_limit }}</div>
             </div>
 
             <div class="flex flex-col space-y-2">

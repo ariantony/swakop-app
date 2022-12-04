@@ -143,10 +143,11 @@ class ProductController extends Controller
             'name' => 'required|string',
             // 'barcode' => 'required|string|unique:products',
             'group_id' => 'required|integer|exists:groups,id',
+            'restock_limit' => 'nullable|integer',
         ]);
 
         $post = $request->only([
-            'code', 'name', 'barcode', 'group_id',
+            'code', 'name', 'barcode', 'group_id', 'restock_limit'
         ]);
 
         if ($product = Product::create($post)) {
@@ -181,10 +182,11 @@ class ProductController extends Controller
             'name' => 'required|string',
             // 'barcode' => ['required', 'string', Rule::unique('products')->ignore($product->id)],
             'group_id' => ['required', 'integer', 'exists:groups,id'],
+            'restock_limit' => 'nullable|integer',
         ]);
 
         $post = $request->only([
-            'code', 'name', 'barcode', 'group_id',
+            'code', 'name', 'barcode', 'group_id', 'restock_limit'
         ]);
         
         if ($product->update($post)) {

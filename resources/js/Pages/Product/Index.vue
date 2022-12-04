@@ -24,6 +24,7 @@ const form = useForm({
   name: '',
   barcode: '',
   group_id: null,
+  restock_limit: null,
 })
 const formStock = useForm({
   product: null,
@@ -44,6 +45,7 @@ const show = () => {
     if(form.errors.code) self.refs.code.focus()
     else if(form.errors.name) self.refs.name.focus()
     else if(form.errors.barcode) self.refs.barcode.focus()
+    else if(form.errors.restock_limit) self.refs.restock_limit.focus()
   })
 }
 
@@ -244,7 +246,7 @@ onMounted(() => {
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="group_id" class="lowercase first-letter:capitalize w-1/3">Kelompok barang</label>
+                  <label for="group_id" class="capitalize w-1/3">Kelompok barang</label>
                   <Select
                     v-model="form.group_id"
                     :options="groups.map(g => ({
@@ -253,7 +255,7 @@ onMounted(() => {
                     }))"
                     :searchable="true" />
                 </div>
-                <div v-if="form.errors.group_id" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.group_id }}</div>
+                <div v-if="form.errors.group_id" class="text-right text-red-400 text-sm capitalize">{{ form.errors.group_id }}</div>
               </div>
 
               <div class="flex flex-col space-y-2">
@@ -262,6 +264,14 @@ onMounted(() => {
                   <input ref="barcode" type="text" name="barcode" v-model="form.barcode" class="w-3/4 bg-white border border-slate-200 rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="barcode">
                 </div>
                 <div v-if="form.errors.barcode" class="text-right text-red-400 text-sm lowercase first-letter:capitalize">{{ form.errors.barcode }}</div>
+              </div>
+
+              <div class="flex flex-col space-y-2">
+                <div class="flex items-center space-x-2">
+                  <label for="restock_limit" class="capitalize w-1/4">Restock Limit</label>
+                  <input ref="restock_limit" type="number" name="restock_limit" v-model="form.restock_limit" class="w-3/4 bg-white border border-slate-200 rounded uppercase placeholder:capitalize" autocomplete="off" placeholder="Restock Limit">
+                </div>
+                <div v-if="form.errors.restock_limit" class="text-right text-red-400 text-sm capitalize">{{ form.errors.restock_limit }}</div>
               </div>
 
             </div>

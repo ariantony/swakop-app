@@ -49,16 +49,18 @@ const self = getCurrentInstance()
                 <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Barcode</th>
                 <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300">Harga</th>
                 <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Stok</th>
+                <th class="px-1 py-2 uppercase border-b-2 border-x-2 border-slate-300 w-16">Limit</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, i) in products" :key="i" :item="item">
+              <tr v-for="(item, i) in products" :key="i" :item="item" :class="(item.stock_unit <= Number(item.restock_limit) ? 'bg-yellow-300' : '')">
                 <td class="border p-2 border-x-2 border-slate-300 text-center">{{ i + 1 }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.code }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.name }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.barcode }}</td>
-                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item?.price?.price_per_unit) }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-right">{{ item.price?.price_per_unit ? rupiah(item?.price?.price_per_unit) : '-' }}</td>
                 <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.stock_unit }}</td>
+                <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.restock_limit }}</td>
               </tr>
             </tbody>
           </table>
