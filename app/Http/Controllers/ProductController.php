@@ -247,9 +247,22 @@ class ProductController extends Controller
         }
 
         if ($request->method() === 'GET') {
+
+            $result = [];
+            if (count($request->input('so')) > 0) {
+                foreach ($request->input('so') as $so) {
+                    $result[$so['product_id']] = [
+                        'real' => $so['real'],
+                        'note' => $so['note'],
+                        'class' => $so['note'] === '✓' ? 'text-green-600' : 'text-red-600',
+                    ];
+                }
+            }
+            
             return Inertia::render('Product/Print/IframeGroup', [
                 'products' => $products,
-                'group' => $products->first()->group
+                'group' => $products->first()->group,
+                'so' => $result,
             ]);
         }
 
