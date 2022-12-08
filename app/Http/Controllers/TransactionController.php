@@ -90,7 +90,7 @@ class TransactionController extends Controller
      */
     private function addQrisTax(float $total)
     {
-        return $total + ($total * 0.07);
+        return ceil($total + ($total * 0.007));
     }
     
     /**
