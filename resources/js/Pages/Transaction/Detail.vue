@@ -10,6 +10,7 @@ const { transaction, close } = defineProps({
 })
 
 const isReturned = ref(transaction.details[0].type === 'return sell')
+const useQris = ref(transaction.payment_method === 'qris')
 
 const hide = e => {
   if (e.key === 'Escape') {
@@ -39,6 +40,9 @@ onUnmounted(() => window.removeEventListener('keyup', hide))
           <h2 class="text-xl">Tanggal Transaksi : {{ dateindo(transaction.created_at, true) }}</h2>
           <div v-if="isReturned" class="bg-red-500 rounded-md p-2 px-6 text-white font-bold">
             <p class="uppercase">RETUR</p>
+          </div>
+          <div v-if="useQris" class="bg-cyan-500 rounded-md p-2 px-6 text-white font-bold">
+            <p class="uppercase">Bayar menggunakan QRIS</p>
           </div>
           <h2 class="text-xl">Kasir : {{ transaction.user.name }}</h2>
         </div>

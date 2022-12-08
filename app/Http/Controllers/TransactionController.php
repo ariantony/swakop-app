@@ -85,6 +85,15 @@ class TransactionController extends Controller
     }
 
     /**
+     * @param float $total
+     * @return float
+     */
+    private function addQrisTax(float $total)
+    {
+        return $total + ($total * 0.07);
+    }
+    
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -132,12 +141,17 @@ class TransactionController extends Controller
 
         $products = Product::find(array_keys($transactionByProducts));
 
-        $total = $this->calculateTotalTransactionPrice($products, $transactionByProducts);
+        $total = $original = $this->calculateTotalTransactionPrice($products, $transactionByProducts);
         
+        if ($request->useQris) {
+            $total = $this->addQrisTax($total);
+        }
+
         $tx = Transaction::firstOrCreate([
             'user_id' => $request->user()->id,
             'total_cost' => $total,
-            'pay' => $request->pay,
+            'pay' => $request->useQris ? $original : $request->pay,
+            'payment_method' => $request->useQris ? 'qris' : 'cash',
             'created_at' => now()->format('Y-m-d H:i:s'),
         ]);
 
@@ -182,9 +196,6 @@ class TransactionController extends Controller
      */
     public function paginate(Request $request)
     {
-        $model = new Transaction();
-        $columns = array_filter($model->getFillable(), fn ($column) => !in_array($column, $model->getHidden()));
-
         $request->validate([
             'search' => 'nullable|string',
             'order.key' => 'nullable|string',
@@ -193,17 +204,28 @@ class TransactionController extends Controller
         ]);
 
         return Transaction::with('details')
+                            ->join('users', 'users.id', '=', 'transactions.user_id')
                             ->when(!$request->user()->hasRole('admin'), fn ($query) => $query->where('user_id', $request->user()->id))
-                            ->whereRelation('details', 'type', 'sell')->where(function (Builder $query) use (&$request, &$model, &$columns) {
+                            ->whereRelation('details', 'type', 'sell')
+                            ->where(function (Builder $query) use (&$request) {
                                 $search = '%' . $request->input('search') . '%';
 
-                                foreach ($columns as $column) {
-                                    $query->orWhere($column, 'like', $search);
-                                }
-
-                                $query->orWhere('id', 'like', $search);
+                                return $query->where('users.name', 'like', $search)
+                                            ->orWhere('transactions.total_cost', 'like', $search)
+                                            ->orWhere('transactions.pay', 'like', $search)
+                                            ->orWhere('transactions.payment_method', 'like', $search)
+                                            ->orWhere('transactions.id', 'like', $search);
                             })
-                            ->orderBy($request->input('order.key', 'created_at') ?: 'created_at', $request->input('order.dir', 'desc') ?: 'desc')
+                            ->orderBy($request->input('order.key', 'transactions.created_at') ?: 'transactions.created_at', $request->input('order.dir', 'desc') ?: 'desc')
+                            ->select([
+                                'transactions.id',
+                                'transactions.user_id',
+                                'transactions.total_cost',
+                                'transactions.pay',
+                                'transactions.payment_method',
+                                'transactions.created_at',
+                                'users.name'
+                            ])
                             ->paginate($request->input('per_page', 10));
     }
 

@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import SinglePrice from './SinglePrice.vue'
 import VariablePrice from './VariablePrice.vue'
 
@@ -8,6 +9,7 @@ const { transaction, totalItem } = defineProps({
 })
 
 const price = value => new Number(value).toLocaleString('in-ID')
+const useQris = ref(transaction.payment_method === 'qris')
 
 setTimeout(() => window.print(), 1000)
 
@@ -46,15 +48,19 @@ setTimeout(() => window.print(), 1000)
       <tr class="border-t-2 border-black border-dotted">
         <td class="px-1">Total Item</td>
         <td class="text-right">{{ totalItem }}</td>
-        <td colspan="2" class="px-1 text-right">{{ price(transaction.total_cost) }}</td>
-      </tr>
-      <tr>
-        <td class="px-1" colspan="2">Cash</td>
         <td colspan="2" class="px-1 text-right">{{ price(transaction.pay) }}</td>
       </tr>
+      <tr v-show="useQris">
+        <td colspan="3" class="px-1">Pajak QRIS 0,7%</td>
+        <td class="px-1 text-right">{{ price(transaction.total_cost - transaction.pay) }}</td>
+      </tr>
       <tr>
-        <td class="px-1" colspan="2">Change</td>
-        <td colspan="2" class="px-1 text-right">{{ price(transaction.pay - transaction.total_cost) }}</td>
+        <td class="px-1" colspan="2">Total Bayar</td>
+        <td colspan="2" class="px-1 text-right">{{ price(useQris ? transaction.total_cost : transaction.pay) }}</td>
+      </tr>
+      <tr>
+        <td class="px-1" colspan="2">Kembalian</td>
+        <td colspan="2" class="px-1 text-right">{{ price(useQris ? 0 : transaction.pay - transaction.total_cost) }}</td>
       </tr>
     </table>
     <div class="flex items-center justify-center space-y-1 mt-2 border-y-2 border-black border-solid text-sm">

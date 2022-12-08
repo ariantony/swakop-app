@@ -23,6 +23,7 @@ const form = useForm({
 const temp = useForm({
   transactions: [],
   pay: 0,
+  useQris: false,
 })
 
 const current = useForm({
@@ -164,7 +165,7 @@ const submit = () => {
     return
   }
 
-  if (form.cash < grandTotal()) {
+  if (form.cash < grandTotal() && temp.useQris === false) {
     return Swal.fire({
       title: 'Peringatan',
       text: 'Jumlah bayar harus melebihi dari total pembelian',
@@ -438,7 +439,7 @@ onMounted(() => {
       <form @submit.prevent="submit" class="bg-white w-full max-w-sm rounded-md p-4 flex flex-col space-y-4">
         <div class="flex items-center justify-between space-x-2">
           <label class="lowercase first-letter:capitalize">cash</label>
-          <input ref="cash" @input.prevent="reformat" type="text" class="bg-transparent rounded-md placeholder:capitalize text-right" placeholder="cash" required>
+          <input ref="cash" @input.prevent="reformat" type="text" class="bg-transparent rounded-md placeholder:capitalize text-right" placeholder="cash">
         </div>
 
         <div class="flex items-center justify-between space-x-2">
@@ -447,8 +448,15 @@ onMounted(() => {
         </div>
 
         <div class="flex items-center justify-end space-x-2">
-          <button type="submit" class="bg-blue-600 rounded-md px-3 py-1 text-sm text-white font-semibold" :class="temp.processing && 'cursor-not-allowed bg-red-500'" :disabled="temp.processing">
+          <button @click="(temp.useQris = true)" type="submit" class="bg-pink-600 rounded-md px-3 py-1 text-sm text-white font-semibold" :class="temp.processing && 'cursor-not-allowed bg-red-500'" :disabled="temp.processing">
             <div class="flex items-center space-x-1">
+              <i class="bx bx-qr"></i>
+              <p class="capitalize">bayar lewat qris</p>
+            </div>
+          </button>
+
+          <button type="submit" class="bg-blue-600 rounded-md px-3 py-1 text-sm text-white font-semibold" :class="temp.processing && 'cursor-not-allowed bg-red-500'" :disabled="temp.processing">
+            <div @click="(temp.useQris = false)" class="flex items-center space-x-1">
               <i class="bx bx-check"></i>
               <p class="lowercase first-letter:capitalize">checkout</p>
             </div>

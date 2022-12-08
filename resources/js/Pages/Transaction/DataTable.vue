@@ -20,7 +20,7 @@ const a = ref(true)
         <Th class="px-1 py-2 uppercase border-b-2 border-r-2 border-slate-300" :sortable="false">no</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="id">id</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="user_id">kasir</Th>
-        <!-- <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="payment_method">metode pembayaran</Th> -->
+        <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="payment_method">metode</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="total_cost">total belanja</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-x-2 border-slate-300" :table="table" name="created_at">tanggal transaksi</Th>
         <Th class="px-3 py-2 uppercase border-b-2 border-l-2 border-slate-300" :sortable="false">aksi</Th>
@@ -30,7 +30,7 @@ const a = ref(true)
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">no</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">id</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">kasir</Th>
-      <!-- <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">metode pembayaran</Th> -->
+      <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">metode</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">total belanja</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">tanggal transaksi</Th>
       <Th class="p-2 uppercase border-t-2 border-x-2 border-slate-300" :sortable="false">aksi</Th>
@@ -40,7 +40,7 @@ const a = ref(true)
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ index + 1 }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-center">{{ item.id.toString().padStart(10, '0') }}</td>
         <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.user.name }}</td>
-        <!-- <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.payment_method }}</td> -->
+        <td class="border p-2 border-x-2 border-slate-300 capitalize">{{ item.payment_method }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ rupiah(item.total_cost) }}</td>
         <td class="border p-2 border-x-2 border-slate-300 text-right">{{ dateindo(item.created_at, true) }}</td>
         <td class="border p-1 ">
