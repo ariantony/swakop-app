@@ -48,7 +48,7 @@ setTimeout(() => window.print(), 1000)
       <tr class="border-t-2 border-black border-dotted">
         <td class="px-1">Total Item</td>
         <td class="text-right">{{ totalItem }}</td>
-        <td colspan="2" class="px-1 text-right">{{ price(transaction.pay) }}</td>
+        <td colspan="2" class="px-1 text-right">{{ price(useQris ? transaction.pay : transaction.total_cost) }}</td>
       </tr>
       <tr v-show="useQris">
         <td colspan="3" class="px-1">Pajak QRIS 0,7%</td>

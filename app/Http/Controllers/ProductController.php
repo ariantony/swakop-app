@@ -240,7 +240,7 @@ class ProductController extends Controller
             'group_id' => 'required|integer|exists:groups,id',
         ]);
 
-        $products = Product::with('group')->where('group_id', $post['group_id'])->orderBy('name')->get();
+        $products = Product::with(['group', 'from', 'to'])->where('group_id', $post['group_id'])->orderBy('name')->get();
 
         if ($products->count() === 0) {
             return redirect()->back()->with('error', 'Tidak ada produk dalam kelompok barang ini.');
