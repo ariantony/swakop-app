@@ -28,12 +28,23 @@ const paginator = ref({})
 const latest = ref(href)
 
 const refresh = (page) => {
-  if (page || href)
-    return axios.post(page || href, form.data())
-                .then(response => response.data)
-                .then(response => paginator.value = response)
-                .then(() => latest.value = page || href)
-                .catch(e => Swal.fire({ text: `${e}`, icon: 'error' }))
+  let url = typeof page === 'number' ? href : page || href
+
+  if (typeof page === 'number') {
+    if (href.includes('?page')) {
+      href.replace(/\?page=([\d+])/g, `?page=${page}`)
+    } else {
+      url += `?page=${page}`
+    }
+  }
+
+  console.log('url', url)
+
+  return axios.post(url, form.data())
+              .then(response => response.data)
+              .then(response => paginator.value = response)
+              .then(() => latest.value = url)
+              .catch(e => Swal.fire({ text: `${e}`, icon: 'error' }))
 }
 
 const table = {
@@ -44,6 +55,7 @@ const interval = ref(null)
 
 defineExpose({
   refresh,
+  data: () => paginator.value,
 })
 
 onMounted(() => refresh())
@@ -102,13 +114,14 @@ onUnmounted(() => interval.value && clearInterval(interval.value))
 
       <div class="flex items-center justify-end overflow-x-auto w-full">
         <div class="w-full flex items-center justify-end">
-          <button
+          <a
             v-for="(link, i) in paginator.links"
             :key="i"
             @click.prevent="link.url && refresh(link.url)"
+            :href="link.url"
             class="text-sm uppercase font-semibold px-3 py-1 border flex-none"
             :class="`${i === 0 ? 'rounded-l-md' : ''} ${paginator.links?.length - 1 === i ? 'rounded-r-md' : ''} ${link.active ? 'bg-blue-600 text-white border-blue-600' : (link.url ? 'bg-slate-50' : 'bg-slate-200')} ${link.url ? 'cursor-pointer' : 'cursor-default'}`"
-            v-html="link.label"></button>
+            v-html="link.label"></a>
         </div>
       </div>
     </div>

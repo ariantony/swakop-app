@@ -14,7 +14,8 @@ const { edit, destroy, detail, editStock } = defineProps({
 const table = ref(null)
 
 defineExpose({
-  refresh: () => table.value?.refresh(),
+  refresh: page => table.value?.refresh(page),
+  data: () => table.value?.data(),
 })
 </script>
 

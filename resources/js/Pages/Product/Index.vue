@@ -14,6 +14,7 @@ const { groups } = defineProps({
   groups: Array,
 })
 const self = getCurrentInstance()
+const page = ref(null)
 const table = ref(null)
 const render = ref(true)
 const open = ref(false)
@@ -68,7 +69,10 @@ const closeDetail = () => {
 
 const reset = () => {
   render.value = false
-  nextTick(() => render.value = true)
+  nextTick(() => {
+    render.value = true
+    table.value.refresh(page.value)
+  })
   form.reset()
   formStock.reset()
   close()
@@ -113,7 +117,10 @@ const update = () => {
 //   })
 // }
 
-const submit = () => form.id ? update() : store()
+const submit = () => {
+  page.value = table.value.data().current_page
+  form.id ? update() : store()
+}
 
 const editStock = product => {
   formStock.product = product.id
