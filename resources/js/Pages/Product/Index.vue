@@ -53,7 +53,6 @@ const show = () => {
 const close = () => {
   open.value = false
   form.reset()
-  table.value?.refresh()
   price.value = null
   transaction.value = null
   stock.value = false
@@ -91,6 +90,7 @@ const edit = product => {
   form.name = product.name
   form.barcode = product.barcode
   form.group_id = product.group.id
+  form.restock_limit = product.restock_limit
 
   show()
 }

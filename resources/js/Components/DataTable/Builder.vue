@@ -38,8 +38,6 @@ const refresh = (page) => {
     }
   }
 
-  console.log('url', url)
-
   return axios.post(url, form.data())
               .then(response => response.data)
               .then(response => paginator.value = response)

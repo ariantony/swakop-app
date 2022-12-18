@@ -165,7 +165,6 @@ const submit = () => {
     return
   }
 
-  console.log(temp.useQris)
   if (form.cash < grandTotal() && temp.useQris === false) {
     return Swal.fire({
       title: 'Peringatan',
